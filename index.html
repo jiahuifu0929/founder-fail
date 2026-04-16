@@ -8,7 +8,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <style>
-    /* ─── Reset & Base ─────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
@@ -32,7 +31,6 @@
     }
 
     html { scroll-behavior: smooth; }
-
     body {
       background: var(--bg);
       color: var(--text);
@@ -42,10 +40,9 @@
       min-height: 100vh;
       overflow-x: hidden;
     }
-
     a { color: inherit; text-decoration: none; }
 
-    /* ─── Nav ───────────────────────────────────────────────────── */
+    /* ─── Nav ─────────────────────────────────────────────────── */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -59,26 +56,19 @@
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
     }
-
     .nav-logo {
       font-family: var(--mono);
       font-size: 0.95rem;
       font-weight: 700;
       letter-spacing: -0.02em;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
     }
-
     .nav-logo .dot { color: var(--red); }
-
     .nav-links {
       display: flex;
       align-items: center;
       gap: 2rem;
       list-style: none;
     }
-
     .nav-links a {
       font-size: 0.82rem;
       font-weight: 500;
@@ -87,9 +77,7 @@
       color: var(--text-dim);
       transition: color 0.2s;
     }
-
     .nav-links a:hover { color: var(--text); }
-
     .nav-links .nav-cta {
       background: var(--red-dim);
       color: var(--text);
@@ -99,22 +87,20 @@
       letter-spacing: 0.08em;
       transition: background 0.2s;
     }
-
     .nav-links .nav-cta:hover { background: var(--red); }
 
-    /* ─── Hero ──────────────────────────────────────────────────── */
+    /* ─── Hero ────────────────────────────────────────────────── */
     .hero {
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 8rem 2rem 4rem;
+      padding: 8rem 2rem 6rem;
       text-align: center;
       position: relative;
       overflow: hidden;
     }
-
     .hero::before {
       content: '';
       position: absolute;
@@ -125,7 +111,6 @@
         radial-gradient(ellipse 30% 40% at 20% 60%, rgba(201,151,58,0.04) 0%, transparent 70%);
       pointer-events: none;
     }
-
     .hero-eyebrow {
       font-family: var(--mono);
       font-size: 0.72rem;
@@ -137,7 +122,6 @@
       align-items: center;
       gap: 0.75rem;
     }
-
     .hero-eyebrow::before,
     .hero-eyebrow::after {
       content: '';
@@ -146,7 +130,6 @@
       height: 1px;
       background: var(--red-dim);
     }
-
     .hero-title {
       font-size: clamp(3rem, 8vw, 7rem);
       font-weight: 700;
@@ -154,12 +137,10 @@
       line-height: 0.95;
       margin-bottom: 1.5rem;
     }
-
     .hero-title .strike {
       position: relative;
       color: var(--text-dim);
     }
-
     .hero-title .strike::after {
       content: '';
       position: absolute;
@@ -168,9 +149,7 @@
       height: 3px;
       background: var(--red);
     }
-
     .hero-title .highlight { color: var(--amber); }
-
     .hero-sub {
       max-width: 560px;
       font-size: 1.05rem;
@@ -178,16 +157,13 @@
       line-height: 1.7;
       margin-bottom: 3rem;
     }
-
     .hero-sub strong { color: var(--text); font-weight: 500; }
-
     .hero-actions {
       display: flex;
       gap: 1rem;
       flex-wrap: wrap;
       justify-content: center;
     }
-
     .btn {
       display: inline-flex;
       align-items: center;
@@ -202,51 +178,12 @@
       transition: all 0.2s;
       border: 1px solid transparent;
     }
-
-    .btn-primary {
-      background: var(--red);
-      color: #fff;
-    }
+    .btn-primary { background: var(--red); color: #fff; }
     .btn-primary:hover { background: #d44035; transform: translateY(-1px); }
-
-    .btn-ghost {
-      background: transparent;
-      border-color: var(--border);
-      color: var(--text-dim);
-    }
+    .btn-ghost { background: transparent; border-color: var(--border); color: var(--text-dim); }
     .btn-ghost:hover { border-color: var(--text-dim); color: var(--text); }
 
-    .hero-scroll {
-      position: absolute;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.15em;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      animation: bounce 2s ease-in-out infinite;
-    }
-
-    .hero-scroll::after {
-      content: '';
-      display: block;
-      width: 1px;
-      height: 32px;
-      background: linear-gradient(to bottom, var(--text-muted), transparent);
-    }
-
-    @keyframes bounce {
-      0%, 100% { transform: translateX(-50%) translateY(0); }
-      50% { transform: translateX(-50%) translateY(6px); }
-    }
-
-    /* ─── Stats Bar ─────────────────────────────────────────────── */
+    /* ─── Stats Bar ───────────────────────────────────────────── */
     .stats-bar {
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
@@ -257,11 +194,7 @@
       gap: 4rem;
       flex-wrap: wrap;
     }
-
-    .stat {
-      text-align: center;
-    }
-
+    .stat { text-align: center; }
     .stat-num {
       font-family: var(--mono);
       font-size: 1.8rem;
@@ -269,7 +202,6 @@
       color: var(--amber);
       display: block;
     }
-
     .stat-label {
       font-size: 0.75rem;
       color: var(--text-muted);
@@ -277,14 +209,11 @@
       text-transform: uppercase;
     }
 
-    /* ─── Sections ──────────────────────────────────────────────── */
-    section { padding: 6rem 2rem; }
-
-    .section-inner {
-      max-width: 1100px;
-      margin: 0 auto;
+    /* ─── Features Section ────────────────────────────────────── */
+    .features-section {
+      padding: 6rem 2rem;
     }
-
+    .section-inner { max-width: 1100px; margin: 0 auto; }
     .section-label {
       font-family: var(--mono);
       font-size: 0.68rem;
@@ -293,7 +222,6 @@
       color: var(--text-muted);
       margin-bottom: 0.75rem;
     }
-
     .section-title {
       font-size: clamp(1.8rem, 4vw, 2.8rem);
       font-weight: 700;
@@ -301,7 +229,6 @@
       line-height: 1.1;
       margin-bottom: 1rem;
     }
-
     .section-desc {
       font-size: 1rem;
       color: var(--text-dim);
@@ -310,7 +237,7 @@
       margin-bottom: 3rem;
     }
 
-    /* ─── Feature Cards (3 main sections) ──────────────────────── */
+    /* ─── Feature Cards ───────────────────────────────────────── */
     .features-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -318,7 +245,6 @@
       background: var(--border);
       border: 1px solid var(--border);
     }
-
     .feature-card {
       background: var(--bg2);
       padding: 2.5rem;
@@ -326,10 +252,9 @@
       overflow: hidden;
       cursor: pointer;
       transition: background 0.2s;
+      display: block;
     }
-
     .feature-card:hover { background: var(--bg3); }
-
     .feature-card::before {
       content: '';
       position: absolute;
@@ -338,13 +263,10 @@
       opacity: 0;
       transition: opacity 0.2s;
     }
-
     .feature-card:hover::before { opacity: 1; }
-
     .feature-card.card-red::before   { background: var(--red); }
     .feature-card.card-olive::before { background: var(--olive); }
     .feature-card.card-teal::before  { background: var(--teal); }
-
     .feature-num {
       font-family: var(--mono);
       font-size: 0.68rem;
@@ -352,27 +274,19 @@
       letter-spacing: 0.1em;
       margin-bottom: 1.5rem;
     }
-
-    .feature-icon {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-      display: block;
-    }
-
+    .feature-icon { font-size: 2rem; margin-bottom: 1rem; display: block; }
     .feature-title {
       font-size: 1.25rem;
       font-weight: 700;
       letter-spacing: -0.02em;
       margin-bottom: 0.75rem;
     }
-
     .feature-desc {
       font-size: 0.9rem;
       color: var(--text-dim);
       line-height: 1.65;
       margin-bottom: 1.5rem;
     }
-
     .feature-tag {
       display: inline-block;
       font-family: var(--mono);
@@ -383,11 +297,9 @@
       border-radius: 2px;
       border: 1px solid;
     }
-
     .tag-red   { color: var(--red);   border-color: var(--red-dim);   background: rgba(192,57,43,0.08); }
     .tag-olive { color: var(--olive); border-color: var(--olive-dim); background: rgba(122,140,94,0.08); }
     .tag-teal  { color: var(--teal);  border-color: var(--teal-dim);  background: rgba(74,124,126,0.08); }
-
     .feature-arrow {
       position: absolute;
       bottom: 2.5rem;
@@ -396,413 +308,9 @@
       color: var(--text-muted);
       transition: transform 0.2s, color 0.2s;
     }
+    .feature-card:hover .feature-arrow { transform: translate(3px, -3px); color: var(--text); }
 
-    .feature-card:hover .feature-arrow {
-      transform: translate(3px, -3px);
-      color: var(--text);
-    }
-
-    /* ─── Knowledge Base Preview ────────────────────────────────── */
-    #knowledge { background: var(--bg2); }
-
-    .founders-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      margin-bottom: 2rem;
-    }
-
-    .founder-card {
-      background: var(--bg);
-      padding: 1.75rem;
-      position: relative;
-      transition: background 0.2s;
-    }
-
-    .founder-card:hover { background: var(--bg3); }
-
-    .founder-card-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      margin-bottom: 1rem;
-    }
-
-    .founder-name {
-      font-size: 1rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-    }
-
-    .founder-company {
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      margin-top: 0.1rem;
-    }
-
-    .founder-badge {
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 0.2rem 0.5rem;
-      border-radius: 2px;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    .badge-fail     { background: rgba(192,57,43,0.15);  color: var(--red);   border: 1px solid var(--red-dim); }
-    .badge-survived { background: rgba(122,140,94,0.15); color: var(--olive); border: 1px solid var(--olive-dim); }
-
-    .founder-lesson {
-      font-size: 0.85rem;
-      color: var(--text-dim);
-      line-height: 1.6;
-      margin-bottom: 1.25rem;
-      border-left: 2px solid var(--border);
-      padding-left: 0.75rem;
-    }
-
-    .founder-links {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
-
-    .founder-link {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      transition: color 0.15s;
-    }
-
-    .founder-link:hover { color: var(--amber); }
-
-    .founder-link-type {
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      padding: 0.1rem 0.35rem;
-      border-radius: 2px;
-      background: var(--bg3);
-      color: var(--text-muted);
-      flex-shrink: 0;
-    }
-
-    .view-all-row {
-      text-align: center;
-      margin-top: 2rem;
-    }
-
-    /* ─── Persona Test Preview ──────────────────────────────────── */
-    #personas { background: var(--bg); }
-
-    .types-scroll {
-      display: flex;
-      gap: 1rem;
-      overflow-x: auto;
-      padding-bottom: 1rem;
-      margin-bottom: 2rem;
-      scrollbar-width: thin;
-      scrollbar-color: var(--border) transparent;
-    }
-
-    .type-chip {
-      flex-shrink: 0;
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      padding: 1rem 1.25rem;
-      border-radius: 4px;
-      min-width: 180px;
-      cursor: pointer;
-      transition: border-color 0.2s, background 0.2s;
-    }
-
-    .type-chip:hover {
-      border-color: var(--amber-dim);
-      background: var(--bg3);
-    }
-
-    .type-chip-name {
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 0.3rem;
-    }
-
-    .type-chip-sub {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      line-height: 1.4;
-    }
-
-    .persona-cta-box {
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      padding: 2.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 2rem;
-      flex-wrap: wrap;
-    }
-
-    .persona-cta-text h3 {
-      font-size: 1.2rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.4rem;
-    }
-
-    .persona-cta-text p {
-      font-size: 0.88rem;
-      color: var(--text-dim);
-    }
-
-    /* ─── Game Preview ──────────────────────────────────────────── */
-    #game { background: var(--bg2); }
-
-    .game-preview-box {
-      border: 1px solid var(--border);
-      overflow: hidden;
-    }
-
-    /* Pixel art aesthetic container */
-    .pixel-scene {
-      background: #1a1a2e;
-      padding: 3rem 2rem;
-      text-align: center;
-      position: relative;
-      font-family: var(--mono);
-      image-rendering: pixelated;
-      min-height: 280px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 1.5rem;
-      border-bottom: 1px solid var(--border);
-      overflow: hidden;
-    }
-
-    /* Pixel grid overlay */
-    .pixel-scene::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
-      background-size: 8px 8px;
-      pointer-events: none;
-    }
-
-    .pixel-office {
-      display: grid;
-      grid-template-columns: repeat(8, 40px);
-      grid-template-rows: repeat(4, 32px);
-      gap: 2px;
-      margin: 0 auto;
-    }
-
-    .px {
-      width: 40px;
-      height: 32px;
-      border-radius: 0;
-      image-rendering: pixelated;
-    }
-
-    /* Simple pixel art office scene using divs */
-    .pixel-art-scene {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .pixel-row {
-      display: flex;
-      gap: 2px;
-    }
-
-    .p { width: 12px; height: 12px; display: inline-block; image-rendering: pixelated; }
-
-    /* Pixel colors */
-    .p-wall   { background: #2a2a4a; }
-    .p-window { background: #4a7c7e; }
-    .p-floor  { background: #3a2a1a; }
-    .p-desk   { background: #6b4c2a; }
-    .p-chair  { background: #4a3520; }
-    .p-screen { background: #7a8c5e; }
-    .p-sky    { background: #1a1a2e; }
-    .p-plant  { background: #3d5a2a; }
-    .p-blank  { background: transparent; }
-    .p-char   { background: #c9973a; }
-    .p-shirt  { background: #4a7c7e; }
-    .p-pants  { background: #2a3a5a; }
-    .p-hair   { background: #1a0a00; }
-    .p-skin   { background: #d4a87a; }
-    .p-paper  { background: #e8e2d9; }
-    .p-lamp   { background: #c9973a; border-radius: 50%; }
-    .p-coffee { background: #5a3820; }
-
-    .pixel-dialogue {
-      background: rgba(14,14,14,0.92);
-      border: 2px solid var(--amber);
-      padding: 0.75rem 1.25rem;
-      font-family: var(--mono);
-      font-size: 0.78rem;
-      color: var(--text);
-      letter-spacing: 0.05em;
-      max-width: 360px;
-      text-align: left;
-      position: relative;
-      box-shadow: 4px 4px 0 rgba(201,151,58,0.2);
-    }
-
-    .pixel-dialogue::before {
-      content: '▶';
-      position: absolute;
-      bottom: -1.2rem;
-      left: 1rem;
-      color: var(--amber);
-      font-size: 0.7rem;
-    }
-
-    .pixel-choices {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-      width: 100%;
-      max-width: 360px;
-    }
-
-    .pixel-choice {
-      background: rgba(26,26,46,0.8);
-      border: 1px solid var(--border);
-      padding: 0.5rem 0.85rem;
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      color: var(--text-dim);
-      cursor: pointer;
-      transition: all 0.1s;
-      text-align: left;
-      letter-spacing: 0.03em;
-    }
-
-    .pixel-choice:hover {
-      border-color: var(--amber);
-      color: var(--amber);
-      background: rgba(201,151,58,0.08);
-    }
-
-    .pixel-choice::before { content: '[ '; }
-    .pixel-choice::after  { content: ' ]'; }
-
-    .game-bottom {
-      background: var(--bg);
-      padding: 2rem 2.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 2rem;
-      flex-wrap: wrap;
-    }
-
-    .game-bottom-text h3 {
-      font-size: 1.1rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.3rem;
-    }
-
-    .game-bottom-text p {
-      font-size: 0.85rem;
-      color: var(--text-dim);
-    }
-
-    .pixel-stat-bars {
-      display: flex;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-    }
-
-    .stat-bar-item { text-align: center; }
-
-    .stat-bar-label {
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 0.3rem;
-    }
-
-    .stat-bar-track {
-      width: 80px;
-      height: 8px;
-      background: var(--border);
-      position: relative;
-      image-rendering: pixelated;
-    }
-
-    .stat-bar-fill {
-      position: absolute;
-      top: 0; left: 0; bottom: 0;
-      transition: width 0.3s;
-    }
-
-    .fill-amber { background: var(--amber); }
-    .fill-olive { background: var(--olive); }
-    .fill-teal  { background: var(--teal); }
-
-    /* ─── Manifesto ─────────────────────────────────────────────── */
-    #manifesto {
-      background: var(--bg3);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .manifesto-inner {
-      max-width: 720px;
-      margin: 0 auto;
-      text-align: center;
-    }
-
-    .manifesto-quote {
-      font-size: clamp(1.3rem, 3vw, 2rem);
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      line-height: 1.4;
-      color: var(--text);
-      margin-bottom: 1.5rem;
-    }
-
-    .manifesto-quote em {
-      font-style: normal;
-      color: var(--amber);
-    }
-
-    .manifesto-body {
-      font-size: 0.95rem;
-      color: var(--text-dim);
-      line-height: 1.8;
-      margin-bottom: 2rem;
-    }
-
-    .manifesto-sig {
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      letter-spacing: 0.1em;
-    }
-
-    /* ─── Footer ────────────────────────────────────────────────── */
+    /* ─── Footer ──────────────────────────────────────────────── */
     footer {
       padding: 2.5rem 2rem;
       border-top: 1px solid var(--border);
@@ -812,80 +320,32 @@
       flex-wrap: wrap;
       gap: 1rem;
     }
-
-    .footer-logo {
-      font-family: var(--mono);
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--text-dim);
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 1.5rem;
-      list-style: none;
-    }
-
-    .footer-links a {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      transition: color 0.2s;
-    }
-
+    .footer-logo { font-family: var(--mono); font-size: 0.85rem; font-weight: 700; color: var(--text-dim); }
+    .footer-links { display: flex; gap: 1.5rem; list-style: none; }
+    .footer-links a { font-size: 0.78rem; color: var(--text-muted); transition: color 0.2s; }
     .footer-links a:hover { color: var(--text-dim); }
+    .footer-copy { font-size: 0.72rem; color: var(--text-muted); font-family: var(--mono); }
 
-    .footer-copy {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      font-family: var(--mono);
-    }
-
-    /* ─── Mobile ────────────────────────────────────────────────── */
     @media (max-width: 640px) {
       .nav-links { display: none; }
       .features-grid { grid-template-columns: 1fr; }
-      .founders-grid { grid-template-columns: 1fr; }
       .stats-bar { gap: 2rem; }
-      .game-bottom { flex-direction: column; align-items: flex-start; }
       footer { flex-direction: column; align-items: flex-start; }
-    }
-
-    /* ─── Utility ───────────────────────────────────────────────── */
-    .coming-soon-badge {
-      display: inline-block;
-      font-family: var(--mono);
-      font-size: 0.6rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 0.2rem 0.5rem;
-      border-radius: 2px;
-      background: rgba(201,151,58,0.1);
-      color: var(--amber);
-      border: 1px solid var(--amber-dim);
-      margin-left: 0.5rem;
-      vertical-align: middle;
-    }
-
-    .divider {
-      border: none;
-      border-top: 1px solid var(--border);
     }
   </style>
 </head>
 <body>
 
-  <!-- ─── Nav ───────────────────────────────────────────────────── -->
   <nav>
-    <a href="#" class="nav-logo">founder<span class="dot">.</span>fail</a>
+    <a href="index.html" class="nav-logo">founder<span class="dot">.</span>fail</a>
     <ul class="nav-links">
-      <li><a href="#knowledge">Knowledge Base</a></li>
-      <li><a href="#personas">Failure Type</a></li>
-      <li><a href="#game">Simulation</a></li>
-      <li><a href="#personas" class="nav-cta">Find Your Type →</a></li>
+      <li><a href="knowledge.html">Knowledge Base</a></li>
+      <li><a href="personas.html">Failure Type</a></li>
+      <li><a href="game.html">Simulation</a></li>
+      <li><a href="personas.html" class="nav-cta">Find Your Type →</a></li>
     </ul>
   </nav>
 
-  <!-- ─── Hero ──────────────────────────────────────────────────── -->
   <section class="hero">
     <div class="hero-eyebrow">the internet's most honest startup archive</div>
     <h1 class="hero-title">
@@ -898,13 +358,11 @@
       so you can at least fail faster, cheaper, and more originally than those who came before you.
     </p>
     <div class="hero-actions">
-      <a href="#knowledge" class="btn btn-primary">Explore the wreckage →</a>
-      <a href="#personas" class="btn btn-ghost">Find your failure type</a>
+      <a href="knowledge.html" class="btn btn-primary">Explore the wreckage →</a>
+      <a href="personas.html" class="btn btn-ghost">Find your failure type</a>
     </div>
-    <div class="hero-scroll">scroll</div>
   </section>
 
-  <!-- ─── Stats Bar ─────────────────────────────────────────────── -->
   <div class="stats-bar">
     <div class="stat">
       <span class="stat-num">$847B</span>
@@ -924,385 +382,49 @@
     </div>
   </div>
 
-  <!-- ─── Three Pillars ─────────────────────────────────────────── -->
-  <section>
+  <section class="features-section">
     <div class="section-inner">
       <div class="section-label">what's here</div>
       <h2 class="section-title">Three ways to learn<br />from someone else's pain</h2>
       <p class="section-desc">Pick your level of masochism.</p>
 
       <div class="features-grid">
-        <div class="feature-card card-red" onclick="document.getElementById('knowledge').scrollIntoView({behavior:'smooth'})">
+        <a href="knowledge.html" class="feature-card card-red">
           <div class="feature-num">01</div>
           <span class="feature-icon">📼</span>
           <h3 class="feature-title">Knowledge Base</h3>
-          <p class="feature-desc">Curated founder failures and near-death recoveries. Real links, real lessons, zero fluff. One brutal insight per resource so you know exactly what you're walking into.</p>
+          <p class="feature-desc">Curated founder failures and near-death recoveries. Real links, real lessons, zero fluff. One brutal insight per story so you know exactly what you're reading into.</p>
           <span class="feature-tag tag-red">20+ founders</span>
           <div class="feature-arrow">↗</div>
-        </div>
+        </a>
 
-        <div class="feature-card card-olive" onclick="document.getElementById('personas').scrollIntoView({behavior:'smooth'})">
+        <a href="personas.html" class="feature-card card-olive">
           <div class="feature-num">02</div>
           <span class="feature-icon">🎭</span>
           <h3 class="feature-title">Failure Type Test</h3>
           <p class="feature-desc">12 archetypes. 24 questions. One result that either resonates deeply or offends you — which probably means it's accurate. Shareable. Painful. Entertaining.</p>
           <span class="feature-tag tag-olive">coming soon</span>
           <div class="feature-arrow">↗</div>
-        </div>
+        </a>
 
-        <div class="feature-card card-teal" onclick="document.getElementById('game').scrollIntoView({behavior:'smooth'})">
+        <a href="game.html" class="feature-card card-teal">
           <div class="feature-num">03</div>
           <span class="feature-icon">🎮</span>
           <h3 class="feature-title">Founder Simulation</h3>
           <p class="feature-desc">Choose your startup type. Make 20 decisions. Discover which of 6 endings you deserve. Pixel art included, dignity not guaranteed.</p>
           <span class="feature-tag tag-teal">coming soon</span>
           <div class="feature-arrow">↗</div>
-        </div>
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- ─── Knowledge Base ────────────────────────────────────────── -->
-  <section id="knowledge">
-    <div class="section-inner">
-      <div class="section-label">01 — Knowledge Base</div>
-      <h2 class="section-title">The archive</h2>
-      <p class="section-desc">Failures, near-deaths, and improbable comebacks. Annotated with the one thing you actually need to know.</p>
-
-      <div class="founders-grid">
-
-        <!-- Card 1 -->
-        <div class="founder-card">
-          <div class="founder-card-top">
-            <div>
-              <div class="founder-name">Elizabeth Holmes</div>
-              <div class="founder-company">Theranos</div>
-            </div>
-            <span class="founder-badge badge-fail">Collapse</span>
-          </div>
-          <div class="founder-lesson">"Faking it until you make it" is a vibe. Faking blood test results is a felony. Know the difference before you pitch your Series A.</div>
-          <div class="founder-links">
-            <a class="founder-link" href="https://www.youtube.com/watch?v=3pZ9R0NU-Cw" target="_blank" rel="noopener">
-              <span class="founder-link-type">doc</span>The Inventor — HBO documentary on how the lie scaled
-            </a>
-            <a class="founder-link" href="https://www.amazon.com/Bad-Blood-Secrets-Silicon-Startup/dp/152473165X" target="_blank" rel="noopener">
-              <span class="founder-link-type">book</span>Bad Blood — Carreyrou's inside account of the cover-up
-            </a>
-          </div>
-        </div>
-
-        <!-- Card 2 -->
-        <div class="founder-card">
-          <div class="founder-card-top">
-            <div>
-              <div class="founder-name">Adam Neumann</div>
-              <div class="founder-company">WeWork</div>
-            </div>
-            <span class="founder-badge badge-fail">Collapse</span>
-          </div>
-          <div class="founder-lesson">You can convince investors you're a real estate company, a tech company, and a consciousness movement simultaneously — right up until you file the S-1.</div>
-          <div class="founder-links">
-            <a class="founder-link" href="https://www.youtube.com/watch?v=DP5IomT8Oq8" target="_blank" rel="noopener">
-              <span class="founder-link-type">doc</span>WeWork: Or the Making and Breaking of a $47B Unicorn
-            </a>
-            <a class="founder-link" href="https://www.wsj.com/articles/wework-ipo-adam-neumann-11568286297" target="_blank" rel="noopener">
-              <span class="founder-link-type">article</span>WSJ — The IPO filing that ended everything
-            </a>
-          </div>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="founder-card">
-          <div class="founder-card-top">
-            <div>
-              <div class="founder-name">Sam Bankman-Fried</div>
-              <div class="founder-company">FTX</div>
-            </div>
-            <span class="founder-badge badge-fail">Collapse</span>
-          </div>
-          <div class="founder-lesson">Effective altruism does not work retroactively. You cannot donate your way out of an 8-billion-dollar shortfall with customer funds.</div>
-          <div class="founder-links">
-            <a class="founder-link" href="https://www.youtube.com/watch?v=2Ca2tqvqEdU" target="_blank" rel="noopener">
-              <span class="founder-link-type">podcast</span>Acquired — FTX collapse full breakdown
-            </a>
-            <a class="founder-link" href="https://www.amazon.com/Going-Infinite-Rise-Fall-Trader/dp/0593443144" target="_blank" rel="noopener">
-              <span class="founder-link-type">book</span>Going Infinite — Michael Lewis inside account
-            </a>
-          </div>
-        </div>
-
-        <!-- Card 4 — Survived -->
-        <div class="founder-card">
-          <div class="founder-card-top">
-            <div>
-              <div class="founder-name">Brian Chesky</div>
-              <div class="founder-company">Airbnb</div>
-            </div>
-            <span class="founder-badge badge-survived">Near-death → Thrived</span>
-          </div>
-          <div class="founder-lesson">When COVID killed 80% of revenue overnight, Chesky laid off 25% of staff in one of the most transparent CEO moves on record. Then IPO'd at $100B. Honesty scales.</div>
-          <div class="founder-links">
-            <a class="founder-link" href="https://www.youtube.com/watch?v=jCKM5Xzd5HA" target="_blank" rel="noopener">
-              <span class="founder-link-type">video</span>Chesky's 2020 layoff letter — the one everyone studies
-            </a>
-            <a class="founder-link" href="https://tim.blog/2023/07/05/brian-chesky/" target="_blank" rel="noopener">
-              <span class="founder-link-type">podcast</span>Tim Ferriss — Chesky on redesigning Airbnb post-COVID
-            </a>
-          </div>
-        </div>
-
-        <!-- Card 5 — Survived -->
-        <div class="founder-card">
-          <div class="founder-card-top">
-            <div>
-              <div class="founder-name">Stewart Butterfield</div>
-              <div class="founder-company">Slack (via Glitch)</div>
-            </div>
-            <span class="founder-badge badge-survived">Pivoted → Thrived</span>
-          </div>
-          <div class="founder-lesson">Failed game studio became a $27B company. The lesson isn't "pivot." It's that Butterfield had the self-awareness to recognize the real product hiding inside his failure.</div>
-          <div class="founder-links">
-            <a class="founder-link" href="https://www.youtube.com/watch?v=3pZ9R0NU-Cw" target="_blank" rel="noopener">
-              <span class="founder-link-type">podcast</span>How I Built This — Butterfield on two failed games and Slack
-            </a>
-          </div>
-        </div>
-
-        <!-- Card 6 -->
-        <div class="founder-card">
-          <div class="founder-card-top">
-            <div>
-              <div class="founder-name">Reed Hastings</div>
-              <div class="founder-company">Netflix</div>
-            </div>
-            <span class="founder-badge badge-survived">Near-death → Thrived</span>
-          </div>
-          <div class="founder-lesson">Qwikster was a masterclass in how to lose 800,000 subscribers in a quarter. Hastings reversed it, owned the failure publicly, and rebuilt trust. The apology was the product.</div>
-          <div class="founder-links">
-            <a class="founder-link" href="https://www.youtube.com/watch?v=JoMxq4q2mOc" target="_blank" rel="noopener">
-              <span class="founder-link-type">video</span>Netflix vs. Blockbuster — the pivot that almost killed them
-            </a>
-            <a class="founder-link" href="https://www.amazon.com/No-Rules-Netflix-Culture-Reinvention/dp/1984877860" target="_blank" rel="noopener">
-              <span class="founder-link-type">book</span>No Rules Rules — Hastings on what he got wrong
-            </a>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="view-all-row">
-        <span class="btn btn-ghost" style="cursor:default; opacity:0.5;">More founders coming — suggest one →</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── Manifesto ─────────────────────────────────────────────── -->
-  <section id="manifesto">
-    <div class="section-inner manifesto-inner">
-      <div class="manifesto-quote">
-        "The best founders don't avoid failure.<br />
-        They <em>plagiarize</em> it from people<br />
-        who already survived it."
-      </div>
-      <div class="manifesto-body">
-        Every podcast tells you to move fast, ship early, talk to users.
-        Nobody tells you that the co-founder you trust will walk out at month 18.
-        Nobody shows you the board meeting where you almost lose the company.
-        Nobody documents what it actually feels like to be three weeks from zero.
-        <br /><br />
-        This site is for that part.
-      </div>
-      <div class="manifesto-sig">— founder.fail, est. 2025 — built in public</div>
-    </div>
-  </section>
-
-  <!-- ─── Persona Test ───────────────────────────────────────────── -->
-  <section id="personas">
-    <div class="section-inner">
-      <div class="section-label">02 — Failure Type Test</div>
-      <h2 class="section-title">Which kind of failure<br />are you?<span class="coming-soon-badge">coming soon</span></h2>
-      <p class="section-desc">12 archetypes. One of them is disturbingly you. The quiz takes 3 minutes. The self-awareness takes longer.</p>
-
-      <div class="types-scroll">
-        <div class="type-chip">
-          <div class="type-chip-name">🔮 The Fundraising Ghost</div>
-          <div class="type-chip-sub">Raised $3M. No product. Great deck.</div>
-        </div>
-        <div class="type-chip">
-          <div class="type-chip-name">🔄 The Eternal Pivot</div>
-          <div class="type-chip-sub">Changed direction 7 times. Now does B2B compliance.</div>
-        </div>
-        <div class="type-chip">
-          <div class="type-chip-name">🌌 The Visionary Void</div>
-          <div class="type-chip-sub">Big vision. Zero execution. Beautiful roadmap.</div>
-        </div>
-        <div class="type-chip">
-          <div class="type-chip-name">💣 The Co-founder Bomb</div>
-          <div class="type-chip-sub">Partnership that was always going to explode.</div>
-        </div>
-        <div class="type-chip">
-          <div class="type-chip-name">📈 The Premature Scaler</div>
-          <div class="type-chip-sub">80 employees. Zero PMF. Great vibes though.</div>
-        </div>
-        <div class="type-chip">
-          <div class="type-chip-name">🥷 The Stealth Launcher</div>
-          <div class="type-chip-sub">2 years in stealth. Launched. Crickets.</div>
-        </div>
-        <div class="type-chip">
-          <div class="type-chip-name">💸 The VC Honeytrap</div>
-          <div class="type-chip-sub">Optimized for investors. Forgot customers exist.</div>
-        </div>
-        <div class="type-chip">
-          <div class="type-chip-name">🏭 The Feature Factory</div>
-          <div class="type-chip-sub">Built everything asked for. Solved nothing.</div>
-        </div>
-        <div class="type-chip">
-          <div class="type-chip-name">⌛ The Market Timer</div>
-          <div class="type-chip-sub">Right idea. Wrong decade. Or right decade, wrong idea.</div>
-        </div>
-        <div class="type-chip">
-          <div class="type-chip-name">🏳️ The Burnout Founder</div>
-          <div class="type-chip-sub">Great company. Checked out. Slowly sank it.</div>
-        </div>
-        <div class="type-chip">
-          <div class="type-chip-name">⚖️ The Regulation Blindspot</div>
-          <div class="type-chip-sub">Built something amazing. Turns out it was illegal.</div>
-        </div>
-        <div class="type-chip">
-          <div class="type-chip-name">🧩 The Acqui-hire Tragedy</div>
-          <div class="type-chip-sub">Brilliant team. Wrong problem. Got absorbed for parts.</div>
-        </div>
-      </div>
-
-      <div class="persona-cta-box">
-        <div class="persona-cta-text">
-          <h3>Take the test when it launches</h3>
-          <p>24 questions. One archetype. Shareable result card. Brutal but fair.</p>
-        </div>
-        <div style="display:flex;gap:1rem;flex-wrap:wrap;">
-          <button class="btn btn-ghost" onclick="alert('Quiz launching soon. Follow the build on Twitter.')">Notify me on launch</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ─── Simulation Game ───────────────────────────────────────── -->
-  <section id="game">
-    <div class="section-inner">
-      <div class="section-label">03 — Founder Simulation</div>
-      <h2 class="section-title">Run your company.<br />Into the ground.<span class="coming-soon-badge">coming soon</span></h2>
-      <p class="section-desc">Pick a startup type. Make 20 decisions. See which of 6 endings you deserve. Pixel art included. Dignity not guaranteed.</p>
-
-      <div class="game-preview-box">
-
-        <!-- Pixel scene preview -->
-        <div class="pixel-scene">
-
-          <!-- Simple pixel art office using CSS blocks -->
-          <div style="display:flex;flex-direction:column;align-items:center;gap:2px;margin-bottom:0.5rem;">
-            <!-- Row 1: Wall / Window -->
-            <div class="pixel-row">
-              <div class="p p-wall"></div><div class="p p-wall"></div><div class="p p-wall"></div>
-              <div class="p p-window"></div><div class="p p-window"></div><div class="p p-window"></div>
-              <div class="p p-wall"></div><div class="p p-wall"></div><div class="p p-wall"></div>
-              <div class="p p-window"></div><div class="p p-window"></div><div class="p p-window"></div>
-              <div class="p p-wall"></div><div class="p p-wall"></div>
-            </div>
-            <!-- Row 2: Wall + window continuation -->
-            <div class="pixel-row">
-              <div class="p p-wall"></div><div class="p p-wall"></div><div class="p p-wall"></div>
-              <div class="p p-window" style="background:#5a9ea0;"></div><div class="p p-window" style="background:#5a9ea0;"></div><div class="p p-window" style="background:#5a9ea0;"></div>
-              <div class="p p-wall"></div><div class="p p-wall"></div><div class="p p-wall"></div>
-              <div class="p p-window" style="background:#5a9ea0;"></div><div class="p p-window" style="background:#5a9ea0;"></div><div class="p p-window" style="background:#5a9ea0;"></div>
-              <div class="p p-wall"></div><div class="p p-wall"></div>
-            </div>
-            <!-- Row 3: Floor + desk -->
-            <div class="pixel-row">
-              <div class="p p-floor"></div><div class="p p-plant"></div><div class="p p-floor"></div>
-              <div class="p p-desk"></div><div class="p p-screen"></div><div class="p p-screen"></div>
-              <div class="p p-desk"></div><div class="p p-floor"></div><div class="p p-floor"></div>
-              <div class="p p-desk"></div><div class="p p-lamp"></div><div class="p p-paper"></div>
-              <div class="p p-desk"></div><div class="p p-floor"></div>
-            </div>
-            <!-- Row 4: Character on floor -->
-            <div class="pixel-row">
-              <div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div>
-              <div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div>
-              <div class="p p-floor"></div><div class="p p-skin"></div><div class="p p-hair"></div>
-              <div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div>
-              <div class="p p-coffee"></div><div class="p p-floor"></div>
-            </div>
-            <!-- Row 5: Character body -->
-            <div class="pixel-row">
-              <div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div>
-              <div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div>
-              <div class="p p-shirt"></div><div class="p p-shirt"></div><div class="p p-shirt"></div>
-              <div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div>
-              <div class="p p-floor"></div><div class="p p-floor"></div>
-            </div>
-            <!-- Row 6: Character legs -->
-            <div class="pixel-row">
-              <div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div>
-              <div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div>
-              <div class="p p-pants"></div><div class="p p-floor"></div><div class="p p-pants"></div>
-              <div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div>
-              <div class="p p-floor"></div><div class="p p-floor"></div>
-            </div>
-          </div>
-
-          <!-- Dialogue box -->
-          <div class="pixel-dialogue">
-            VC: "Your DAU numbers are incredible."<br />
-            You: [internally] "I have 12 users and 3 are my mom."
-          </div>
-        </div>
-
-        <!-- Choices + stats bar -->
-        <div class="game-bottom">
-          <div class="game-bottom-text">
-            <h3>The Pitch — Day 1</h3>
-            <p>A partner at Sequoia just cold-emailed you. What do you do?</p>
-          </div>
-          <div class="pixel-stat-bars">
-            <div class="stat-bar-item">
-              <div class="stat-bar-label">Runway</div>
-              <div class="stat-bar-track"><div class="stat-bar-fill fill-amber" style="width:70%"></div></div>
-            </div>
-            <div class="stat-bar-item">
-              <div class="stat-bar-label">PMF</div>
-              <div class="stat-bar-track"><div class="stat-bar-fill fill-olive" style="width:20%"></div></div>
-            </div>
-            <div class="stat-bar-item">
-              <div class="stat-bar-label">Morale</div>
-              <div class="stat-bar-track"><div class="stat-bar-fill fill-teal" style="width:85%"></div></div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Sample choices preview -->
-        <div style="padding:1.5rem 2.5rem;background:var(--bg3);border-top:1px solid var(--border);">
-          <div class="pixel-choices">
-            <button class="pixel-choice">Pitch immediately, deal before product</button>
-            <button class="pixel-choice">Ask what they know about your space first</button>
-            <button class="pixel-choice">Ignore it — you're not ready yet</button>
-          </div>
-        </div>
-
-      </div>
-
-      <p style="margin-top:1.25rem;font-size:0.8rem;color:var(--text-muted);text-align:center;font-family:var(--mono);">
-        ↑ static preview only — full game launching soon
-      </p>
-    </div>
-  </section>
-
-  <!-- ─── Footer ────────────────────────────────────────────────── -->
   <footer>
     <div class="footer-logo">founder<span style="color:var(--red)">.</span>fail</div>
     <ul class="footer-links">
-      <li><a href="#knowledge">knowledge base</a></li>
-      <li><a href="#personas">failure types</a></li>
-      <li><a href="#game">simulation</a></li>
+      <li><a href="knowledge.html">knowledge base</a></li>
+      <li><a href="personas.html">failure types</a></li>
+      <li><a href="game.html">simulation</a></li>
     </ul>
     <div class="footer-copy">built in public · 2025</div>
   </footer>

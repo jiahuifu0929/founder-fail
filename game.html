@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Founder Simulation — founder.fail</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:        #0e0e0e;
+      --bg2:       #141414;
+      --bg3:       #1a1a1a;
+      --border:    #2a2a2a;
+      --olive:     #7a8c5e;
+      --olive-dim: #5a6845;
+      --teal:      #4a7c7e;
+      --teal-dim:  #355759;
+      --amber:     #c9973a;
+      --amber-dim: #8f6a28;
+      --red:       #c0392b;
+      --red-dim:   #7d2519;
+      --text:      #e8e2d9;
+      --text-dim:  #8a8279;
+      --text-muted:#4a4642;
+      --mono:      'Space Mono', monospace;
+      --sans:      'Space Grotesk', sans-serif;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* ─── Nav ─────────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      height: 56px;
+      background: rgba(14,14,14,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-left { display: flex; align-items: center; gap: 1.5rem; }
+    .nav-back {
+      font-family: var(--mono); font-size: 0.72rem;
+      color: var(--text-muted); letter-spacing: 0.08em;
+      display: flex; align-items: center; gap: 0.4rem;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--text-dim); }
+    .nav-logo { font-family: var(--mono); font-size: 0.95rem; font-weight: 700; }
+    .nav-logo .dot { color: var(--red); }
+    .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.82rem; font-weight: 500;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--text-dim); transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links .nav-cta {
+      background: var(--red-dim); color: var(--text);
+      padding: 0.35rem 0.9rem; border-radius: 3px;
+      font-size: 0.78rem; letter-spacing: 0.08em;
+      transition: background 0.2s;
+    }
+    .nav-links .nav-cta:hover { background: var(--red); }
+
+    /* ─── Page Header ─────────────────────────────────────────── */
+    .page-header {
+      padding: 8rem 2rem 3rem;
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .page-label {
+      font-family: var(--mono); font-size: 0.68rem;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 0.75rem;
+    }
+    .page-title {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700; letter-spacing: -0.03em;
+      line-height: 1.05; margin-bottom: 1rem;
+    }
+    .page-desc {
+      font-size: 1rem; color: var(--text-dim);
+      line-height: 1.7; max-width: 480px;
+      margin: 0 auto 2.5rem;
+    }
+    .coming-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: var(--mono); font-size: 0.72rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.4rem 1rem; border-radius: 2px;
+      background: rgba(74,124,126,0.1);
+      color: var(--teal); border: 1px solid var(--teal-dim);
+      margin-bottom: 4rem;
+    }
+    .coming-badge .blink {
+      width: 6px; height: 6px; background: var(--teal);
+      border-radius: 50%; animation: blink 1.4s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+    /* ─── Game Preview ────────────────────────────────────────── */
+    .game-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 2rem 6rem;
+    }
+    .game-box {
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    /* Pixel art scene */
+    .pixel-scene {
+      background: #1a1a2e;
+      padding: 3rem 2rem 2rem;
+      text-align: center;
+      position: relative;
+      font-family: var(--mono);
+      image-rendering: pixelated;
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .pixel-scene::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 8px 8px;
+      pointer-events: none;
+    }
+    .pixel-scene-label {
+      position: absolute;
+      top: 1rem; left: 1.25rem;
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      opacity: 0.7;
+    }
+
+    /* CSS pixel art */
+    .pixel-row { display: flex; gap: 2px; }
+    .p { width: 12px; height: 12px; display: inline-block; image-rendering: pixelated; flex-shrink: 0; }
+    .pixel-art { display: flex; flex-direction: column; gap: 2px; }
+    .p-wall   { background: #2a2a4a; }
+    .p-window { background: #4a7c7e; }
+    .p-window2{ background: #5a9ea0; }
+    .p-floor  { background: #3a2a1a; }
+    .p-desk   { background: #6b4c2a; }
+    .p-chair  { background: #4a3520; }
+    .p-screen { background: #7a8c5e; }
+    .p-plant  { background: #3d5a2a; }
+    .p-skin   { background: #d4a87a; }
+    .p-hair   { background: #1a0a00; }
+    .p-shirt  { background: #4a7c7e; }
+    .p-pants  { background: #2a3a5a; }
+    .p-paper  { background: #e8e2d9; }
+    .p-lamp   { background: #c9973a; }
+    .p-coffee { background: #5a3820; }
+    .p-sky    { background: #1a1a2e; }
+    .p-blank  { background: transparent; }
+    .p-vc     { background: #4a3a6a; }
+    .p-vcsuit { background: #1a2a3a; }
+    .p-table  { background: #5a4a30; }
+    .p-chair2 { background: #3a5a6a; }
+
+    .pixel-dialogue {
+      background: rgba(14,14,14,0.95);
+      border: 2px solid var(--teal);
+      padding: 0.85rem 1.25rem;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--text);
+      letter-spacing: 0.04em;
+      max-width: 400px;
+      text-align: left;
+      position: relative;
+      box-shadow: 4px 4px 0 rgba(74,124,126,0.15);
+      line-height: 1.5;
+    }
+    .pixel-dialogue .speaker {
+      font-size: 0.62rem;
+      color: var(--teal);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.4rem;
+    }
+
+    /* Stats + choices */
+    .game-hud {
+      background: var(--bg);
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+      border-bottom: 1px solid var(--border);
+    }
+    .hud-title { font-size: 0.92rem; font-weight: 700; margin-bottom: 0.2rem; }
+    .hud-sub { font-size: 0.78rem; color: var(--text-dim); }
+    .stat-bars { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .stat-bar-item { text-align: center; }
+    .stat-bar-label {
+      font-family: var(--mono); font-size: 0.58rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 0.3rem;
+    }
+    .stat-bar-track {
+      width: 72px; height: 8px;
+      background: var(--border);
+      position: relative; image-rendering: pixelated;
+    }
+    .stat-bar-fill {
+      position: absolute; top: 0; left: 0; bottom: 0;
+    }
+    .fill-amber { background: var(--amber); }
+    .fill-olive { background: var(--olive); }
+    .fill-teal  { background: var(--teal); }
+
+    /* Choices */
+    .pixel-choices {
+      padding: 1.5rem 2rem;
+      background: var(--bg2);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .choices-label {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+    .pixel-choice {
+      background: rgba(26,26,46,0.6);
+      border: 1px solid var(--border);
+      padding: 0.65rem 1rem;
+      font-family: var(--mono);
+      font-size: 0.74rem;
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: all 0.12s;
+      text-align: left;
+      letter-spacing: 0.03em;
+      width: 100%;
+    }
+    .pixel-choice:hover {
+      border-color: var(--teal);
+      color: var(--teal);
+      background: rgba(74,124,126,0.08);
+    }
+    .pixel-choice::before { content: '▸  '; color: var(--text-muted); }
+    .pixel-choice:hover::before { color: var(--teal); }
+
+    /* Endings preview */
+    .endings-section {
+      margin-top: 3rem;
+      border: 1px solid var(--border);
+    }
+    .endings-header {
+      padding: 1.25rem 1.75rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .endings-header h3 { font-size: 0.92rem; font-weight: 700; }
+    .endings-header span {
+      font-family: var(--mono); font-size: 0.65rem;
+      color: var(--text-muted); letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .endings-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+    }
+    .ending-card {
+      background: var(--bg2);
+      padding: 1.25rem 1.5rem;
+    }
+    .ending-icon { font-size: 1.4rem; margin-bottom: 0.5rem; display: block; }
+    .ending-name {
+      font-size: 0.85rem; font-weight: 700;
+      margin-bottom: 0.3rem;
+    }
+    .ending-desc { font-size: 0.75rem; color: var(--text-muted); line-height: 1.4; }
+
+    /* Startup selector preview */
+    .startup-types {
+      margin-top: 2rem;
+    }
+    .startup-types-label {
+      font-family: var(--mono);
+      font-size: 0.68rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+    .startup-chips {
+      display: flex; gap: 0.75rem; flex-wrap: wrap;
+    }
+    .startup-chip {
+      display: flex; align-items: center; gap: 0.5rem;
+      background: var(--bg2); border: 1px solid var(--border);
+      padding: 0.6rem 1rem; border-radius: 3px;
+      font-size: 0.82rem; opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* ─── Footer ──────────────────────────────────────────────── */
+    footer {
+      padding: 2.5rem 2rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-logo { font-family: var(--mono); font-size: 0.85rem; font-weight: 700; color: var(--text-dim); }
+    .footer-links { display: flex; gap: 1.5rem; list-style: none; }
+    .footer-links a { font-size: 0.78rem; color: var(--text-muted); transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text-dim); }
+    .footer-copy { font-size: 0.72rem; color: var(--text-muted); font-family: var(--mono); }
+
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .endings-grid { grid-template-columns: 1fr; }
+      .game-hud { flex-direction: column; align-items: flex-start; }
+      footer { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-left">
+      <a href="index.html" class="nav-back">← home</a>
+      <a href="index.html" class="nav-logo">founder<span class="dot">.</span>fail</a>
+    </div>
+    <ul class="nav-links">
+      <li><a href="knowledge.html">Knowledge Base</a></li>
+      <li><a href="personas.html">Failure Type</a></li>
+      <li><a href="game.html">Simulation</a></li>
+      <li><a href="personas.html" class="nav-cta">Find Your Type →</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-header">
+    <div class="page-label">03 — Founder Simulation</div>
+    <h1 class="page-title">Run your company.<br />Into the ground.</h1>
+    <p class="page-desc">Choose your startup type. Navigate 20 decisions. Find out which of 6 endings you actually deserve. Pixel art included. Dignity not guaranteed.</p>
+    <div class="coming-badge">
+      <span class="blink"></span>
+      Game in development
+    </div>
+  </div>
+
+  <div class="game-wrap">
+
+    <!-- Choose your startup -->
+    <div class="startup-types">
+      <div class="startup-types-label">choose your startup — coming soon</div>
+      <div class="startup-chips">
+        <div class="startup-chip">🖥️ B2B SaaS</div>
+        <div class="startup-chip">📱 Consumer App</div>
+        <div class="startup-chip">🪙 Crypto / Web3</div>
+        <div class="startup-chip">🤖 Hardware / Robotics</div>
+      </div>
+    </div>
+
+    <!-- Game preview -->
+    <div class="game-box" style="margin-top:2rem;">
+      <div class="pixel-scene">
+        <span class="pixel-scene-label">scene preview — static</span>
+
+        <!-- Pixel art: board room pitch -->
+        <div class="pixel-art">
+          <div class="pixel-row">
+            <div class="p p-wall"></div><div class="p p-wall"></div><div class="p p-wall"></div><div class="p p-wall"></div><div class="p p-window"></div><div class="p p-window2"></div><div class="p p-window2"></div><div class="p p-window"></div><div class="p p-wall"></div><div class="p p-wall"></div><div class="p p-wall"></div><div class="p p-wall"></div>
+          </div>
+          <div class="pixel-row">
+            <div class="p p-wall"></div><div class="p p-wall"></div><div class="p p-wall"></div><div class="p p-wall"></div><div class="p p-window2"></div><div class="p p-window2"></div><div class="p p-window2"></div><div class="p p-window2"></div><div class="p p-wall"></div><div class="p p-wall"></div><div class="p p-wall"></div><div class="p p-wall"></div>
+          </div>
+          <div class="pixel-row">
+            <div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-blank"></div><div class="p p-table"></div><div class="p p-table"></div><div class="p p-table"></div><div class="p p-table"></div><div class="p p-table"></div><div class="p p-table"></div><div class="p p-blank"></div><div class="p p-floor"></div><div class="p p-floor"></div>
+          </div>
+          <div class="pixel-row">
+            <div class="p p-blank"></div><div class="p p-vcsuit"></div><div class="p p-blank"></div><div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-blank"></div><div class="p p-shirt"></div><div class="p p-blank"></div>
+          </div>
+          <div class="pixel-row">
+            <div class="p p-vc"></div><div class="p p-vcsuit"></div><div class="p p-vc"></div><div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-paper"></div><div class="p p-paper"></div><div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-shirt"></div><div class="p p-shirt"></div><div class="p p-shirt"></div>
+          </div>
+          <div class="pixel-row">
+            <div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div>
+          </div>
+        </div>
+
+        <div class="pixel-dialogue">
+          <div class="speaker">VC Partner</div>
+          "Your TAM slide says $4 trillion. Walk me through that math."
+        </div>
+      </div>
+
+      <div class="game-hud">
+        <div>
+          <div class="hud-title">The Pitch — Day 1</div>
+          <div class="hud-sub">You're in a Sequoia partner meeting. Your product has 12 users. 3 are your mom.</div>
+        </div>
+        <div class="stat-bars">
+          <div class="stat-bar-item">
+            <div class="stat-bar-label">Runway</div>
+            <div class="stat-bar-track"><div class="stat-bar-fill fill-amber" style="width:70%"></div></div>
+          </div>
+          <div class="stat-bar-item">
+            <div class="stat-bar-label">PMF</div>
+            <div class="stat-bar-track"><div class="stat-bar-fill fill-olive" style="width:15%"></div></div>
+          </div>
+          <div class="stat-bar-item">
+            <div class="stat-bar-label">Morale</div>
+            <div class="stat-bar-track"><div class="stat-bar-fill fill-teal" style="width:90%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pixel-choices">
+        <div class="choices-label">What do you do?</div>
+        <button class="pixel-choice" onclick="this.style.opacity='0.4'">Pitch confidently — $4T is conservative actually</button>
+        <button class="pixel-choice" onclick="this.style.opacity='0.4'">Admit the number is aspirational and pivot to traction</button>
+        <button class="pixel-choice" onclick="this.style.opacity='0.4'">Ask them what markets they're excited about right now</button>
+      </div>
+    </div>
+
+    <!-- 6 Endings -->
+    <div class="endings-section">
+      <div class="endings-header">
+        <h3>6 possible endings</h3>
+        <span>your choices determine which one</span>
+      </div>
+      <div class="endings-grid">
+        <div class="ending-card">
+          <span class="ending-icon">🏆</span>
+          <div class="ending-name">The Exit</div>
+          <div class="ending-desc">IPO or acquisition. You made it. Statistically unlikely.</div>
+        </div>
+        <div class="ending-card">
+          <span class="ending-icon">🤝</span>
+          <div class="ending-name">Acqui-hired</div>
+          <div class="ending-desc">Your team got absorbed. The product was killed on day one.</div>
+        </div>
+        <div class="ending-card">
+          <span class="ending-icon">🧟</span>
+          <div class="ending-name">Zombie Mode</div>
+          <div class="ending-desc">Somehow still open. Going nowhere. 5 employees. 2019 runway.</div>
+        </div>
+        <div class="ending-card">
+          <span class="ending-icon">💸</span>
+          <div class="ending-name">Default Dead</div>
+          <div class="ending-desc">Runway hit zero. You had 47 days and scheduled a team offsite.</div>
+        </div>
+        <div class="ending-card">
+          <span class="ending-icon">🔄</span>
+          <div class="ending-name">The Eternal Pivot</div>
+          <div class="ending-desc">You changed the idea 7 times. Now you sell B2B compliance software. You hate it.</div>
+        </div>
+        <div class="ending-card">
+          <span class="ending-icon">📰</span>
+          <div class="ending-name">Famous for the Wrong Reasons</div>
+          <div class="ending-desc">Congratulations. You're a podcast episode now.</div>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top:1.5rem;font-size:0.75rem;color:var(--text-muted);text-align:center;font-family:var(--mono);">
+      ↑ static preview — full playable game coming soon
+    </p>
+  </div>
+
+  <footer>
+    <div class="footer-logo">founder<span style="color:var(--red)">.</span>fail</div>
+    <ul class="footer-links">
+      <li><a href="knowledge.html">knowledge base</a></li>
+      <li><a href="personas.html">failure types</a></li>
+      <li><a href="game.html">simulation</a></li>
+    </ul>
+    <div class="footer-copy">built in public · 2025</div>
+  </footer>
+
+</body>
+</html>

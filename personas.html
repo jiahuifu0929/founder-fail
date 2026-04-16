@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Failure Type Test — founder.fail</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:        #0e0e0e;
+      --bg2:       #141414;
+      --bg3:       #1a1a1a;
+      --border:    #2a2a2a;
+      --olive:     #7a8c5e;
+      --olive-dim: #5a6845;
+      --teal:      #4a7c7e;
+      --teal-dim:  #355759;
+      --amber:     #c9973a;
+      --amber-dim: #8f6a28;
+      --red:       #c0392b;
+      --red-dim:   #7d2519;
+      --text:      #e8e2d9;
+      --text-dim:  #8a8279;
+      --text-muted:#4a4642;
+      --mono:      'Space Mono', monospace;
+      --sans:      'Space Grotesk', sans-serif;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* ─── Nav ─────────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      height: 56px;
+      background: rgba(14,14,14,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-left { display: flex; align-items: center; gap: 1.5rem; }
+    .nav-back {
+      font-family: var(--mono); font-size: 0.72rem;
+      color: var(--text-muted); letter-spacing: 0.08em;
+      display: flex; align-items: center; gap: 0.4rem;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--text-dim); }
+    .nav-logo { font-family: var(--mono); font-size: 0.95rem; font-weight: 700; }
+    .nav-logo .dot { color: var(--red); }
+    .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.82rem; font-weight: 500;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--text-dim); transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-links .nav-cta {
+      background: var(--red-dim); color: var(--text);
+      padding: 0.35rem 0.9rem; border-radius: 3px;
+      font-size: 0.78rem; letter-spacing: 0.08em;
+      transition: background 0.2s;
+    }
+    .nav-links .nav-cta:hover { background: var(--red); }
+
+    /* ─── Page Header ─────────────────────────────────────────── */
+    .page-header {
+      padding: 8rem 2rem 3rem;
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .page-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+    .page-title {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 1rem;
+    }
+    .page-desc {
+      font-size: 1rem;
+      color: var(--text-dim);
+      line-height: 1.7;
+      max-width: 480px;
+      margin: 0 auto 2.5rem;
+    }
+
+    /* ─── Coming Soon Badge ───────────────────────────────────── */
+    .coming-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.4rem 1rem;
+      border-radius: 2px;
+      background: rgba(201,151,58,0.1);
+      color: var(--amber);
+      border: 1px solid var(--amber-dim);
+      margin-bottom: 4rem;
+    }
+    .coming-badge .blink {
+      width: 6px; height: 6px;
+      background: var(--amber);
+      border-radius: 50%;
+      animation: blink 1.4s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+    /* ─── Teaser Grid ─────────────────────────────────────────── */
+    .teaser-section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem 6rem;
+    }
+    .teaser-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .types-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-bottom: 1rem;
+    }
+    .type-card {
+      background: var(--bg2);
+      padding: 1.5rem;
+      transition: background 0.2s;
+    }
+    .type-card:hover { background: var(--bg3); }
+    .type-card-icon { font-size: 1.5rem; margin-bottom: 0.6rem; display: block; }
+    .type-card-name { font-size: 0.92rem; font-weight: 700; margin-bottom: 0.3rem; }
+    .type-card-sub { font-size: 0.78rem; color: var(--text-muted); line-height: 1.4; }
+
+    /* Locked/mystery cards */
+    .type-card.locked {
+      position: relative;
+      cursor: default;
+    }
+    .type-card.locked .type-card-icon,
+    .type-card.locked .type-card-name,
+    .type-card.locked .type-card-sub {
+      filter: blur(4px);
+      user-select: none;
+      pointer-events: none;
+    }
+    .type-card.locked::after {
+      content: '?';
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: 1.8rem;
+      color: var(--text-muted);
+      background: rgba(14,14,14,0.4);
+    }
+
+    /* ─── CTA Box ─────────────────────────────────────────────── */
+    .cta-box {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 3rem 2rem;
+      text-align: center;
+      margin-top: 2rem;
+    }
+    .cta-box h3 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+    .cta-box p {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      margin-bottom: 1.5rem;
+    }
+    .cta-box .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.6rem;
+      font-family: var(--sans);
+      font-size: 0.88rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      border-radius: 3px;
+      cursor: not-allowed;
+      opacity: 0.5;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      background: transparent;
+    }
+
+    /* ─── Footer ──────────────────────────────────────────────── */
+    footer {
+      padding: 2.5rem 2rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-logo { font-family: var(--mono); font-size: 0.85rem; font-weight: 700; color: var(--text-dim); }
+    .footer-links { display: flex; gap: 1.5rem; list-style: none; }
+    .footer-links a { font-size: 0.78rem; color: var(--text-muted); transition: color 0.2s; }
+    .footer-links a:hover { color: var(--text-dim); }
+    .footer-copy { font-size: 0.72rem; color: var(--text-muted); font-family: var(--mono); }
+
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .types-grid { grid-template-columns: repeat(2, 1fr); }
+      footer { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-left">
+      <a href="index.html" class="nav-back">← home</a>
+      <a href="index.html" class="nav-logo">founder<span class="dot">.</span>fail</a>
+    </div>
+    <ul class="nav-links">
+      <li><a href="knowledge.html">Knowledge Base</a></li>
+      <li><a href="personas.html">Failure Type</a></li>
+      <li><a href="game.html">Simulation</a></li>
+      <li><a href="personas.html" class="nav-cta">Find Your Type →</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-header">
+    <div class="page-label">02 — Failure Type Test</div>
+    <h1 class="page-title">Which kind of<br />failure are you?</h1>
+    <p class="page-desc">12 archetypes. 24 questions. One result that either resonates deeply or offends you — which probably means it's accurate.</p>
+    <div class="coming-badge">
+      <span class="blink"></span>
+      Quiz launching soon
+    </div>
+  </div>
+
+  <div class="teaser-section">
+    <div class="teaser-label">a few of the 12 types — take the test to reveal the rest</div>
+
+    <div class="types-grid">
+      <!-- Revealed: 3 types -->
+      <div class="type-card">
+        <span class="type-card-icon">🔮</span>
+        <div class="type-card-name">The Fundraising Ghost</div>
+        <div class="type-card-sub">Raised $3M. No product. Great deck.</div>
+      </div>
+      <div class="type-card">
+        <span class="type-card-icon">🔄</span>
+        <div class="type-card-name">The Eternal Pivot</div>
+        <div class="type-card-sub">Changed direction 7 times. Now sells B2B compliance software.</div>
+      </div>
+      <div class="type-card">
+        <span class="type-card-icon">🌌</span>
+        <div class="type-card-name">The Visionary Void</div>
+        <div class="type-card-sub">Big vision. Zero execution. Beautiful roadmap.</div>
+      </div>
+
+      <!-- Locked: 9 mystery types -->
+      <div class="type-card locked">
+        <span class="type-card-icon">💣</span>
+        <div class="type-card-name">The Co-founder Bomb</div>
+        <div class="type-card-sub">Partnership that was always going to explode.</div>
+      </div>
+      <div class="type-card locked">
+        <span class="type-card-icon">📈</span>
+        <div class="type-card-name">The Premature Scaler</div>
+        <div class="type-card-sub">80 employees. Zero PMF.</div>
+      </div>
+      <div class="type-card locked">
+        <span class="type-card-icon">🥷</span>
+        <div class="type-card-name">The Stealth Launcher</div>
+        <div class="type-card-sub">2 years in stealth. Launched. Crickets.</div>
+      </div>
+      <div class="type-card locked">
+        <span class="type-card-icon">💸</span>
+        <div class="type-card-name">The VC Honeytrap</div>
+        <div class="type-card-sub">Optimized for investors, not customers.</div>
+      </div>
+      <div class="type-card locked">
+        <span class="type-card-icon">🏭</span>
+        <div class="type-card-name">The Feature Factory</div>
+        <div class="type-card-sub">Built everything asked for. Solved nothing.</div>
+      </div>
+      <div class="type-card locked">
+        <span class="type-card-icon">⌛</span>
+        <div class="type-card-name">???</div>
+        <div class="type-card-sub">Right idea. Wrong decade.</div>
+      </div>
+      <div class="type-card locked">
+        <span class="type-card-icon">🏳️</span>
+        <div class="type-card-name">???</div>
+        <div class="type-card-sub">Great company. Checked out mentally.</div>
+      </div>
+      <div class="type-card locked">
+        <span class="type-card-icon">⚖️</span>
+        <div class="type-card-name">???</div>
+        <div class="type-card-sub">Built something amazing. Turns out it was illegal.</div>
+      </div>
+      <div class="type-card locked">
+        <span class="type-card-icon">🧩</span>
+        <div class="type-card-name">???</div>
+        <div class="type-card-sub">Brilliant team. Wrong problem.</div>
+      </div>
+    </div>
+
+    <div class="cta-box">
+      <h3>Find out which one you are</h3>
+      <p>24 questions · shareable result card · brutally accurate</p>
+      <button class="btn" disabled>Take the test — coming soon</button>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">founder<span style="color:var(--red)">.</span>fail</div>
+    <ul class="footer-links">
+      <li><a href="knowledge.html">knowledge base</a></li>
+      <li><a href="personas.html">failure types</a></li>
+      <li><a href="game.html">simulation</a></li>
+    </ul>
+    <div class="footer-copy">built in public · 2025</div>
+  </footer>
+
+</body>
+</html>
