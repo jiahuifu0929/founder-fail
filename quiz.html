@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Failure Type Test — founder.fail</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:        #0e0e0e;
+      --bg2:       #141414;
+      --bg3:       #1a1a1a;
+      --border:    #2a2a2a;
+      --olive:     #7a8c5e;
+      --olive-dim: #5a6845;
+      --teal:      #4a7c7e;
+      --teal-dim:  #355759;
+      --amber:     #c9973a;
+      --amber-dim: #8f6a28;
+      --red:       #c0392b;
+      --red-dim:   #7d2519;
+      --text:      #e8e2d9;
+      --text-dim:  #8a8279;
+      --text-muted:#4a4642;
+      --mono:      'Space Mono', monospace;
+      --sans:      'Space Grotesk', sans-serif;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* ─── Nav ─────────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem; height: 56px;
+      background: rgba(14,14,14,0.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-left { display: flex; align-items: center; gap: 1.5rem; }
+    .nav-back {
+      font-family: var(--mono); font-size: 0.72rem; color: var(--text-muted);
+      letter-spacing: 0.08em; display: flex; align-items: center; gap: 0.4rem;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--text-dim); }
+    .nav-logo { font-family: var(--mono); font-size: 0.95rem; font-weight: 700; }
+    .nav-logo .dot { color: var(--red); }
+    .nav-progress {
+      font-family: var(--mono); font-size: 0.72rem; color: var(--text-muted);
+      letter-spacing: 0.08em;
+    }
+
+    /* ─── Screens ─────────────────────────────────────────────── */
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* ─── Start Screen ────────────────────────────────────────── */
+    #screen-start {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 8rem 2rem 4rem; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    #screen-start::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 50% 50% at 50% 0%, rgba(192,57,43,0.07) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 80% 80%, rgba(201,151,58,0.05) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .start-eyebrow {
+      font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--olive);
+      margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 0.75rem;
+    }
+    .start-eyebrow::before, .start-eyebrow::after {
+      content: ''; display: block; width: 32px; height: 1px; background: var(--olive-dim);
+    }
+    .start-title {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 700; letter-spacing: -0.04em; line-height: 1.0;
+      margin-bottom: 1.25rem;
+    }
+    .start-title .accent { color: var(--amber); }
+    .start-sub {
+      max-width: 480px; font-size: 1rem; color: var(--text-dim);
+      line-height: 1.7; margin-bottom: 1rem;
+    }
+    .start-meta {
+      font-family: var(--mono); font-size: 0.68rem; color: var(--text-muted);
+      letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 2.5rem;
+    }
+    .start-btn {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      padding: 1rem 2rem; font-family: var(--sans);
+      font-size: 0.95rem; font-weight: 700; letter-spacing: 0.02em;
+      background: var(--red); color: #fff; border: none;
+      border-radius: 3px; cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .start-btn:hover { background: #d44035; transform: translateY(-2px); }
+    .start-types-hint {
+      margin-top: 3rem;
+      display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center;
+      max-width: 560px;
+    }
+    .hint-chip {
+      font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.06em;
+      padding: 0.2rem 0.6rem; border-radius: 2px;
+      background: var(--bg2); border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+
+    /* ─── Quiz Screen ─────────────────────────────────────────── */
+    #screen-quiz {
+      min-height: 100vh;
+      padding: 80px 0 4rem;
+      display: flex; flex-direction: column;
+    }
+    .quiz-progress-bar-wrap {
+      position: fixed; top: 56px; left: 0; right: 0; z-index: 99;
+      height: 3px; background: var(--border);
+    }
+    .quiz-progress-bar {
+      height: 100%; background: var(--olive);
+      transition: width 0.4s ease;
+    }
+    .quiz-inner {
+      max-width: 680px; margin: 0 auto; padding: 3rem 2rem;
+      flex: 1; display: flex; flex-direction: column; justify-content: center;
+    }
+    .q-counter {
+      font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+    .q-text {
+      font-size: clamp(1.2rem, 3vw, 1.75rem);
+      font-weight: 700; letter-spacing: -0.02em;
+      line-height: 1.25; margin-bottom: 2.5rem;
+      opacity: 0; transform: translateY(12px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .q-text.visible { opacity: 1; transform: translateY(0); }
+    .q-options {
+      display: flex; flex-direction: column; gap: 0.75rem;
+      opacity: 0; transform: translateY(12px);
+      transition: opacity 0.3s ease 0.08s, transform 0.3s ease 0.08s;
+    }
+    .q-options.visible { opacity: 1; transform: translateY(0); }
+    .q-option {
+      background: var(--bg2); border: 1px solid var(--border);
+      padding: 1rem 1.25rem; text-align: left; cursor: pointer;
+      font-family: var(--sans); font-size: 0.92rem; color: var(--text-dim);
+      transition: all 0.15s; border-radius: 2px;
+      display: flex; align-items: flex-start; gap: 1rem;
+    }
+    .q-option:hover {
+      border-color: var(--olive); color: var(--text);
+      background: var(--bg3);
+    }
+    .q-option.selected {
+      border-color: var(--olive); background: rgba(122,140,94,0.1);
+      color: var(--text);
+    }
+    .q-option.disabled { pointer-events: none; opacity: 0.5; }
+    .q-option-key {
+      font-family: var(--mono); font-size: 0.65rem;
+      color: var(--text-muted); flex-shrink: 0;
+      width: 20px; padding-top: 1px;
+    }
+    .q-option:hover .q-option-key,
+    .q-option.selected .q-option-key { color: var(--olive); }
+    .q-next {
+      margin-top: 2rem; align-self: flex-end;
+      display: none;
+      padding: 0.65rem 1.4rem; font-family: var(--sans);
+      font-size: 0.85rem; font-weight: 600; letter-spacing: 0.04em;
+      background: var(--red); color: #fff; border: none;
+      border-radius: 3px; cursor: pointer; transition: background 0.2s;
+    }
+    .q-next:hover { background: #d44035; }
+    .q-next.show { display: inline-block; animation: fadeUp 0.2s ease; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── Result Screen ───────────────────────────────────────── */
+    #screen-result {
+      min-height: 100vh;
+      padding: 80px 2rem 4rem;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .result-inner { max-width: 680px; width: 100%; margin: 3rem auto 0; }
+    .result-label {
+      font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: 1rem;
+    }
+
+    /* The shareable card */
+    .result-card {
+      background: var(--bg2); border: 1px solid var(--border);
+      padding: 2.5rem; margin-bottom: 2rem;
+      position: relative; overflow: hidden;
+    }
+    .result-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--olive);
+    }
+    .result-card-eyebrow {
+      font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--olive); margin-bottom: 0.5rem;
+    }
+    .result-type-name {
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 700; letter-spacing: -0.03em; line-height: 1.1;
+      margin-bottom: 0.4rem;
+    }
+    .result-type-icon { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+    .result-tagline {
+      font-family: var(--mono); font-size: 0.78rem; color: var(--amber);
+      letter-spacing: 0.06em; margin-bottom: 1.75rem;
+      border-left: 2px solid var(--amber-dim); padding-left: 0.75rem;
+    }
+    .result-brutal {
+      font-size: 0.95rem; color: var(--text); line-height: 1.75;
+      margin-bottom: 1.5rem;
+    }
+    .result-insight {
+      font-size: 0.88rem; color: var(--text-dim); line-height: 1.7;
+      padding: 1rem 1.25rem;
+      background: var(--bg3); border-left: 2px solid var(--olive-dim);
+    }
+    .result-insight-label {
+      font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--olive); margin-bottom: 0.4rem;
+    }
+    .result-card-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 2rem; padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap; gap: 0.5rem;
+    }
+    .result-card-url {
+      font-family: var(--mono); font-size: 0.65rem; color: var(--text-muted);
+      letter-spacing: 0.08em;
+    }
+    .result-card-logo {
+      font-family: var(--mono); font-size: 0.78rem; font-weight: 700;
+      color: var(--text-dim);
+    }
+    .result-card-logo span { color: var(--red); }
+
+    /* Action buttons */
+    .result-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 2rem; }
+    .action-btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.7rem 1.2rem; font-family: var(--sans);
+      font-size: 0.82rem; font-weight: 600; letter-spacing: 0.03em;
+      border-radius: 3px; cursor: pointer; transition: all 0.15s;
+      border: 1px solid transparent;
+    }
+    .btn-share {
+      background: #1a1a1a; color: var(--text);
+      border-color: var(--border);
+    }
+    .btn-share:hover { border-color: var(--text-dim); }
+    .btn-copy {
+      background: transparent; color: var(--text-dim);
+      border-color: var(--border);
+    }
+    .btn-copy:hover { border-color: var(--text-dim); color: var(--text); }
+    .btn-retry {
+      background: transparent; color: var(--text-muted);
+      border-color: var(--border);
+    }
+    .btn-retry:hover { color: var(--text-dim); border-color: var(--text-dim); }
+    .copy-confirm {
+      font-family: var(--mono); font-size: 0.72rem; color: var(--olive);
+      display: none; padding: 0.5rem 0;
+    }
+
+    /* Score breakdown */
+    .score-breakdown {
+      background: var(--bg2); border: 1px solid var(--border); padding: 1.5rem;
+    }
+    .score-breakdown-title {
+      font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--text-muted); margin-bottom: 1.25rem;
+    }
+    .score-row {
+      display: flex; align-items: center; gap: 1rem; margin-bottom: 0.6rem;
+    }
+    .score-row-name { font-size: 0.78rem; color: var(--text-dim); min-width: 160px; }
+    .score-row-name.winner { color: var(--text); font-weight: 600; }
+    .score-bar-track {
+      flex: 1; height: 4px; background: var(--border);
+    }
+    .score-bar-fill { height: 100%; background: var(--border); transition: width 0.6s ease; }
+    .score-bar-fill.winner-bar { background: var(--olive); }
+    .score-num {
+      font-family: var(--mono); font-size: 0.65rem; color: var(--text-muted);
+      min-width: 24px; text-align: right;
+    }
+
+    /* Footer */
+    footer {
+      padding: 2.5rem 2rem; border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem; width: 100%;
+    }
+    .footer-logo { font-family: var(--mono); font-size: 0.85rem; font-weight: 700; color: var(--text-dim); }
+    .footer-copy { font-size: 0.72rem; color: var(--text-muted); font-family: var(--mono); }
+
+    @media (max-width: 640px) {
+      .start-types-hint { display: none; }
+      .result-actions { flex-direction: column; }
+      .score-row-name { min-width: 120px; font-size: 0.7rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── Nav ───────────────────────────────────────────────────── -->
+  <nav>
+    <div class="nav-left">
+      <a href="personas.html" class="nav-back">← failure types</a>
+      <a href="index.html" class="nav-logo">founder<span class="dot">.</span>fail</a>
+    </div>
+    <div class="nav-progress" id="nav-progress"></div>
+  </nav>
+
+  <!-- ─── Screen: Start ─────────────────────────────────────────── -->
+  <div id="screen-start" class="screen active">
+    <div class="start-eyebrow">02 — Failure Type Test</div>
+    <h1 class="start-title">Which kind of<br /><span class="accent">failure</span> are you?</h1>
+    <p class="start-sub">
+      24 questions. 12 archetypes. One result that's either deeply accurate or deeply offensive —
+      which, honestly, is the same thing.
+    </p>
+    <p class="start-meta">3 minutes · no signup · shareable result</p>
+    <button class="start-btn" onclick="startQuiz()">Start the test →</button>
+    <div class="start-types-hint">
+      <span class="hint-chip">The Fundraising Ghost</span>
+      <span class="hint-chip">The Eternal Pivot</span>
+      <span class="hint-chip">The Visionary Void</span>
+      <span class="hint-chip">The Co-founder Bomb</span>
+      <span class="hint-chip">The Premature Scaler</span>
+      <span class="hint-chip">The Stealth Launcher</span>
+      <span class="hint-chip">The VC Honeytrap</span>
+      <span class="hint-chip">The Feature Factory</span>
+      <span class="hint-chip">The Market Timer</span>
+      <span class="hint-chip">The Burnout Founder</span>
+      <span class="hint-chip">The Regulation Blindspot</span>
+      <span class="hint-chip">The Acqui-hire Tragedy</span>
+    </div>
+  </div>
+
+  <!-- ─── Screen: Quiz ──────────────────────────────────────────── -->
+  <div id="screen-quiz" class="screen">
+    <div class="quiz-progress-bar-wrap">
+      <div class="quiz-progress-bar" id="progress-bar" style="width:0%"></div>
+    </div>
+    <div class="quiz-inner">
+      <div class="q-counter" id="q-counter">Question 1 of 24</div>
+      <div class="q-text" id="q-text"></div>
+      <div class="q-options" id="q-options"></div>
+      <button class="q-next" id="q-next" onclick="nextQuestion()">Next →</button>
+    </div>
+  </div>
+
+  <!-- ─── Screen: Result ────────────────────────────────────────── -->
+  <div id="screen-result" class="screen">
+    <div class="result-inner">
+      <div class="result-label">your result</div>
+
+      <div class="result-card" id="result-card">
+        <div class="result-card-eyebrow">founder.fail — failure type</div>
+        <span class="result-type-icon" id="res-icon"></span>
+        <h2 class="result-type-name" id="res-name"></h2>
+        <div class="result-tagline" id="res-tagline"></div>
+        <div class="result-brutal" id="res-brutal"></div>
+        <div class="result-insight">
+          <div class="result-insight-label">the actual fix</div>
+          <div id="res-insight"></div>
+        </div>
+        <div class="result-card-footer">
+          <div class="result-card-url">founder.fail/quiz</div>
+          <div class="result-card-logo">founder<span>.</span>fail</div>
+        </div>
+      </div>
+
+      <div class="result-actions">
+        <button class="action-btn btn-share" onclick="shareOnX()">Share on X →</button>
+        <button class="action-btn btn-copy" onclick="copyResult()">Copy result</button>
+        <button class="action-btn btn-retry" onclick="restartQuiz()">Retake test</button>
+      </div>
+      <div class="copy-confirm" id="copy-confirm">Copied to clipboard ✓</div>
+
+      <div class="score-breakdown">
+        <div class="score-breakdown-title">How you scored across all 12 types</div>
+        <div id="score-bars"></div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-logo">founder<span style="color:var(--red)">.</span>fail</div>
+      <div class="footer-copy">built in public by <a href="https://x.com/JFinnyc" target="_blank" rel="noopener" style="color:var(--text-dim);text-decoration:underline;text-underline-offset:3px;">@jfinnyc</a></div>
+    </footer>
+  </div>
+
+  <script>
+  // ─── Data ────────────────────────────────────────────────────────
+  const TYPES = {
+    FG: {
+      name: 'The Fundraising Ghost',
+      icon: '🔮',
+      tagline: 'Raised the money. Forgot to build the company.',
+      brutal: `You have a gift. You walk into a room and make people believe in a future that doesn't fully exist yet. Your deck is tight. Your narrative is compelling. Your ability to sidestep the question of "where's the product?" is honestly impressive. The raise feels like the win — the validation, the headline, the proof that you were right all along. It is not the win. It is the starting gun. Every dollar you raised is a dollar you owe results on, and "building momentum" is not a metric that appears on a cap table. Somewhere between the first term sheet and the third partner meeting, you stopped being a founder and became a professional fundraiser. These are different jobs.`,
+      insight: `Ship something embarrassingly small. Not a beta. Not a soft launch. Something working, in front of real users, this month. The fundraising identity is seductive — kill it before it kills the company.`
+    },
+    EP: {
+      name: 'The Eternal Pivot',
+      icon: '🔄',
+      tagline: 'Seven companies. One legal entity. Zero product-market fit.',
+      brutal: `Congratulations — you've technically started four companies inside one cap table. Your board has watched you refactor the entire roadmap three times in eighteen months and has now adopted the dead-eyed patience of people who've stopped trying to understand what you're actually building. Each pivot came with great energy. "We talked to users and realized the real opportunity is in enterprise." "We're going horizontal now." "Actually we think the API is the product." Each one felt like clarity. It was not clarity. It was anxiety wearing a strategy hat. Most pivots are not strategic corrections — they're a founder running from the discomfort of finding out whether the first idea actually worked.`,
+      insight: `Before your next direction change, write down exactly what you've learned from users that justifies it. Not what you think. What they actually said. If you can't write that in two sentences, you're not pivoting — you're escaping.`
+    },
+    VV: {
+      name: 'The Visionary Void',
+      icon: '🌌',
+      tagline: 'Sees the future clearly. Refuses to live in the present.',
+      brutal: `Your vision is genuinely inspiring. The kind that makes investors lean forward, employees quit stable jobs, and journalists write sentences about "changing the way we think about X." The problem is that vision without velocity is an expensive hobby. You have a beautiful roadmap, a compelling thesis, and a product that has been "almost ready" for longer than most startups exist. You are protecting the vision from the compromise of reality, and you have convinced yourself that this is wisdom. It is not. The founders who actually changed industries did so by shipping relentlessly bad early versions of their big idea, listening to what those versions taught them, and iterating into the future they saw. You skipped that part.`,
+      insight: `Find the smallest, ugliest version of your vision that you could ship to 10 real users in the next 30 days. Build that. The vision survives contact with reality. The timeline doesn't.`
+    },
+    CB: {
+      name: 'The Co-founder Bomb',
+      icon: '💣',
+      tagline: 'A partnership that was always going to explode.',
+      brutal: `There is a conversation you and your co-founder have been avoiding for approximately six months. You both know what it is. It lives in the subtext of every decision meeting and in the specific tone you both use when you don't agree. Maybe it's about equity. Maybe it's about who's actually CEO. Maybe it's about fundamentally different visions for what this company is for. You've been managing around it because having it feels like it will break something — and you are right, it will break something. The question is whether it breaks now, when it's still fixable, or in eighteen months, in a board meeting, with lawyers involved and a product that never shipped because the leadership was permanently distracted.`,
+      insight: `Co-founder breakups kill more startups than bad markets do. Most of them are survivable when they happen early and honestly. Have the conversation this week. You're not past the point of no return. But you will be.`
+    },
+    PS: {
+      name: 'The Premature Scaler',
+      icon: '📈',
+      tagline: 'Hired 40 people before finding one customer who actually paid.',
+      brutal: `You raised a Series A, signed a lease on an office with exposed brick, built out a full leadership team, and started planning the Series B deck — before anyone had real evidence the core product worked. This felt like confidence. It was actually avoidance. Hiring is the most expensive way to feel like you're making progress without the discomfort of finding out if anyone actually wants what you built. Headcount is not traction. ARR is traction. The number of people on your Slack is not a metric that matters to a customer trying to decide whether to give you their money.`,
+      insight: `How many of your current employees could you replace with a $500/month tool if you were starting over today? That number is not an insult — it's a diagnostic. PMF first. Scale second. Always.`
+    },
+    SL: {
+      name: 'The Stealth Launcher',
+      icon: '🥷',
+      tagline: '14 months of building. 3 users at launch. 2 of them were your friends.',
+      brutal: `The product is almost ready. It will be ready in about three months. It's been almost ready for seven months. You're protecting it from premature exposure — from the criticism, the misunderstanding, the competitive risk of showing your hand. What you're actually protecting it from is the one thing that would make it better: real humans with real problems who would tell you, painfully, what doesn't work. The market does not care how long it took you to build. It only cares whether it solves something real. You cannot know if it does that until you show it to someone who isn't trying to be supportive.`,
+      insight: `Ship before you're ready. Not when you're embarrassed — when you're terrified. The version you release this month will teach you more than the version you've been perfecting for a year.`
+    },
+    VH: {
+      name: 'The VC Honeytrap',
+      icon: '💸',
+      tagline: 'Optimized for the cap table. Forgot there were customers.',
+      brutal: `You know your investors' portfolio thesis better than you know your customers' actual workflows. Your north star metric was designed to look good in a Series A narrative rather than reflect genuine value to the people paying you money. Your board updates are works of narrative art — selective, technically accurate, and carefully structured to defer the hard questions to next quarter. There is a version of this that works, right up until a down round or a competitor with actual retention numbers walks into the same partner meeting. The companies that get acqui-hired for $2M at the end were usually excellent at fundraising.`,
+      insight: `Write down the three metrics your customers care about most. Now write down the three metrics you report to your investors most often. If these lists are different, you have a serious problem that more fundraising will make worse.`
+    },
+    FF: {
+      name: 'The Feature Factory',
+      icon: '🏭',
+      tagline: 'Built everything users asked for. Solved absolutely nothing.',
+      brutal: `You haven't said no to a user request in eight months. Your product now has 47 features, a roadmap document that requires two scrolls, and a churn problem you're solving with — more features. This feels productive. It is not product development; it's therapy for your anxiety about whether the core value proposition actually works. You have confused "listening to users" with "executing on whatever users ask for," which is a trap. Users will tell you exactly what they want. They are almost always wrong about what they need. Apple didn't ship a phone with a stylus because users asked for it.`,
+      insight: `Pick the one thing your product does better than anything else in the world. Obsess over that. Delete or deprioritize everything that isn't that. Great products are remarkable at one thing, not adequate at forty.`
+    },
+    MT: {
+      name: 'The Market Timer',
+      icon: '⌛',
+      tagline: 'Right idea. Wrong moment. Either too early or five minutes too late.',
+      brutal: `Your timing instincts are impressive — unfortunately, impressive in the wrong direction. You've built something that's either ahead of the infrastructure required to support it (the world simply cannot run what you've designed yet), or you've entered a category that peaked eighteen months ago and the market didn't send you the memo. The cruelest thing about startup timing is that you can be completely right about the future and still run out of money before the future arrives. Or you can be the fifth excellent company in a category the market has already picked a winner for and work incredibly hard to finish fourth.`,
+      insight: `Timing is the one variable you cannot fully outwork. Ask yourself honestly: are there signs the market is ready right now — not eventually, but now? What would have to be true for you to be two years early? Is any of that true?`
+    },
+    BF: {
+      name: 'The Burnout Founder',
+      icon: '🏳️',
+      tagline: 'Built something real. Checked out somewhere around month 22.',
+      brutal: `You built something real. You attracted real people who believed in it. Somewhere around the eighteen-month mark — after the third pivot discussion, the second cofounder exit, the board meeting where you ran the numbers out loud — you stopped believing in it without telling anyone. You kept showing up. The all-hands presentations were still energizing. The deck was still good. But the founder who genuinely cared about this problem is not the same person running the company right now, and your team can sense it even if they can't name it. Founder burnout doesn't just affect you — every decision made in your absence of conviction carries that absence forward.`,
+      insight: `The question isn't whether to rest. It's whether to stay. These are different questions that require different answers. One conversation you haven't had is with yourself, honestly, about whether you still want to do this. Have that one first.`
+    },
+    RB: {
+      name: 'The Regulation Blindspot',
+      icon: '⚖️',
+      tagline: 'Built something incredible. In a gray area. That just turned black.',
+      brutal: `Your product works beautifully inside a legal ambiguity, and your growth strategy quietly depends on that ambiguity staying ambiguous. The lawyers called it a "gray area." You interpreted that as permission. Every company that has scaled on regulatory arbitrage — from Uber's early labor classification to Theranos's CLIA exemptions to every crypto platform that operated in legal limbo — eventually faces the moment when the regulators arrive. At that moment, the choice is between an expensive, painful rebuild and a faster, uglier exit. Building in gray areas isn't automatically wrong. Building as though those areas will never turn dark is.`,
+      insight: `Have a lawyer who isn't trying to make you feel good tell you exactly where your regulatory risk is. Then build a version of your product that works if that risk materializes. Know which one that is.`
+    },
+    AT: {
+      name: 'The Acqui-hire Tragedy',
+      icon: '🧩',
+      tagline: 'World-class team. Wrong problem. Absorbed for parts.',
+      brutal: `Your team is genuinely exceptional. Your execution is clean, your culture is real, and your ability to hire and retain people who are significantly better than the problem you've given them is almost impressive. The uncomfortable truth is that you either didn't validate that the problem existed before you built the solution, or you validated it in a way that produced the answer you wanted rather than the one that was true. A great team solving a problem the market doesn't have urgently enough to pay for will be acqui-hired at a number that makes everyone technically whole and nobody actually happy.`,
+      insight: `Go back to the original problem hypothesis. Would you still start this company today, knowing what you know now? If yes — what's the smallest proof you could get in the next 30 days that someone will pay for it? If no — that's important information too.`
+    }
+  };
+
+  const QUESTIONS = [
+    {
+      q: "Your startup idea originally came from...",
+      opts: [
+        { text: "A problem I personally experienced and couldn't stop thinking about fixing", scores: { MT: 1, AT: 1 } },
+        { text: "A gap I spotted while analyzing investor trends and market maps", scores: { FG: 2, VH: 1 } },
+        { text: "A vision of the future I've been drafting for years — the world just needs to catch up", scores: { VV: 2, SL: 1 } },
+        { text: "My co-founder pitched it to me over drinks and it sounded right", scores: { CB: 2 } }
+      ]
+    },
+    {
+      q: "How long did you build before showing anyone outside the team?",
+      opts: [
+        { text: "Under a month — shipped something embarrassingly rough immediately", scores: { AT: 1 } },
+        { text: "3–6 months — wanted the core features solid first", scores: { FF: 1 } },
+        { text: "6–12 months — needed it polished before it represented us", scores: { SL: 1, VV: 1 } },
+        { text: "Over a year. It needs to be right before it goes out.", scores: { SL: 2, VV: 1 } }
+      ]
+    },
+    {
+      q: "How many times have you substantially changed the core idea?",
+      opts: [
+        { text: "Never. We've been focused on the same problem since day one.", scores: { PS: 1, VH: 1 } },
+        { text: "Once — we found a clearly better angle through user feedback", scores: { AT: 1 } },
+        { text: "2–3 times — the market kept telling us something different", scores: { EP: 1 } },
+        { text: "I've lost count. But this version is definitely the right one.", scores: { EP: 2 } }
+      ]
+    },
+    {
+      q: "When a VC passes on your raise, your first instinct is...",
+      opts: [
+        { text: "Their loss. The market will prove me right within 18 months.", scores: { VV: 2 } },
+        { text: "Get the associate's feedback. Find another way into the fund.", scores: { FG: 2, VH: 1 } },
+        { text: "Update the narrative in the deck — the story needs work.", scores: { FG: 1, VH: 1 } },
+        { text: "Fair. I probably need more traction before this conversation makes sense.", scores: { AT: 1 } }
+      ]
+    },
+    {
+      q: "Your co-founder relationship could currently be described as...",
+      opts: [
+        { text: "Aligned and strong — we've been close for years and know each other well", scores: { CB: 1 } },
+        { text: "Tense. We haven't talked about the equity split or decision rights clearly.", scores: { CB: 2 } },
+        { text: "I work solo. Co-founders add complexity I don't want.", scores: { BF: 1 } },
+        { text: "We have genuinely different visions for the company and we're pretending we don't.", scores: { CB: 2 } }
+      ]
+    },
+    {
+      q: "Your product roadmap is primarily driven by...",
+      opts: [
+        { text: "Validated user demand and specific retention patterns", scores: { AT: 1 } },
+        { text: "Whatever users request most loudly and frequently", scores: { FF: 2 } },
+        { text: "My read on where the industry is heading in 3–5 years", scores: { VV: 1, SL: 1 } },
+        { text: "What will look best in the next investor update", scores: { VH: 2, FG: 1 } }
+      ]
+    },
+    {
+      q: "Your current runway situation...",
+      opts: [
+        { text: "Healthy — we raised enough to focus on building without distraction", scores: { PS: 1 } },
+        { text: "Tight but fine — constraints create focus", scores: { MT: 1 } },
+        { text: "3–4 months out. I'm essentially in full-time fundraise mode right now.", scores: { FG: 2 } },
+        { text: "I honestly don't check the number closely. My CFO owns that.", scores: { RB: 1, PS: 1 } }
+      ]
+    },
+    {
+      q: "When do you decide to hire someone new?",
+      opts: [
+        { text: "When a specific function is clearly bottlenecking growth and revenue", scores: { AT: 1 } },
+        { text: "When I raise — that's what the capital is for", scores: { PS: 2, FG: 1 } },
+        { text: "I hired the full leadership team before we had a shipping product", scores: { PS: 2 } },
+        { text: "I haven't hired yet — still validating the core premise alone", scores: { SL: 1 } }
+      ]
+    },
+    {
+      q: "What actually keeps you up at night?",
+      opts: [
+        { text: "Whether we've genuinely found product-market fit", scores: { EP: 1, AT: 1 } },
+        { text: "Whether investors will follow on in the next round", scores: { FG: 2, VH: 1 } },
+        { text: "The co-founder situation, honestly", scores: { CB: 2 } },
+        { text: "Not much. I've gotten better at detaching from outcomes.", scores: { BF: 2 } }
+      ]
+    },
+    {
+      q: "Your relationship with your users right now is...",
+      opts: [
+        { text: "I talk to 5+ users per week, by name, regularly", scores: { FF: 1 } },
+        { text: "I talked to users early on. Less so now — we're heads down building.", scores: { SL: 1 } },
+        { text: "The product speaks for itself. I don't want to bias outcomes.", scores: { VV: 1, SL: 1 } },
+        { text: "My investors are my primary stakeholders at this stage.", scores: { VH: 2, FG: 1 } }
+      ]
+    },
+    {
+      q: "How do you describe your market size?",
+      opts: [
+        { text: "A specific, winnable $200–500M niche we can dominate first", scores: { AT: 1 } },
+        { text: "A $2 trillion TAM if you zoom out the right amount", scores: { FG: 2, VH: 1 } },
+        { text: "The market doesn't exist yet. We're creating the category.", scores: { VV: 2, MT: 1 } },
+        { text: "Similar to what [major company] did, but for [our industry]", scores: { EP: 1, VH: 1 } }
+      ]
+    },
+    {
+      q: "Your product's legal and regulatory situation...",
+      opts: [
+        { text: "Fully mapped. We have outside counsel and it's clean.", scores: { AT: 1 } },
+        { text: "We'll deal with regulation when we're too big to ignore", scores: { RB: 2 } },
+        { text: "Our lawyers called it a gray area. We interpreted that as a green light.", scores: { RB: 2 } },
+        { text: "We're in a regulated industry and built compliance in from the start", scores: { MT: 1 } }
+      ]
+    },
+    {
+      q: "When you were last genuinely honest about a mistake to your team or investors...",
+      opts: [
+        { text: "This week. Transparency is a competitive advantage I'm intentional about.", scores: { AT: 1 } },
+        { text: "I frame setbacks as 'learnings' in board updates. Same thing, better optics.", scores: { VH: 1, FG: 1 } },
+        { text: "I genuinely don't remember. I move forward, not backward.", scores: { BF: 1, VV: 1 } },
+        { text: "I solve problems before acknowledging them. Why create anxiety?", scores: { RB: 1, SL: 1 } }
+      ]
+    },
+    {
+      q: "If your startup shut down tomorrow, the postmortem would say...",
+      opts: [
+        { text: "'World-class team. Wrong problem.'", scores: { AT: 2 } },
+        { text: "'Right product. Ran out of money before it clicked.'", scores: { FG: 1, MT: 1 } },
+        { text: "'Could never decide what they were actually building.'", scores: { EP: 2 } },
+        { text: "'Founder checked out 18 months before the company did.'", scores: { BF: 2 } }
+      ]
+    },
+    {
+      q: "Your metrics have been flat for 6 weeks. You...",
+      opts: [
+        { text: "Change the product direction immediately — the market is telling us something", scores: { EP: 2 } },
+        { text: "Build more features. Something in the roadmap will unlock growth.", scores: { FF: 2 } },
+        { text: "Push the investor update out two weeks and sprint on the problem first", scores: { VH: 1, BF: 1 } },
+        { text: "Conduct focused user interviews this week to understand what's actually happening", scores: { AT: 1 } }
+      ]
+    },
+    {
+      q: "Your team headcount right now is...",
+      opts: [
+        { text: "Lean — 5 or fewer, everyone ships code or closes customers", scores: { SL: 1 } },
+        { text: "Growing fast — we've nearly doubled this quarter", scores: { PS: 2 } },
+        { text: "Overdue for a restructure I keep finding reasons to delay", scores: { CB: 1, BF: 1 } },
+        { text: "Just me and a co-founder who barely talks to me anymore", scores: { CB: 2 } }
+      ]
+    },
+    {
+      q: "Your launch strategy was (or will be)...",
+      opts: [
+        { text: "Closed beta with 20–50 specific users, then expand from learnings", scores: { AT: 1 } },
+        { text: "Product Hunt, press release, TechCrunch — full launch event", scores: { VH: 1, PS: 1 } },
+        { text: "We haven't launched publicly yet. The product isn't ready.", scores: { SL: 2, VV: 1 } },
+        { text: "We've effectively launched 4 times as the product changed", scores: { EP: 2 } }
+      ]
+    },
+    {
+      q: "How aligned are you and your co-founder on the long-term vision?",
+      opts: [
+        { text: "Completely. We've discussed it extensively and deeply agree.", scores: { CB: 1 } },
+        { text: "Mostly. There are a few things we've been deliberately not discussing.", scores: { CB: 2 } },
+        { text: "We disagree on things — that tension is actually healthy.", scores: { AT: 1 } },
+        { text: "I'm solo. No co-founder.", scores: { BF: 1 } }
+      ]
+    },
+    {
+      q: "The best use of investor capital is...",
+      opts: [
+        { text: "Finding PMF with a small team before scaling anything", scores: { AT: 1 } },
+        { text: "Hiring senior talent to accelerate the roadmap significantly", scores: { PS: 1 } },
+        { text: "Marketing to manufacture growth metrics ahead of the next round", scores: { VH: 2, FG: 1 } },
+        { text: "Keeping operations running while we figure out the business model", scores: { EP: 1 } }
+      ]
+    },
+    {
+      q: "Imagine your company in 5 years. What do you see?",
+      opts: [
+        { text: "A clear and specific picture. Unclear on the path to get there.", scores: { VV: 2 } },
+        { text: "An acqui-hire at a fair price would honestly be fine at this point.", scores: { AT: 1, BF: 1 } },
+        { text: "I'll probably be running something else by then.", scores: { BF: 2 } },
+        { text: "I think in 6-month increments. 5 years is too abstract to be useful.", scores: { FF: 1 } }
+      ]
+    },
+    {
+      q: "The word 'pivot' makes you feel...",
+      opts: [
+        { text: "Validated — the best founders pivot constantly. It's a feature, not a bug.", scores: { EP: 2 } },
+        { text: "Defensive — we're not pivoting, we're evolving our thesis.", scores: { VV: 1, EP: 1 } },
+        { text: "Tired. Been there. Done it three times.", scores: { EP: 1, BF: 1 } },
+        { text: "Committed to avoid it — staying focused is the discipline.", scores: { SL: 1 } }
+      ]
+    },
+    {
+      q: "Your biggest competitive advantage is...",
+      opts: [
+        { text: "Our technology is genuinely unique and hard to replicate", scores: { VV: 1, MT: 1 } },
+        { text: "Our investor relationships open doors competitors can't access", scores: { FG: 2, VH: 1 } },
+        { text: "Our team. We will out-execute anyone in this space.", scores: { AT: 1 } },
+        { text: "Demonstrated retention in a specific niche where we have real density", scores: { FF: 1 } }
+      ]
+    },
+    {
+      q: "In the last 3 months, your average working hours per week...",
+      opts: [
+        { text: "80+. I live inside this. There is no separation.", scores: { PS: 1, BF: 1 } },
+        { text: "60–80. Intense but I can sustain it.", scores: { SL: 1 } },
+        { text: "40–60. I've learned to be deliberate about recovery.", scores: { AT: 1 } },
+        { text: "Under 40. I've been... recalibrating what this means to me.", scores: { BF: 2 } }
+      ]
+    },
+    {
+      q: "The thought that terrifies you most about your startup is...",
+      opts: [
+        { text: "That the market is fundamentally smaller than our model assumes", scores: { MT: 2 } },
+        { text: "That we run out of money before the flywheel starts", scores: { FG: 1, EP: 1 } },
+        { text: "That my co-founder leaves and takes the culture with them", scores: { CB: 2 } },
+        { text: "That we build something technically impressive that nobody cares about", scores: { AT: 1, SL: 1 } }
+      ]
+    }
+  ];
+
+  // ─── State ───────────────────────────────────────────────────────
+  let current = 0;
+  let scores = {};
+  let selected = null;
+  const KEYS = ['A','B','C','D'];
+
+  function initScores() {
+    scores = {};
+    Object.keys(TYPES).forEach(k => scores[k] = 0);
+  }
+
+  // ─── Navigation ──────────────────────────────────────────────────
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function startQuiz() {
+    current = 0;
+    selected = null;
+    initScores();
+    showScreen('screen-quiz');
+    renderQuestion();
+  }
+
+  function restartQuiz() {
+    startQuiz();
+  }
+
+  // ─── Quiz Logic ──────────────────────────────────────────────────
+  function renderQuestion() {
+    const q = QUESTIONS[current];
+    const total = QUESTIONS.length;
+
+    // Progress
+    const pct = (current / total) * 100;
+    document.getElementById('progress-bar').style.width = pct + '%';
+    document.getElementById('q-counter').textContent = `Question ${current + 1} of ${total}`;
+    document.getElementById('nav-progress').textContent = `${current + 1} / ${total}`;
+
+    // Question text with animation
+    const qText = document.getElementById('q-text');
+    const qOpts = document.getElementById('q-options');
+    const qNext = document.getElementById('q-next');
+
+    qText.classList.remove('visible');
+    qOpts.classList.remove('visible');
+    qNext.classList.remove('show');
+    selected = null;
+
+    setTimeout(() => {
+      qText.textContent = q.q;
+      qText.classList.add('visible');
+
+      qOpts.innerHTML = '';
+      q.opts.forEach((opt, i) => {
+        const btn = document.createElement('button');
+        btn.className = 'q-option';
+        btn.innerHTML = `<span class="q-option-key">${KEYS[i]}</span>${opt.text}`;
+        btn.onclick = () => selectOption(i, btn);
+        qOpts.appendChild(btn);
+      });
+      qOpts.classList.add('visible');
+    }, 150);
+  }
+
+  function selectOption(idx, btn) {
+    document.querySelectorAll('.q-option').forEach(b => {
+      b.classList.remove('selected');
+      b.classList.add('disabled');
+    });
+    btn.classList.add('selected');
+    btn.classList.remove('disabled');
+    selected = idx;
+
+    const nextBtn = document.getElementById('q-next');
+    nextBtn.classList.add('show');
+    nextBtn.textContent = current < QUESTIONS.length - 1 ? 'Next →' : 'See my result →';
+  }
+
+  function nextQuestion() {
+    if (selected === null) return;
+
+    // Record scores
+    const opt = QUESTIONS[current].opts[selected];
+    Object.entries(opt.scores).forEach(([type, pts]) => {
+      scores[type] = (scores[type] || 0) + pts;
+    });
+
+    current++;
+    if (current >= QUESTIONS.length) {
+      showResult();
+    } else {
+      renderQuestion();
+    }
+  }
+
+  // ─── Result ──────────────────────────────────────────────────────
+  function showResult() {
+    // Find winner
+    let winner = null, maxScore = -1;
+    Object.entries(scores).forEach(([type, score]) => {
+      if (score > maxScore) { maxScore = score; winner = type; }
+    });
+
+    const type = TYPES[winner];
+    document.getElementById('res-icon').textContent = type.icon;
+    document.getElementById('res-name').textContent = type.name;
+    document.getElementById('res-tagline').textContent = type.tagline;
+    document.getElementById('res-brutal').textContent = type.brutal;
+    document.getElementById('res-insight').textContent = type.insight;
+
+    // Score bars
+    const sortedScores = Object.entries(scores).sort((a,b) => b[1]-a[1]);
+    const maxVal = sortedScores[0][1] || 1;
+    const barsEl = document.getElementById('score-bars');
+    barsEl.innerHTML = '';
+    sortedScores.forEach(([key, val]) => {
+      const isWinner = key === winner;
+      const pct = Math.round((val / maxVal) * 100);
+      barsEl.innerHTML += `
+        <div class="score-row">
+          <div class="score-row-name ${isWinner ? 'winner' : ''}">${TYPES[key].icon} ${TYPES[key].name}</div>
+          <div class="score-bar-track">
+            <div class="score-bar-fill ${isWinner ? 'winner-bar' : ''}" style="width:${pct}%"></div>
+          </div>
+          <div class="score-num">${val}</div>
+        </div>`;
+    });
+
+    document.getElementById('progress-bar').style.width = '100%';
+    document.getElementById('nav-progress').textContent = 'done';
+    showScreen('screen-result');
+
+    // Animate bars in
+    setTimeout(() => {
+      document.querySelectorAll('.score-bar-fill').forEach(el => {
+        el.style.transition = 'width 0.6s ease';
+      });
+    }, 100);
+  }
+
+  // ─── Share ───────────────────────────────────────────────────────
+  function shareOnX() {
+    const winner = getWinnerType();
+    const type = TYPES[winner];
+    const text = `I just took the founder failure test on founder.fail and I'm "${type.name}" ${type.icon}\n\n"${type.tagline}"\n\nFind your failure type:`;
+    const url = 'https://founder.fail/quiz';
+    const tweetUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
+    window.open(tweetUrl, '_blank');
+  }
+
+  function copyResult() {
+    const winner = getWinnerType();
+    const type = TYPES[winner];
+    const text = `founder.fail failure type: ${type.icon} ${type.name}\n"${type.tagline}"\n\nTake the test: founder.fail/quiz`;
+    navigator.clipboard.writeText(text).then(() => {
+      const el = document.getElementById('copy-confirm');
+      el.style.display = 'block';
+      setTimeout(() => el.style.display = 'none', 2500);
+    });
+  }
+
+  function getWinnerType() {
+    let winner = null, maxScore = -1;
+    Object.entries(scores).forEach(([type, score]) => {
+      if (score > maxScore) { maxScore = score; winner = type; }
+    });
+    return winner;
+  }
+
+  // Keyboard support
+  document.addEventListener('keydown', (e) => {
+    const screen = document.querySelector('.screen.active');
+    if (!screen || screen.id !== 'screen-quiz') return;
+    const idx = ['a','b','c','d'].indexOf(e.key.toLowerCase());
+    if (idx !== -1) {
+      const opts = document.querySelectorAll('.q-option:not(.disabled):not(.selected)');
+      if (opts[idx]) opts[idx].click();
+    }
+    if (e.key === 'Enter' || e.key === ' ') {
+      const nextBtn = document.getElementById('q-next');
+      if (nextBtn.classList.contains('show')) nextBtn.click();
+    }
+  });
+  </script>
+
+</body>
+</html>
