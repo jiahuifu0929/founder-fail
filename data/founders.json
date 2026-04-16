@@ -1,0 +1,117 @@
+[
+  {
+    "id": "elizabeth-holmes",
+    "name": "Elizabeth Holmes",
+    "company": "Theranos",
+    "type": "collapse",
+    "category": ["fraud", "fundraising", "product"],
+    "lesson": "\"Faking it until you make it\" is a vibe. Faking blood test results is a felony. Know the difference before you pitch your Series A.",
+    "links": [
+      {
+        "type": "doc",
+        "label": "The Inventor — HBO documentary on how the lie scaled",
+        "url": "https://www.youtube.com/watch?v=3pZ9R0NU-Cw"
+      },
+      {
+        "type": "book",
+        "label": "Bad Blood — Carreyrou's inside account of the cover-up",
+        "url": "https://www.amazon.com/Bad-Blood-Secrets-Silicon-Startup/dp/152473165X"
+      }
+    ]
+  },
+  {
+    "id": "adam-neumann",
+    "name": "Adam Neumann",
+    "company": "WeWork",
+    "type": "collapse",
+    "category": ["fundraising", "governance", "culture"],
+    "lesson": "You can convince investors you're a real estate company, a tech company, and a consciousness movement simultaneously — right up until you file the S-1.",
+    "links": [
+      {
+        "type": "doc",
+        "label": "WeWork: Or the Making and Breaking of a $47B Unicorn",
+        "url": "https://www.youtube.com/watch?v=DP5IomT8Oq8"
+      },
+      {
+        "type": "article",
+        "label": "WSJ — The IPO filing that ended everything",
+        "url": "https://www.wsj.com/articles/wework-ipo-adam-neumann-11568286297"
+      }
+    ]
+  },
+  {
+    "id": "sam-bankman-fried",
+    "name": "Sam Bankman-Fried",
+    "company": "FTX",
+    "type": "collapse",
+    "category": ["fraud", "governance", "crypto"],
+    "lesson": "Effective altruism does not work retroactively. You cannot donate your way out of an 8-billion-dollar shortfall with customer funds.",
+    "links": [
+      {
+        "type": "podcast",
+        "label": "Acquired — FTX collapse full breakdown",
+        "url": "https://www.youtube.com/watch?v=2Ca2tqvqEdU"
+      },
+      {
+        "type": "book",
+        "label": "Going Infinite — Michael Lewis inside account",
+        "url": "https://www.amazon.com/Going-Infinite-Rise-Fall-Trader/dp/0593443144"
+      }
+    ]
+  },
+  {
+    "id": "brian-chesky",
+    "name": "Brian Chesky",
+    "company": "Airbnb",
+    "type": "survived",
+    "category": ["near-death", "leadership", "recovery"],
+    "lesson": "When COVID killed 80% of revenue overnight, Chesky laid off 25% of staff in one of the most transparent CEO moves on record. Then IPO'd at $100B. Honesty scales.",
+    "links": [
+      {
+        "type": "video",
+        "label": "Chesky's 2020 layoff letter — the one everyone studies",
+        "url": "https://www.youtube.com/watch?v=jCKM5Xzd5HA"
+      },
+      {
+        "type": "podcast",
+        "label": "Tim Ferriss — Chesky on redesigning Airbnb post-COVID",
+        "url": "https://tim.blog/2023/07/05/brian-chesky/"
+      }
+    ]
+  },
+  {
+    "id": "stewart-butterfield",
+    "name": "Stewart Butterfield",
+    "company": "Slack (via Glitch)",
+    "type": "survived",
+    "category": ["pivot", "product", "recovery"],
+    "lesson": "Failed game studio became a $27B company. The lesson isn't \"pivot.\" It's that Butterfield had the self-awareness to recognize the real product hiding inside his failure.",
+    "links": [
+      {
+        "type": "podcast",
+        "label": "How I Built This — Butterfield on two failed games and Slack",
+        "url": "https://podcasts.apple.com/us/podcast/slack-stewart-butterfield/id1150510297?i=1000389847502"
+      }
+    ]
+  },
+  {
+    "id": "reed-hastings",
+    "name": "Reed Hastings",
+    "company": "Netflix",
+    "type": "survived",
+    "category": ["near-death", "product", "recovery"],
+    "lesson": "Qwikster was a masterclass in how to lose 800,000 subscribers in a quarter. Hastings reversed it, owned the failure publicly, and rebuilt trust. The apology was the product.",
+    "links": [
+      {
+        "type": "video",
+        "label": "Netflix vs. Blockbuster — the pivot that almost killed them",
+        "url": "https://www.youtube.com/watch?v=JoMxq4q2mOc"
+      },
+      {
+        "type": "book",
+        "label": "No Rules Rules — Hastings on what he got wrong",
+        "url": "https://www.amazon.com/No-Rules-Netflix-Culture-Reinvention/dp/1984877860"
+      }
+    ]
+  }
+]
