@@ -272,13 +272,9 @@
   </div>
 
   <div class="filter-bar">
-    <button class="filter-btn active" onclick="filterCards('all', this)">All</button>
-    <button class="filter-btn" onclick="filterCards('collapse', this)">Collapse</button>
-    <button class="filter-btn" onclick="filterCards('survived', this)">Near-death → Survived</button>
-    <button class="filter-btn" onclick="filterCards('fundraising', this)">Fundraising</button>
-    <button class="filter-btn" onclick="filterCards('fraud', this)">Fraud</button>
-    <button class="filter-btn" onclick="filterCards('product', this)">Product</button>
-    <button class="filter-btn" onclick="filterCards('pivot', this)">Pivot</button>
+    <button class="filter-btn active" id="btn-all" onclick="filterCards('all', this)">All</button>
+    <button class="filter-btn" id="btn-collapse" onclick="filterCards('collapse', this)">Collapse</button>
+    <button class="filter-btn" id="btn-survived" onclick="filterCards('survived', this)">Near-death → Survived</button>
   </div>
 
   <div class="founders-wrap">
@@ -294,11 +290,11 @@
         </div>
         <div class="founder-lesson">"Faking it until you make it" is a vibe. Faking blood test results is a felony. Know the difference before you pitch your Series A.</div>
         <div class="founder-links">
-          <a class="founder-link" href="https://www.hbo.com/movies/the-inventor-out-for-blood-in-silicon-valley" target="_blank" rel="noopener">
-            <span class="founder-link-type">doc</span>The Inventor (HBO) — how the lie was built and scaled
+          <a class="founder-link" href="https://abcaudio.com/podcasts/the-dropout/" target="_blank" rel="noopener">
+            <span class="founder-link-type">podcast</span>The Dropout (ABC Audio) — 6-part series on how the deception was built
           </a>
-          <a class="founder-link" href="https://www.amazon.com/Bad-Blood-Secrets-Silicon-Startup/dp/152473165X" target="_blank" rel="noopener">
-            <span class="founder-link-type">book</span>Bad Blood — Carreyrou's inside account of the cover-up
+          <a class="founder-link" href="https://www.wsj.com/articles/theranos-has-struggled-with-blood-tests-1444881901" target="_blank" rel="noopener">
+            <span class="founder-link-type">article</span>WSJ — Carreyrou's original investigation that broke it all open
           </a>
         </div>
       </div>
@@ -311,13 +307,13 @@
           </div>
           <span class="founder-badge badge-fail">Collapse</span>
         </div>
-        <div class="founder-lesson">You can convince investors you're a real estate company, a tech company, and a consciousness movement — right up until you file the S-1 and they read it.</div>
+        <div class="founder-lesson">You can convince investors you're a real estate company, a tech company, and a consciousness movement — right up until you file the S-1 and they actually read it.</div>
         <div class="founder-links">
-          <a class="founder-link" href="https://www.hulu.com/movie/wework-or-the-making-and-breaking-of-a-47-billion-unicorn" target="_blank" rel="noopener">
-            <span class="founder-link-type">doc</span>WeWork: The Making and Breaking of a $47B Unicorn (Hulu)
+          <a class="founder-link" href="https://www.acquired.fm/episodes/wework" target="_blank" rel="noopener">
+            <span class="founder-link-type">podcast</span>Acquired — 3-hour deep dive into WeWork's rise and implosion
           </a>
-          <a class="founder-link" href="https://www.amazon.com/Cult-We-WeWork-Adam-Neumann/dp/0593239296" target="_blank" rel="noopener">
-            <span class="founder-link-type">book</span>The Cult of We — the definitive account of WeWork's collapse
+          <a class="founder-link" href="https://www.theatlantic.com/magazine/archive/2021/11/the-we-of-wework/620171/" target="_blank" rel="noopener">
+            <span class="founder-link-type">article</span>The Atlantic — how Neumann built and imploded a $47B vision
           </a>
         </div>
       </div>
@@ -335,8 +331,8 @@
           <a class="founder-link" href="https://www.acquired.fm/episodes/ftx" target="_blank" rel="noopener">
             <span class="founder-link-type">podcast</span>Acquired — full breakdown of the FTX collapse
           </a>
-          <a class="founder-link" href="https://www.amazon.com/Going-Infinite-Rise-Fall-Trader/dp/0593443144" target="_blank" rel="noopener">
-            <span class="founder-link-type">book</span>Going Infinite — Michael Lewis's inside account
+          <a class="founder-link" href="https://www.newyorker.com/magazine/2023/10/02/going-infinite-michael-lewis-book-review" target="_blank" rel="noopener">
+            <span class="founder-link-type">article</span>The New Yorker — review essay on SBF and what the story really tells us
           </a>
         </div>
       </div>
@@ -352,10 +348,10 @@
         <div class="founder-lesson">When COVID killed 80% of revenue overnight, Chesky laid off 25% of staff in the most transparent CEO letter anyone had seen. Then IPO'd at $100B. Honesty scales.</div>
         <div class="founder-links">
           <a class="founder-link" href="https://news.airbnb.com/a-message-from-co-founder-and-ceo-brian-chesky/" target="_blank" rel="noopener">
-            <span class="founder-link-type">letter</span>Chesky's 2020 layoff letter — the one everyone studies
+            <span class="founder-link-type">letter</span>Chesky's 2020 layoff letter — the one everyone in tech studies
           </a>
-          <a class="founder-link" href="https://tim.blog/2023/07/05/brian-chesky/" target="_blank" rel="noopener">
-            <span class="founder-link-type">podcast</span>Tim Ferriss — Chesky on redesigning Airbnb post-COVID
+          <a class="founder-link" href="https://lexfridman.com/brian-chesky/" target="_blank" rel="noopener">
+            <span class="founder-link-type">podcast</span>Lex Fridman #312 — Chesky on near-death, rebuilding, and what he'd do differently
           </a>
         </div>
       </div>
@@ -371,7 +367,7 @@
         <div class="founder-lesson">Failed game studio became a $27B company. The lesson isn't "pivot." It's that Butterfield had the self-awareness to see the real product hiding inside his failure.</div>
         <div class="founder-links">
           <a class="founder-link" href="https://www.npr.org/2017/07/07/535790583/slack-stewart-butterfield" target="_blank" rel="noopener">
-            <span class="founder-link-type">podcast</span>How I Built This (NPR) — Butterfield on two failed games and Slack
+            <span class="founder-link-type">podcast</span>How I Built This (NPR) — Butterfield on two failed games and how Slack happened
           </a>
         </div>
       </div>
@@ -384,13 +380,13 @@
           </div>
           <span class="founder-badge badge-survived">Near-death → Thrived</span>
         </div>
-        <div class="founder-lesson">Qwikster was a masterclass in losing 800,000 subscribers in a quarter. Hastings reversed course, owned it publicly, and rebuilt trust. The apology was the product.</div>
+        <div class="founder-lesson">Qwikster cost Netflix 800,000 subscribers in a quarter. Hastings reversed course, owned it publicly, and rebuilt trust. The apology was the product.</div>
         <div class="founder-links">
-          <a class="founder-link" href="https://about.netflix.com/en/news/an-explanation-and-some-reflections" target="_blank" rel="noopener">
-            <span class="founder-link-type">letter</span>Hastings' Qwikster apology — the public post-mortem
+          <a class="founder-link" href="https://lexfridman.com/reed-hastings/" target="_blank" rel="noopener">
+            <span class="founder-link-type">podcast</span>Lex Fridman #343 — Hastings on culture, the Qwikster mistake, and what he'd fix
           </a>
-          <a class="founder-link" href="https://www.amazon.com/No-Rules-Netflix-Culture-Reinvention/dp/1984877860" target="_blank" rel="noopener">
-            <span class="founder-link-type">book</span>No Rules Rules — Hastings on what he got wrong
+          <a class="founder-link" href="https://www.theatlantic.com/ideas/archive/2020/09/netflixs-culture-is-at-the-heart-of-its-success/616491/" target="_blank" rel="noopener">
+            <span class="founder-link-type">article</span>The Atlantic — how Netflix's radical culture survived its near-death moments
           </a>
         </div>
       </div>
@@ -398,7 +394,7 @@
     </div>
 
     <div class="suggest-row">
-      <a class="suggest-link" href="https://twitter.com/intent/tweet?text=Hey%20%40founderfail%2C%20you%20should%20add%20this%20founder%20story%3A%20" target="_blank" rel="noopener">
+      <a class="suggest-link" href="https://x.com/JFinnyc" target="_blank" rel="noopener">
         More founders coming. Suggest one →
       </a>
     </div>
@@ -406,32 +402,29 @@
 
   <footer>
     <div class="footer-logo">founder<span style="color:var(--red)">.</span>fail</div>
-    <ul class="footer-links">
-      <li><a href="knowledge.html">knowledge base</a></li>
-      <li><a href="personas.html">failure types</a></li>
-      <li><a href="game.html">simulation</a></li>
-    </ul>
-    <div class="footer-copy">built in public · 2025</div>
+    <div class="footer-copy">built in public by <a href="https://x.com/JFinnyc" target="_blank" rel="noopener" style="color:var(--text-dim);text-decoration:underline;text-underline-offset:3px;">X @jfinnyc</a></div>
   </footer>
 
   <script>
+    let currentFilter = 'all';
     function filterCards(type, btn) {
+      // If clicking the already-active filter, reset to All
+      if (currentFilter === type && type !== 'all') {
+        type = 'all';
+        btn = document.getElementById('btn-all');
+      }
+      currentFilter = type;
+
       document.querySelectorAll('.filter-btn').forEach(b => {
         b.classList.remove('active', 'active-red', 'active-olive');
       });
 
       if (type === 'collapse') btn.classList.add('active-red');
-      else if (type === 'survived' || type === 'pivot') btn.classList.add('active-olive');
+      else if (type === 'survived') btn.classList.add('active-olive');
       else btn.classList.add('active');
 
       document.querySelectorAll('.founder-card').forEach(card => {
-        if (type === 'all') {
-          card.style.display = '';
-        } else if (type === 'collapse' || type === 'survived') {
-          card.style.display = card.dataset.type === type ? '' : 'none';
-        } else {
-          card.style.display = card.dataset.tags.includes(type) ? '' : 'none';
-        }
+        card.style.display = (type === 'all' || card.dataset.type === type) ? '' : 'none';
       });
     }
   </script>
