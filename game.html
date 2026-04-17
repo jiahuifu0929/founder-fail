@@ -528,11 +528,11 @@
 <script>
 // ─── Pixel art scene images ──────────────────────────────────────────
 const SCENES = {
-  boardroom: '<video src="assets/boardroom.mp4" autoplay loop muted playsinline></video>',
-  laptop2am: '<video src="assets/laptop2am.mp4" autoplay loop muted playsinline></video>',
-  crisis:    '<video src="assets/crisis.mp4" autoplay loop muted playsinline></video>',
-  teammeeting:'<video src="assets/teammeeting.mp4" autoplay loop muted playsinline></video>',
-  street:    '<video src="assets/street.mp4" autoplay loop muted playsinline></video>',
+  boardroom: '<video src="assets/boardroom.mp4" poster="assets/boardroom.png" autoplay loop muted playsinline preload="auto"></video>',
+  laptop2am: '<video src="assets/laptop2am.mp4" poster="assets/laptop2am.png" autoplay loop muted playsinline preload="auto"></video>',
+  crisis:    '<video src="assets/crisis.mp4" poster="assets/crisis.png" autoplay loop muted playsinline preload="auto"></video>',
+  teammeeting:'<video src="assets/teammeeting.mp4" poster="assets/teammeeting.png" autoplay loop muted playsinline preload="auto"></video>',
+  street:    '<video src="assets/street.mp4" poster="assets/street.png" autoplay loop muted playsinline preload="auto"></video>',
 };
 
 /*
@@ -1497,12 +1497,14 @@ function renderScene() {
 }
 
 // ─── Typewriter ───────────────────────────────────────────────────────
+let _twInterval = null;
 function typewrite(el, text, speed) {
+  if (_twInterval) clearInterval(_twInterval);
   el.textContent = '';
   let i = 0;
-  const interval = setInterval(() => {
+  _twInterval = setInterval(() => {
     if (i < text.length) { el.textContent += text[i++]; }
-    else clearInterval(interval);
+    else { clearInterval(_twInterval); _twInterval = null; }
   }, speed);
 }
 
@@ -1634,7 +1636,7 @@ function showEnding(key) {
   document.getElementById('ending-decisions').textContent = state.decisionsCount;
 
   const typeLabel = state.startupType === 'saas' ? 'B2B SaaS' : state.startupType === 'consumer' ? 'Consumer App' : state.startupType === 'crypto' ? 'Crypto/Web3' : 'Hardware';
-  const tweetText = encodeURIComponent(`I ran my ${typeLabel} startup on founder.fail and ended up: "${e.title}" (${e.tagline})\n\nRunway: ${state.runway} | PMF: ${state.pmf} | Morale: ${state.morale}\n\nfounder.fail`);
+  const tweetText = encodeURIComponent(`I ran my ${typeLabel} startup on founder.fail and ended up: "${e.title}" (${e.tagline})\n\nRunway: ${state.runway} | PMF: ${state.pmf} | Morale: ${state.morale}\n\nfounder-fail.vercel.app`);
   const shareUrl = `https://x.com/intent/tweet?text=${tweetText}`;
   document.getElementById('btn-share-ending').onclick = () => {
     const a = document.createElement('a');

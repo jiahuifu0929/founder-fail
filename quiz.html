@@ -944,8 +944,8 @@
   function shareOnX() {
     if (!currentWinner) return;
     const type = TYPES[currentWinner];
-    const text = `I just took the founder failure test on founder.fail\n\nMy failure type: ${type.icon} ${type.name}\n\n"${type.tagline}"\n\nfound yours:`;
-    const url = 'https://founder.fail/quiz';
+    const text = `I just took the founder failure test on founder.fail\n\nMy failure type: ${type.icon} ${type.name}\n\n"${type.tagline}"\n\nfind yours:`;
+    const url = 'https://founder-fail.vercel.app/quiz.html';
     const tweetUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
     // Use anchor click — most reliable approach, bypasses popup blockers
     const a = document.createElement('a');
@@ -960,7 +960,7 @@
   function copyResult() {
     if (!currentWinner) return;
     const type = TYPES[currentWinner];
-    const text = `Founder failure type: ${type.icon} ${type.name}\n"${type.tagline}"\n\nTake the test: founder.fail/quiz`;
+    const text = `Founder failure type: ${type.icon} ${type.name}\n"${type.tagline}"\n\nTake the test: founder-fail.vercel.app/quiz.html`;
     navigator.clipboard.writeText(text).then(() => {
       const el = document.getElementById('copy-confirm');
       el.style.display = 'block';
