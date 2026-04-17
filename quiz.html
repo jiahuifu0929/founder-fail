@@ -61,8 +61,11 @@
     }
 
     /* ─── Screens ─────────────────────────────────────────────── */
-    .screen { display: none; }
-    .screen.active { display: block; }
+    .screen { display: none !important; }
+    .screen.active { display: block !important; }
+    #screen-start.active { display: flex !important; }
+    #screen-quiz.active  { display: flex !important; }
+    #screen-result.active { display: flex !important; }
 
     /* ─── Start Screen ────────────────────────────────────────── */
     #screen-start {
@@ -185,8 +188,20 @@
     }
     .q-option:hover .q-option-key,
     .q-option.selected .q-option-key { color: var(--olive); }
+    .q-nav {
+      margin-top: 2rem; display: flex;
+      align-items: center; justify-content: flex-end; gap: 1rem;
+    }
+    .q-back {
+      display: none;
+      padding: 0.65rem 1.2rem; font-family: var(--sans);
+      font-size: 0.85rem; font-weight: 600; letter-spacing: 0.04em;
+      background: transparent; color: var(--text-muted);
+      border: 1px solid var(--border); border-radius: 3px; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .q-back:hover { color: var(--text-dim); border-color: var(--text-dim); }
     .q-next {
-      margin-top: 2rem; align-self: flex-end;
       display: none;
       padding: 0.65rem 1.4rem; font-family: var(--sans);
       font-size: 0.85rem; font-weight: 600; letter-spacing: 0.04em;
@@ -311,7 +326,7 @@
     .score-bar-track {
       flex: 1; height: 4px; background: var(--border);
     }
-    .score-bar-fill { height: 100%; background: var(--border); transition: width 0.6s ease; }
+    .score-bar-fill { height: 100%; background: #4a4642; transition: width 0.6s ease; }
     .score-bar-fill.winner-bar { background: var(--olive); }
     .score-num {
       font-family: var(--mono); font-size: 0.65rem; color: var(--text-muted);
@@ -380,7 +395,10 @@
       <div class="q-counter" id="q-counter">Question 1 of 24</div>
       <div class="q-text" id="q-text"></div>
       <div class="q-options" id="q-options"></div>
-      <button class="q-next" id="q-next" onclick="nextQuestion()">Next →</button>
+      <div class="q-nav">
+        <button class="q-back" id="q-back" onclick="prevQuestion()">← Back</button>
+        <button class="q-next" id="q-next" onclick="nextQuestion()">Next →</button>
+      </div>
     </div>
   </div>
 
@@ -733,14 +751,36 @@
   ];
 
   // ─── State ───────────────────────────────────────────────────────
-  let current = 0;
+  let questionOrder = [];   // shuffled indices into QUESTIONS
+  let current = 0;          // position in questionOrder
+  let answers = [];         // answers[position] = selected optIdx or null
   let scores = {};
-  let selected = null;
+  let currentWinner = null;
   const KEYS = ['A','B','C','D'];
 
   function initScores() {
     scores = {};
     Object.keys(TYPES).forEach(k => scores[k] = 0);
+  }
+
+  function shuffleArray(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  function computeScoresFromAnswers() {
+    initScores();
+    answers.forEach((optIdx, pos) => {
+      if (optIdx === null || optIdx === undefined) return;
+      const qIdx = questionOrder[pos];
+      const opt = QUESTIONS[qIdx].opts[optIdx];
+      Object.entries(opt.scores).forEach(([type, pts]) => {
+        scores[type] = (scores[type] || 0) + pts;
+      });
+    });
   }
 
   // ─── Navigation ──────────────────────────────────────────────────
@@ -752,28 +792,41 @@
 
   function startQuiz() {
     current = 0;
-    selected = null;
+    answers = new Array(QUESTIONS.length).fill(null);
     initScores();
+    currentWinner = null;
+    questionOrder = shuffleArray([...Array(QUESTIONS.length).keys()]);
     showScreen('screen-quiz');
     renderQuestion();
   }
 
   function restartQuiz() {
-    startQuiz();
+    current = 0;
+    answers = new Array(QUESTIONS.length).fill(null);
+    initScores();
+    currentWinner = null;
+    // Always reshuffle on retake so answer order differs
+    questionOrder = shuffleArray([...Array(QUESTIONS.length).keys()]);
+    showScreen('screen-quiz');
+    renderQuestion();
   }
 
   // ─── Quiz Logic ──────────────────────────────────────────────────
   function renderQuestion() {
-    const q = QUESTIONS[current];
+    const qIdx = questionOrder[current];
+    const q = QUESTIONS[qIdx];
     const total = QUESTIONS.length;
+    const preSelected = answers[current];
 
-    // Progress
     const pct = (current / total) * 100;
     document.getElementById('progress-bar').style.width = pct + '%';
     document.getElementById('q-counter').textContent = `Question ${current + 1} of ${total}`;
     document.getElementById('nav-progress').textContent = `${current + 1} / ${total}`;
 
-    // Question text with animation
+    // Back button visibility
+    const backBtn = document.getElementById('q-back');
+    backBtn.style.display = current > 0 ? 'inline-block' : 'none';
+
     const qText = document.getElementById('q-text');
     const qOpts = document.getElementById('q-options');
     const qNext = document.getElementById('q-next');
@@ -781,7 +834,6 @@
     qText.classList.remove('visible');
     qOpts.classList.remove('visible');
     qNext.classList.remove('show');
-    selected = null;
 
     setTimeout(() => {
       qText.textContent = q.q;
@@ -791,52 +843,65 @@
       q.opts.forEach((opt, i) => {
         const btn = document.createElement('button');
         btn.className = 'q-option';
+        if (preSelected === i) btn.classList.add('selected');
         btn.innerHTML = `<span class="q-option-key">${KEYS[i]}</span>${opt.text}`;
-        btn.onclick = () => selectOption(i, btn);
+        btn.onclick = () => selectOption(i);
         qOpts.appendChild(btn);
       });
       qOpts.classList.add('visible');
+
+      // Restore next button if question was already answered
+      if (preSelected !== null && preSelected !== undefined) {
+        qNext.textContent = current < QUESTIONS.length - 1 ? 'Next →' : 'See my result →';
+        qNext.classList.add('show');
+      }
     }, 150);
   }
 
-  function selectOption(idx, btn) {
-    document.querySelectorAll('.q-option').forEach(b => {
-      b.classList.remove('selected');
-      b.classList.add('disabled');
-    });
-    btn.classList.add('selected');
-    btn.classList.remove('disabled');
-    selected = idx;
+  function selectOption(idx) {
+    // Allow changing answer — just move the selected state
+    document.querySelectorAll('.q-option').forEach(b => b.classList.remove('selected'));
+    document.querySelectorAll('.q-option')[idx].classList.add('selected');
 
     const nextBtn = document.getElementById('q-next');
-    nextBtn.classList.add('show');
     nextBtn.textContent = current < QUESTIONS.length - 1 ? 'Next →' : 'See my result →';
+    nextBtn.classList.add('show');
   }
 
   function nextQuestion() {
-    if (selected === null) return;
-
-    // Record scores
-    const opt = QUESTIONS[current].opts[selected];
-    Object.entries(opt.scores).forEach(([type, pts]) => {
-      scores[type] = (scores[type] || 0) + pts;
-    });
+    const selectedBtn = document.querySelector('.q-option.selected');
+    if (!selectedBtn) return;
+    const idx = Array.from(document.querySelectorAll('.q-option')).indexOf(selectedBtn);
+    answers[current] = idx;
 
     current++;
     if (current >= QUESTIONS.length) {
+      computeScoresFromAnswers();
       showResult();
     } else {
       renderQuestion();
     }
   }
 
+  function prevQuestion() {
+    if (current === 0) return;
+    // Save current answer if one is selected before going back
+    const selectedBtn = document.querySelector('.q-option.selected');
+    if (selectedBtn) {
+      const idx = Array.from(document.querySelectorAll('.q-option')).indexOf(selectedBtn);
+      answers[current] = idx;
+    }
+    current--;
+    renderQuestion();
+  }
+
   // ─── Result ──────────────────────────────────────────────────────
   function showResult() {
-    // Find winner
     let winner = null, maxScore = -1;
     Object.entries(scores).forEach(([type, score]) => {
       if (score > maxScore) { maxScore = score; winner = type; }
     });
+    currentWinner = winner;
 
     const type = TYPES[winner];
     document.getElementById('res-icon').textContent = type.icon;
@@ -845,7 +910,7 @@
     document.getElementById('res-brutal').textContent = type.brutal;
     document.getElementById('res-insight').textContent = type.insight;
 
-    // Score bars
+    // Score bars — render at 0 width, then animate in
     const sortedScores = Object.entries(scores).sort((a,b) => b[1]-a[1]);
     const maxVal = sortedScores[0][1] || 1;
     const barsEl = document.getElementById('score-bars');
@@ -857,7 +922,7 @@
         <div class="score-row">
           <div class="score-row-name ${isWinner ? 'winner' : ''}">${TYPES[key].icon} ${TYPES[key].name}</div>
           <div class="score-bar-track">
-            <div class="score-bar-fill ${isWinner ? 'winner-bar' : ''}" style="width:${pct}%"></div>
+            <div class="score-bar-fill ${isWinner ? 'winner-bar' : ''}" data-pct="${pct}" style="width:0%"></div>
           </div>
           <div class="score-num">${val}</div>
         </div>`;
@@ -867,28 +932,35 @@
     document.getElementById('nav-progress').textContent = 'done';
     showScreen('screen-result');
 
-    // Animate bars in
+    // Animate bars after screen is visible
     setTimeout(() => {
       document.querySelectorAll('.score-bar-fill').forEach(el => {
-        el.style.transition = 'width 0.6s ease';
+        el.style.width = el.dataset.pct + '%';
       });
-    }, 100);
+    }, 120);
   }
 
   // ─── Share ───────────────────────────────────────────────────────
   function shareOnX() {
-    const winner = getWinnerType();
-    const type = TYPES[winner];
-    const text = `I just took the founder failure test on founder.fail and I'm "${type.name}" ${type.icon}\n\n"${type.tagline}"\n\nFind your failure type:`;
+    if (!currentWinner) return;
+    const type = TYPES[currentWinner];
+    const text = `I just took the founder failure test on founder.fail\n\nMy failure type: ${type.icon} ${type.name}\n\n"${type.tagline}"\n\nfound yours:`;
     const url = 'https://founder.fail/quiz';
     const tweetUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`;
-    window.open(tweetUrl, '_blank');
+    // Use anchor click — most reliable approach, bypasses popup blockers
+    const a = document.createElement('a');
+    a.href = tweetUrl;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   }
 
   function copyResult() {
-    const winner = getWinnerType();
-    const type = TYPES[winner];
-    const text = `founder.fail failure type: ${type.icon} ${type.name}\n"${type.tagline}"\n\nTake the test: founder.fail/quiz`;
+    if (!currentWinner) return;
+    const type = TYPES[currentWinner];
+    const text = `Founder failure type: ${type.icon} ${type.name}\n"${type.tagline}"\n\nTake the test: founder.fail/quiz`;
     navigator.clipboard.writeText(text).then(() => {
       const el = document.getElementById('copy-confirm');
       el.style.display = 'block';
@@ -896,27 +968,17 @@
     });
   }
 
-  function getWinnerType() {
-    let winner = null, maxScore = -1;
-    Object.entries(scores).forEach(([type, score]) => {
-      if (score > maxScore) { maxScore = score; winner = type; }
-    });
-    return winner;
-  }
-
   // Keyboard support
   document.addEventListener('keydown', (e) => {
     const screen = document.querySelector('.screen.active');
     if (!screen || screen.id !== 'screen-quiz') return;
     const idx = ['a','b','c','d'].indexOf(e.key.toLowerCase());
-    if (idx !== -1) {
-      const opts = document.querySelectorAll('.q-option:not(.disabled):not(.selected)');
-      if (opts[idx]) opts[idx].click();
-    }
+    if (idx !== -1) selectOption(idx);
     if (e.key === 'Enter' || e.key === ' ') {
       const nextBtn = document.getElementById('q-next');
       if (nextBtn.classList.contains('show')) nextBtn.click();
     }
+    if (e.key === 'Backspace' || e.key === 'ArrowLeft') prevQuestion();
   });
   </script>
 

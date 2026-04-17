@@ -40,24 +40,17 @@
 
     /* ─── Nav ─────────────────────────────────────────────────── */
     nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 2rem;
-      height: 56px;
-      background: rgba(14,14,14,0.92);
-      backdrop-filter: blur(12px);
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem; height: 56px;
+      background: rgba(14,14,14,0.92); backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
     }
     .nav-left { display: flex; align-items: center; gap: 1.5rem; }
     .nav-back {
       font-family: var(--mono); font-size: 0.72rem;
       color: var(--text-muted); letter-spacing: 0.08em;
-      display: flex; align-items: center; gap: 0.4rem;
-      transition: color 0.2s;
+      display: flex; align-items: center; gap: 0.4rem; transition: color 0.2s;
     }
     .nav-back:hover { color: var(--text-dim); }
     .nav-logo { font-family: var(--mono); font-size: 0.95rem; font-weight: 700; }
@@ -72,17 +65,26 @@
     .nav-links .nav-cta {
       background: var(--red-dim); color: var(--text);
       padding: 0.35rem 0.9rem; border-radius: 3px;
-      font-size: 0.78rem; letter-spacing: 0.08em;
-      transition: background 0.2s;
+      font-size: 0.78rem; letter-spacing: 0.08em; transition: background 0.2s;
     }
     .nav-links .nav-cta:hover { background: var(--red); }
 
-    /* ─── Page Header ─────────────────────────────────────────── */
+    /* ─── Screens ─────────────────────────────────────────────── */
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* ─── Start Screen ────────────────────────────────────────── */
+    #screen-start {
+      padding-top: 56px;
+      min-height: 100vh;
+      display: none;
+      flex-direction: column;
+    }
+    #screen-start.active { display: flex; }
+
     .page-header {
-      padding: 8rem 2rem 3rem;
-      max-width: 800px;
-      margin: 0 auto;
-      text-align: center;
+      padding: 5rem 2rem 3rem;
+      max-width: 800px; margin: 0 auto; text-align: center;
     }
     .page-label {
       font-family: var(--mono); font-size: 0.68rem;
@@ -96,263 +98,286 @@
     }
     .page-desc {
       font-size: 1rem; color: var(--text-dim);
-      line-height: 1.7; max-width: 480px;
-      margin: 0 auto 2.5rem;
+      line-height: 1.7; max-width: 480px; margin: 0 auto 2.5rem;
     }
-    .coming-badge {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      font-family: var(--mono); font-size: 0.72rem;
+
+    .startup-select { max-width: 760px; margin: 0 auto; padding: 0 2rem 6rem; }
+    .startup-select-label {
+      font-family: var(--mono); font-size: 0.68rem;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 1.25rem;
+    }
+    .startup-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px;
+      background: var(--border); border: 1px solid var(--border);
+    }
+    .startup-option {
+      background: var(--bg2); padding: 1.75rem 1.5rem;
+      cursor: pointer; transition: all 0.15s; position: relative;
+      display: flex; flex-direction: column; gap: 0.4rem;
+    }
+    .startup-option:hover { background: var(--bg3); }
+    .startup-option.selected { background: rgba(74,124,126,0.08); }
+    .startup-option.selected::after {
+      content: '✓';
+      position: absolute; top: 1rem; right: 1rem;
+      font-family: var(--mono); font-size: 0.75rem; color: var(--teal);
+    }
+    .startup-icon { font-size: 1.6rem; margin-bottom: 0.25rem; }
+    .startup-name { font-size: 0.95rem; font-weight: 700; }
+    .startup-tagline { font-size: 0.78rem; color: var(--text-muted); }
+    .startup-difficulty {
+      font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em;
+      text-transform: uppercase; margin-top: 0.5rem;
+    }
+    .diff-hard { color: var(--red); }
+    .diff-med  { color: var(--amber); }
+    .diff-easy { color: var(--olive); }
+
+    .btn-start {
+      display: block; width: 100%; margin-top: 1.5rem;
+      background: var(--teal-dim); border: 1px solid var(--teal);
+      color: var(--text); font-family: var(--mono); font-size: 0.82rem;
       letter-spacing: 0.1em; text-transform: uppercase;
-      padding: 0.4rem 1rem; border-radius: 2px;
-      background: rgba(74,124,126,0.1);
-      color: var(--teal); border: 1px solid var(--teal-dim);
-      margin-bottom: 4rem;
+      padding: 1rem; cursor: pointer; transition: all 0.15s;
     }
-    .coming-badge .blink {
-      width: 6px; height: 6px; background: var(--teal);
-      border-radius: 50%; animation: blink 1.4s ease-in-out infinite;
-    }
-    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.2; } }
+    .btn-start:hover { background: var(--teal); }
+    .btn-start:disabled { opacity: 0.3; cursor: not-allowed; }
 
-    /* ─── Game Preview ────────────────────────────────────────── */
-    .game-wrap {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 0 2rem 6rem;
+    /* ─── Game Screen ─────────────────────────────────────────── */
+    #screen-game {
+      padding-top: 56px; min-height: 100vh;
+      display: none; flex-direction: column;
     }
-    .game-box {
-      border: 1px solid var(--border);
-      overflow: hidden;
+    #screen-game.active { display: flex; }
+
+    .game-layout {
+      flex: 1; max-width: 960px; width: 100%;
+      margin: 0 auto; padding: 2rem;
+      display: grid; grid-template-rows: auto 1fr auto; gap: 0;
     }
 
-    /* Pixel art scene */
-    .pixel-scene {
-      background: #1a1a2e;
-      padding: 3rem 2rem 2rem;
-      text-align: center;
-      position: relative;
-      font-family: var(--mono);
-      image-rendering: pixelated;
-      min-height: 300px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 1.5rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .pixel-scene::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
-      background-size: 8px 8px;
-      pointer-events: none;
-    }
-    .pixel-scene-label {
-      position: absolute;
-      top: 1rem; left: 1.25rem;
-      font-family: var(--mono);
-      font-size: 0.62rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--teal);
-      opacity: 0.7;
-    }
-
-    /* CSS pixel art */
-    .pixel-row { display: flex; gap: 2px; }
-    .p { width: 12px; height: 12px; display: inline-block; image-rendering: pixelated; flex-shrink: 0; }
-    .pixel-art { display: flex; flex-direction: column; gap: 2px; }
-    .p-wall   { background: #2a2a4a; }
-    .p-window { background: #4a7c7e; }
-    .p-window2{ background: #5a9ea0; }
-    .p-floor  { background: #3a2a1a; }
-    .p-desk   { background: #6b4c2a; }
-    .p-chair  { background: #4a3520; }
-    .p-screen { background: #7a8c5e; }
-    .p-plant  { background: #3d5a2a; }
-    .p-skin   { background: #d4a87a; }
-    .p-hair   { background: #1a0a00; }
-    .p-shirt  { background: #4a7c7e; }
-    .p-pants  { background: #2a3a5a; }
-    .p-paper  { background: #e8e2d9; }
-    .p-lamp   { background: #c9973a; }
-    .p-coffee { background: #5a3820; }
-    .p-sky    { background: #1a1a2e; }
-    .p-blank  { background: transparent; }
-    .p-vc     { background: #4a3a6a; }
-    .p-vcsuit { background: #1a2a3a; }
-    .p-table  { background: #5a4a30; }
-    .p-chair2 { background: #3a5a6a; }
-
-    .pixel-dialogue {
-      background: rgba(14,14,14,0.95);
-      border: 2px solid var(--teal);
-      padding: 0.85rem 1.25rem;
-      font-family: var(--mono);
-      font-size: 0.78rem;
-      color: var(--text);
-      letter-spacing: 0.04em;
-      max-width: 400px;
-      text-align: left;
-      position: relative;
-      box-shadow: 4px 4px 0 rgba(74,124,126,0.15);
-      line-height: 1.5;
-    }
-    .pixel-dialogue .speaker {
-      font-size: 0.62rem;
-      color: var(--teal);
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 0.4rem;
-    }
-
-    /* Stats + choices */
+    /* HUD */
     .game-hud {
-      background: var(--bg);
-      padding: 1.5rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 2rem;
-      flex-wrap: wrap;
-      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1.5rem; background: var(--bg2);
+      border: 1px solid var(--border); border-bottom: none;
+      flex-wrap: wrap; gap: 1rem;
     }
-    .hud-title { font-size: 0.92rem; font-weight: 700; margin-bottom: 0.2rem; }
-    .hud-sub { font-size: 0.78rem; color: var(--text-dim); }
-    .stat-bars { display: flex; gap: 1.5rem; flex-wrap: wrap; }
-    .stat-bar-item { text-align: center; }
+    .hud-info {}
+    .hud-title { font-size: 0.9rem; font-weight: 700; }
+    .hud-sub { font-size: 0.72rem; color: var(--text-muted); font-family: var(--mono); }
+    .hud-progress {
+      font-family: var(--mono); font-size: 0.62rem;
+      color: var(--text-muted); letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .stat-bars { display: flex; gap: 1.75rem; flex-wrap: wrap; }
+    .stat-bar-item { text-align: center; min-width: 72px; }
     .stat-bar-label {
       font-family: var(--mono); font-size: 0.58rem;
       letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--text-muted); margin-bottom: 0.3rem;
+      color: var(--text-muted); margin-bottom: 0.35rem;
     }
     .stat-bar-track {
-      width: 72px; height: 8px;
-      background: var(--border);
+      width: 72px; height: 8px; background: var(--border);
       position: relative; image-rendering: pixelated;
     }
     .stat-bar-fill {
       position: absolute; top: 0; left: 0; bottom: 0;
+      transition: width 0.4s ease;
     }
     .fill-amber { background: var(--amber); }
     .fill-olive { background: var(--olive); }
     .fill-teal  { background: var(--teal); }
+    .fill-red   { background: var(--red); }
+    .stat-val {
+      font-family: var(--mono); font-size: 0.58rem;
+      color: var(--text-muted); margin-top: 0.25rem;
+    }
+
+    /* Scene */
+    .game-scene {
+      border: 1px solid var(--border); border-bottom: none;
+      background: #0f0f1e; position: relative;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 1.5rem;
+      padding: 3rem 2rem 2rem; min-height: 340px;
+      font-family: var(--mono); image-rendering: pixelated;
+      overflow: hidden;
+    }
+    .game-scene::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
+      background-size: 8px 8px; pointer-events: none;
+    }
+    .scene-label {
+      position: absolute; top: 1rem; left: 1.25rem;
+      font-family: var(--mono); font-size: 0.6rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--teal); opacity: 0.6;
+    }
+    .scene-day {
+      position: absolute; top: 1rem; right: 1.25rem;
+      font-family: var(--mono); font-size: 0.6rem;
+      letter-spacing: 0.08em; color: var(--text-muted);
+    }
+
+    /* pixel art scenes */
+    .pixel-art { display: flex; justify-content: center; }
+    .pixel-art img, .pixel-art video {
+      width: 100%; max-width: 440px; height: auto;
+      image-rendering: pixelated;
+      border-radius: 2px;
+    }
+
+    .pixel-dialogue {
+      background: rgba(10,10,20,0.97);
+      border: 2px solid var(--teal); padding: 0.85rem 1.25rem;
+      font-family: var(--mono); font-size: 0.78rem; color: var(--text);
+      letter-spacing: 0.03em; max-width: 420px; width: 100%;
+      text-align: left; line-height: 1.55;
+      box-shadow: 4px 4px 0 rgba(74,124,126,0.12);
+    }
+    .pixel-dialogue .speaker {
+      font-size: 0.6rem; color: var(--teal);
+      letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.4rem;
+    }
+    #dialogue-text { min-height: 2.5em; }
 
     /* Choices */
-    .pixel-choices {
-      padding: 1.5rem 2rem;
+    .game-choices {
+      border: 1px solid var(--border);
       background: var(--bg2);
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
     }
     .choices-label {
-      font-family: var(--mono);
-      font-size: 0.62rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-      margin-bottom: 0.5rem;
+      font-family: var(--mono); font-size: 0.6rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-muted); padding: 0.75rem 1.25rem 0;
+    }
+    .choices-list {
+      padding: 0.5rem 1rem 1rem; display: flex; flex-direction: column; gap: 0.4rem;
     }
     .pixel-choice {
-      background: rgba(26,26,46,0.6);
-      border: 1px solid var(--border);
-      padding: 0.65rem 1rem;
-      font-family: var(--mono);
-      font-size: 0.74rem;
-      color: var(--text-dim);
-      cursor: pointer;
-      transition: all 0.12s;
-      text-align: left;
-      letter-spacing: 0.03em;
-      width: 100%;
+      background: rgba(26,26,46,0.5); border: 1px solid var(--border);
+      padding: 0.65rem 1rem; font-family: var(--mono); font-size: 0.74rem;
+      color: var(--text-dim); cursor: pointer; transition: all 0.12s;
+      text-align: left; letter-spacing: 0.03em; width: 100%;
+      display: flex; align-items: center; gap: 0.75rem;
     }
-    .pixel-choice:hover {
-      border-color: var(--teal);
-      color: var(--teal);
+    .pixel-choice:hover:not(:disabled) {
+      border-color: var(--teal); color: var(--teal);
       background: rgba(74,124,126,0.08);
     }
-    .pixel-choice::before { content: '▸  '; color: var(--text-muted); }
-    .pixel-choice:hover::before { color: var(--teal); }
+    .pixel-choice:disabled { opacity: 0.35; cursor: not-allowed; }
+    .pixel-choice.chosen {
+      border-color: var(--teal); color: var(--teal);
+      background: rgba(74,124,126,0.12);
+    }
+    .choice-key {
+      font-size: 0.6rem; color: var(--text-muted); flex-shrink: 0;
+      border: 1px solid var(--border); padding: 0.1rem 0.35rem;
+      border-radius: 2px;
+    }
+    .pixel-choice:hover .choice-key, .pixel-choice.chosen .choice-key { color: var(--teal); border-color: var(--teal); }
 
-    /* Endings preview */
-    .endings-section {
-      margin-top: 3rem;
-      border: 1px solid var(--border);
+    /* stat delta flash */
+    .delta-flash {
+      position: absolute; font-family: var(--mono); font-size: 0.7rem;
+      font-weight: 700; letter-spacing: 0.05em; pointer-events: none;
+      opacity: 0; transform: translateY(0);
+      transition: opacity 0.2s, transform 0.6s ease;
     }
-    .endings-header {
-      padding: 1.25rem 1.75rem;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .delta-flash.show { opacity: 1; transform: translateY(-20px); }
+    .delta-flash.hide { opacity: 0; transform: translateY(-36px); }
+    .delta-pos { color: var(--olive); }
+    .delta-neg { color: var(--red); }
+
+    /* ─── Ending Screen ───────────────────────────────────────── */
+    #screen-ending {
+      padding-top: 56px; min-height: 100vh;
+      display: none; flex-direction: column;
     }
-    .endings-header h3 { font-size: 0.92rem; font-weight: 700; }
-    .endings-header span {
+    #screen-ending.active { display: flex; }
+
+    .ending-wrap {
+      flex: 1; max-width: 720px; width: 100%;
+      margin: 0 auto; padding: 3rem 2rem 6rem;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .ending-label {
       font-family: var(--mono); font-size: 0.65rem;
-      color: var(--text-muted); letter-spacing: 0.08em;
-      text-transform: uppercase;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 1.5rem;
     }
-    .endings-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: var(--border);
+    .ending-icon-big { font-size: 3.5rem; margin-bottom: 1rem; }
+    .ending-title {
+      font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700;
+      letter-spacing: -0.03em; text-align: center; margin-bottom: 0.75rem;
     }
-    .ending-card {
-      background: var(--bg2);
-      padding: 1.25rem 1.5rem;
+    .ending-tagline {
+      font-family: var(--mono); font-size: 0.8rem; color: var(--text-muted);
+      text-align: center; letter-spacing: 0.05em; margin-bottom: 2rem;
     }
-    .ending-icon { font-size: 1.4rem; margin-bottom: 0.5rem; display: block; }
-    .ending-name {
-      font-size: 0.85rem; font-weight: 700;
-      margin-bottom: 0.3rem;
-    }
-    .ending-desc { font-size: 0.75rem; color: var(--text-muted); line-height: 1.4; }
-
-    /* Startup selector preview */
-    .startup-types {
-      margin-top: 2rem;
-    }
-    .startup-types-label {
-      font-family: var(--mono);
-      font-size: 0.68rem; letter-spacing: 0.15em;
-      text-transform: uppercase; color: var(--text-muted);
-      margin-bottom: 1rem;
-    }
-    .startup-chips {
-      display: flex; gap: 0.75rem; flex-wrap: wrap;
-    }
-    .startup-chip {
-      display: flex; align-items: center; gap: 0.5rem;
+    .ending-body {
       background: var(--bg2); border: 1px solid var(--border);
-      padding: 0.6rem 1rem; border-radius: 3px;
-      font-size: 0.82rem; opacity: 0.5;
-      cursor: not-allowed;
+      padding: 1.75rem; font-size: 0.9rem; color: var(--text-dim);
+      line-height: 1.75; width: 100%; margin-bottom: 1.5rem;
     }
+    .ending-stats {
+      width: 100%; background: var(--bg2); border: 1px solid var(--border);
+      padding: 1.25rem 1.5rem; margin-bottom: 2rem;
+      display: flex; gap: 2rem; flex-wrap: wrap;
+    }
+    .ending-stat-item { text-align: center; }
+    .ending-stat-label {
+      font-family: var(--mono); font-size: 0.6rem;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.35rem;
+    }
+    .ending-stat-val { font-family: var(--mono); font-size: 1.1rem; font-weight: 700; }
+
+    .ending-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+    .btn-play-again {
+      background: var(--bg2); border: 1px solid var(--border);
+      color: var(--text-dim); font-family: var(--mono); font-size: 0.78rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.75rem 1.5rem; cursor: pointer; transition: all 0.15s;
+    }
+    .btn-play-again:hover { border-color: var(--teal); color: var(--teal); }
+    .btn-share {
+      background: var(--teal-dim); border: 1px solid var(--teal);
+      color: var(--text); font-family: var(--mono); font-size: 0.78rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.75rem 1.5rem; cursor: pointer; transition: all 0.15s;
+    }
+    .btn-share:hover { background: var(--teal); }
+
+    /* fade transition */
+    .fade-out { animation: fadeOut 0.25s ease forwards; }
+    .fade-in  { animation: fadeIn 0.3s ease forwards; }
+    @keyframes fadeOut { to { opacity: 0; transform: translateY(4px); } }
+    @keyframes fadeIn  { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
     /* ─── Footer ──────────────────────────────────────────────── */
     footer {
-      padding: 2.5rem 2rem;
-      border-top: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1rem;
+      padding: 2rem 2rem; border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
     }
     .footer-logo { font-family: var(--mono); font-size: 0.85rem; font-weight: 700; color: var(--text-dim); }
     .footer-copy { font-size: 0.72rem; color: var(--text-muted); font-family: var(--mono); }
 
     @media (max-width: 640px) {
       .nav-links { display: none; }
-      .endings-grid { grid-template-columns: 1fr; }
-      .game-hud { flex-direction: column; align-items: flex-start; }
+      .stat-bars { gap: 1rem; }
+      .startup-grid { grid-template-columns: 1fr; }
+      .game-layout { padding: 1rem; }
       footer { flex-direction: column; align-items: flex-start; }
+      .ending-stats { flex-direction: column; gap: 1rem; }
     }
   </style>
 </head>
@@ -367,98 +392,132 @@
       <li><a href="knowledge.html">Knowledge Base</a></li>
       <li><a href="personas.html">Failure Type</a></li>
       <li><a href="game.html">Simulation</a></li>
-      <li><a href="personas.html" class="nav-cta">Find Your Type →</a></li>
+      <li><a href="quiz.html" class="nav-cta">Take the Quiz →</a></li>
     </ul>
   </nav>
 
-  <div class="page-header">
-    <div class="page-label">03 — Founder Simulation</div>
-    <h1 class="page-title">Run your company.<br />Into the ground.</h1>
-    <p class="page-desc">Choose your startup type. Navigate 20 decisions. Land on one of 6 endings — The Exit, Acqui-hired, Zombie Mode, Default Dead, The Eternal Pivot, or Famous for the Wrong Reasons. Most paths don't end well.</p>
-    <div class="coming-badge">
-      <span class="blink"></span>
-      Game in development
+  <!-- ─── START SCREEN ──────────────────────────────────────── -->
+  <div id="screen-start" class="screen active">
+    <div class="page-header">
+      <div class="page-label">03 — Founder Simulation</div>
+      <h1 class="page-title">Run your company.<br />Into the ground.</h1>
+      <p class="page-desc">Choose your startup type. Navigate 15 decisions. Land on one of 6 endings. Most paths don't end well.</p>
+    </div>
+    <div class="startup-select">
+      <div class="startup-select-label">choose your startup type</div>
+      <div class="startup-grid" id="startup-grid">
+        <div class="startup-option" data-type="saas" onclick="selectStartup(this)">
+          <div class="startup-icon">🖥️</div>
+          <div class="startup-name">B2B SaaS</div>
+          <div class="startup-tagline">Enterprise software nobody asked for at a price nobody expects</div>
+          <div class="startup-difficulty diff-easy">difficulty: medium</div>
+        </div>
+        <div class="startup-option" data-type="consumer" onclick="selectStartup(this)">
+          <div class="startup-icon">📱</div>
+          <div class="startup-name">Consumer App</div>
+          <div class="startup-tagline">Chasing DAUs, burning cash, praying for virality</div>
+          <div class="startup-difficulty diff-hard">difficulty: very hard</div>
+        </div>
+        <div class="startup-option" data-type="crypto" onclick="selectStartup(this)">
+          <div class="startup-icon">🪙</div>
+          <div class="startup-name">Crypto / Web3</div>
+          <div class="startup-tagline">Launch a token. Watch it pump. Call it a protocol.</div>
+          <div class="startup-difficulty diff-med">difficulty: hard</div>
+        </div>
+        <div class="startup-option" data-type="hardware" onclick="selectStartup(this)">
+          <div class="startup-icon">🤖</div>
+          <div class="startup-name">Hardware / Robotics</div>
+          <div class="startup-tagline">Real atoms, real pain, real 5-year runways</div>
+          <div class="startup-difficulty diff-hard">difficulty: brutal</div>
+        </div>
+      </div>
+      <button class="btn-start" id="btn-start" disabled onclick="startGame()">▸  select a startup to begin</button>
     </div>
   </div>
 
-  <div class="game-wrap">
-
-    <!-- Choose your startup -->
-    <div class="startup-types">
-      <div class="startup-types-label">choose your startup — coming soon</div>
-      <div class="startup-chips">
-        <div class="startup-chip">🖥️ B2B SaaS</div>
-        <div class="startup-chip">📱 Consumer App</div>
-        <div class="startup-chip">🪙 Crypto / Web3</div>
-        <div class="startup-chip">🤖 Hardware / Robotics</div>
-      </div>
-    </div>
-
-    <!-- Game preview -->
-    <div class="game-box" style="margin-top:2rem;">
-      <div class="pixel-scene">
-        <span class="pixel-scene-label">scene preview — static</span>
-
-        <!-- Pixel art: board room pitch -->
-        <div class="pixel-art">
-          <div class="pixel-row">
-            <div class="p p-wall"></div><div class="p p-wall"></div><div class="p p-wall"></div><div class="p p-wall"></div><div class="p p-window"></div><div class="p p-window2"></div><div class="p p-window2"></div><div class="p p-window"></div><div class="p p-wall"></div><div class="p p-wall"></div><div class="p p-wall"></div><div class="p p-wall"></div>
-          </div>
-          <div class="pixel-row">
-            <div class="p p-wall"></div><div class="p p-wall"></div><div class="p p-wall"></div><div class="p p-wall"></div><div class="p p-window2"></div><div class="p p-window2"></div><div class="p p-window2"></div><div class="p p-window2"></div><div class="p p-wall"></div><div class="p p-wall"></div><div class="p p-wall"></div><div class="p p-wall"></div>
-          </div>
-          <div class="pixel-row">
-            <div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-blank"></div><div class="p p-table"></div><div class="p p-table"></div><div class="p p-table"></div><div class="p p-table"></div><div class="p p-table"></div><div class="p p-table"></div><div class="p p-blank"></div><div class="p p-floor"></div><div class="p p-floor"></div>
-          </div>
-          <div class="pixel-row">
-            <div class="p p-blank"></div><div class="p p-vcsuit"></div><div class="p p-blank"></div><div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-blank"></div><div class="p p-shirt"></div><div class="p p-blank"></div>
-          </div>
-          <div class="pixel-row">
-            <div class="p p-vc"></div><div class="p p-vcsuit"></div><div class="p p-vc"></div><div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-paper"></div><div class="p p-paper"></div><div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-shirt"></div><div class="p p-shirt"></div><div class="p p-shirt"></div>
-          </div>
-          <div class="pixel-row">
-            <div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div><div class="p p-floor"></div>
-          </div>
-        </div>
-
-        <div class="pixel-dialogue">
-          <div class="speaker">VC Partner</div>
-          "Your TAM slide says $4 trillion. Walk me through that math."
-        </div>
-      </div>
+  <!-- ─── GAME SCREEN ───────────────────────────────────────── -->
+  <div id="screen-game" class="screen">
+    <div class="game-layout">
 
       <div class="game-hud">
-        <div>
-          <div class="hud-title">The Pitch — Day 1</div>
-          <div class="hud-sub">You're in a Sequoia partner meeting. Your product has 12 users. 3 are your mom.</div>
+        <div class="hud-info">
+          <div class="hud-title" id="hud-title">—</div>
+          <div class="hud-sub" id="hud-sub">—</div>
         </div>
-        <div class="stat-bars">
-          <div class="stat-bar-item">
-            <div class="stat-bar-label">Runway</div>
-            <div class="stat-bar-track"><div class="stat-bar-fill fill-amber" style="width:70%"></div></div>
+        <div style="display:flex;align-items:center;gap:2rem;flex-wrap:wrap;">
+          <div class="stat-bars">
+            <div class="stat-bar-item" style="position:relative">
+              <div class="stat-bar-label">Runway</div>
+              <div class="stat-bar-track"><div class="stat-bar-fill fill-amber" id="bar-runway" style="width:65%"></div></div>
+              <div class="stat-val" id="val-runway">65</div>
+              <span class="delta-flash" id="delta-runway"></span>
+            </div>
+            <div class="stat-bar-item" style="position:relative">
+              <div class="stat-bar-label">PMF</div>
+              <div class="stat-bar-track"><div class="stat-bar-fill fill-olive" id="bar-pmf" style="width:20%"></div></div>
+              <div class="stat-val" id="val-pmf">20</div>
+              <span class="delta-flash" id="delta-pmf"></span>
+            </div>
+            <div class="stat-bar-item" style="position:relative">
+              <div class="stat-bar-label">Morale</div>
+              <div class="stat-bar-track"><div class="stat-bar-fill fill-teal" id="bar-morale" style="width:75%"></div></div>
+              <div class="stat-val" id="val-morale">75</div>
+              <span class="delta-flash" id="delta-morale"></span>
+            </div>
           </div>
-          <div class="stat-bar-item">
-            <div class="stat-bar-label">PMF</div>
-            <div class="stat-bar-track"><div class="stat-bar-fill fill-olive" style="width:15%"></div></div>
-          </div>
-          <div class="stat-bar-item">
-            <div class="stat-bar-label">Morale</div>
-            <div class="stat-bar-track"><div class="stat-bar-fill fill-teal" style="width:90%"></div></div>
-          </div>
+          <div class="hud-progress" id="hud-progress">scene 1 / 15</div>
         </div>
       </div>
 
-      <div class="pixel-choices">
+      <div class="game-scene" id="game-scene">
+        <div class="scene-label" id="scene-label">—</div>
+        <div class="scene-day" id="scene-day">—</div>
+        <div class="pixel-art" id="pixel-art-container"></div>
+        <div class="pixel-dialogue">
+          <div class="speaker" id="dialogue-speaker">—</div>
+          <div id="dialogue-text"></div>
+        </div>
+      </div>
+
+      <div class="game-choices">
         <div class="choices-label">What do you do?</div>
-        <button class="pixel-choice" onclick="this.style.opacity='0.4'">Pitch confidently — $4T is conservative actually</button>
-        <button class="pixel-choice" onclick="this.style.opacity='0.4'">Admit the number is aspirational and pivot to traction</button>
-        <button class="pixel-choice" onclick="this.style.opacity='0.4'">Ask them what markets they're excited about right now</button>
+        <div class="choices-list" id="choices-list"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ─── ENDING SCREEN ────────────────────────────────────── -->
+  <div id="screen-ending" class="screen">
+    <div class="ending-wrap">
+      <div class="ending-label" id="ending-label">— the end —</div>
+      <div class="ending-icon-big" id="ending-icon">🏆</div>
+      <h1 class="ending-title" id="ending-title">The Exit</h1>
+      <div class="ending-tagline" id="ending-tagline">—</div>
+      <div class="ending-body" id="ending-body">—</div>
+      <div class="ending-stats">
+        <div class="ending-stat-item">
+          <div class="ending-stat-label">Final Runway</div>
+          <div class="ending-stat-val" id="ending-runway">—</div>
+        </div>
+        <div class="ending-stat-item">
+          <div class="ending-stat-label">PMF Score</div>
+          <div class="ending-stat-val" id="ending-pmf">—</div>
+        </div>
+        <div class="ending-stat-item">
+          <div class="ending-stat-label">Team Morale</div>
+          <div class="ending-stat-val" id="ending-morale">—</div>
+        </div>
+        <div class="ending-stat-item">
+          <div class="ending-stat-label">Decisions Made</div>
+          <div class="ending-stat-val" id="ending-decisions">—</div>
+        </div>
+      </div>
+      <div class="ending-actions">
+        <button class="btn-play-again" onclick="resetGame()">▸  play again</button>
+        <button class="btn-share" id="btn-share-ending">share on X →</button>
       </div>
     </div>
-
-    <p style="margin-top:1.5rem;font-size:0.75rem;color:var(--text-muted);text-align:center;font-family:var(--mono);">
-      ↑ static preview — full playable game coming soon
-    </p>
   </div>
 
   <footer>
@@ -466,5 +525,1150 @@
     <div class="footer-copy">built in public by <a href="https://x.com/JFinnyc" target="_blank" rel="noopener" style="color:var(--text-dim);text-decoration:underline;text-underline-offset:3px;">@jfinnyc</a></div>
   </footer>
 
+<script>
+// ─── Pixel art scene images ──────────────────────────────────────────
+const SCENES = {
+  boardroom: '<video src="assets/boardroom.mp4" autoplay loop muted playsinline></video>',
+  laptop2am: '<video src="assets/laptop2am.mp4" autoplay loop muted playsinline></video>',
+  crisis:    '<video src="assets/crisis.mp4" autoplay loop muted playsinline></video>',
+  teammeeting:'<video src="assets/teammeeting.mp4" autoplay loop muted playsinline></video>',
+  street:    '<video src="assets/street.mp4" autoplay loop muted playsinline></video>',
+};
+
+/*
+const _OLD_SCENES = {
+  _boardroom: (() => {
+    let s = '';
+    // back wall
+    for(let x=0;x<32;x++) s += px(x,0,C.wall,1,5);
+    // ceiling lights
+    s += px(8,0,C.amber,2,1) + px(20,0,C.amber,2,1);
+    // window left (city view)
+    s += px(3,1,C.winFrame,6,4);
+    s += px(4,2,C.sky,4,2);
+    s += px(4,3,C.skyLine,1,1) + px(6,2,C.skyLine,1,1); // buildings in window
+    s += px(5,2,C.bldgWin,1,1); // lit window in building
+    // window right
+    s += px(22,1,C.winFrame,6,4);
+    s += px(23,2,C.sky,4,2);
+    s += px(24,2,C.skyLine,1,1) + px(26,3,C.skyLine,1,1);
+    s += px(25,3,C.bldgWin,1,1);
+    // whiteboard
+    s += px(13,1,'#e8e2d9',6,3);
+    s += px(14,2,'#4a7c7e',1,1) + px(16,2,'#c0392b',2,1); // marker strokes on board
+    // plant left corner
+    s += px(1,3,C.plant2,1,1) + px(2,3,C.plant,1,1) + px(1,4,C.plant,2,1) + px(1,5,C.pot,2,1);
+    // plant right corner
+    s += px(29,3,C.plant,1,1) + px(30,3,C.plant2,1,1) + px(29,4,C.plant2,2,1) + px(29,5,C.pot,2,1);
+    // floor
+    for(let x=0;x<32;x++) s += px(x,5,C.floor,1,11);
+    for(let x=0;x<32;x+=4) s += px(x,5,C.floor2,2,11); // floor tile pattern
+    // conference table
+    s += px(8,8,C.table,16,2);
+    s += px(9,10,C.tableLeg,1,2) + px(22,10,C.tableLeg,1,2); // legs
+    // papers on table
+    s += px(12,8,C.paper,2,1) + px(18,8,C.paper,1,1);
+    // laptop on table
+    s += px(15,7,C.screen,2,1) + px(15,8,'#1a1a2a',2,1);
+    // VC figure (left side, seated)
+    s += px(6,6,C.hair,2,1); // hair
+    s += px(6,7,C.skin,2,1); // face
+    s += px(5,8,C.suit,4,2); // suit body
+    s += px(5,10,C.suit,1,2) + px(8,10,C.suit,1,2); // legs
+    // chair
+    s += px(5,10,C.chair,4,1);
+    // Founder figure (right side, standing & presenting)
+    s += px(26,5,C.hair2,2,1);
+    s += px(26,6,C.skin,2,1);
+    s += px(25,7,C.shirt1,4,2); // body
+    s += px(24,7,C.skin,1,1); // pointing hand
+    s += px(26,9,'#2a3a5a',2,2); // pants
+    // Second person at table
+    s += px(11,6,C.hair,1,1);
+    s += px(11,7,C.skin,1,1);
+    s += px(10,8,C.shirt2,3,1);
+    return `<svg viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">${s}</svg>`;
+  })(),
+
+  laptop2am: (() => {
+    let s = '';
+    // dark room
+    for(let x=0;x<32;x++) s += px(x,0,'#08081a',1,16);
+    // small window showing night sky
+    s += px(2,1,C.winFrame,5,4);
+    s += px(3,2,'#0a1525',3,2);
+    // stars
+    s += px(4,2,'#e8e2d9',1,1);
+    s += px(3,3,'#8a8279',1,1);
+    // moon sliver
+    s += px(5,2,C.amber,1,1);
+    // desk lamp (right side of desk, amber glow)
+    s += px(24,5,C.desk,1,1); // lamp base
+    s += px(24,4,C.desk2,1,1); // lamp arm
+    s += px(23,3,C.amber,2,1); // lamp shade
+    // glow circle around lamp
+    s += `<rect x="210" y="30" width="50" height="50" fill="${C.lampGlow}" rx="25" style="animation:lamp-flicker 3s infinite"/>`;
+    // desk surface
+    s += px(6,9,C.desk,22,1);
+    s += px(6,10,C.desk2,22,1);
+    // desk legs
+    s += px(7,11,C.desk,1,4) + px(8,11,C.desk2,1,4);
+    s += px(25,11,C.desk,1,4) + px(26,11,C.desk2,1,4);
+    // monitor screen (glowing)
+    s += px(12,5,C.screenOff,8,1); // monitor top bezel
+    s += px(12,6,C.screen,8,3); // screen
+    s += px(13,7,C.screen2,2,1); // code on screen
+    s += px(16,6,'#a0c080',1,1); // cursor
+    s += `<rect x="160" y="60" width="10" height="10" fill="#a0c080" style="animation:blink-cursor 1s infinite"/>`;
+    s += px(15,9,'#1a1a2a',2,1); // stand
+    // screen glow on desk
+    s += `<rect x="100" y="90" width="120" height="10" fill="rgba(74,124,126,0.08)"/>`;
+    // keyboard
+    s += px(12,9,'#1a1a2a',8,1);
+    // coffee mug
+    s += px(22,8,C.coffee,2,1);
+    s += px(22,7,C.coffee,2,1);
+    s += px(24,7,'#5a3820',1,1); // handle
+    // steam
+    s += `<rect x="225" y="55" width="5" height="10" fill="rgba(200,200,200,0.08)"/>`;
+    // sticky notes on wall
+    s += px(9,2,C.amber,2,2);
+    s += px(12,1,'#c0392b',2,2);
+    s += px(10,4,'#4a7c7e',2,1);
+    // person hunched at desk
+    s += px(15,3,C.hair,2,1); // hair
+    s += px(15,4,C.skin,2,1); // head (leaning forward)
+    s += px(14,5,C.shirt1,4,2); // hoodie
+    s += px(13,7,C.skin,1,1); // hand on keyboard
+    s += px(18,7,C.skin,1,1); // other hand
+    s += px(14,7,C.shirt1,4,2); // lower body
+    s += px(14,9,C.chair,4,1); // chair seat
+    s += px(14,10,'#2a3a5a',4,1); // legs
+    // floor
+    for(let x=0;x<32;x++) s += px(x,15,C.floor,1,1);
+    for(let x=0;x<32;x+=3) s += px(x,15,C.floor2,1,1);
+    return `<svg viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">${s}</svg>`;
+  })(),
+
+  teammeeting: (() => {
+    let s = '';
+    // back wall
+    for(let x=0;x<32;x++) s += px(x,0,C.wall,1,6);
+    // fluorescent lights
+    s += px(4,0,'#e8e2d9',8,1) + px(20,0,'#e8e2d9',8,1);
+    s += `<rect x="40" y="0" width="80" height="10" fill="rgba(232,226,217,0.06)"/>`;
+    s += `<rect x="200" y="0" width="80" height="10" fill="rgba(232,226,217,0.06)"/>`;
+    // whiteboard with content
+    s += px(2,1,'#e8e2d9',10,4);
+    s += px(3,2,'#c0392b',3,1); // red line
+    s += px(3,3,'#4a7c7e',5,1); // teal line
+    s += px(7,2,'#7a8c5e',2,1); // green dot
+    // TV/monitor on wall
+    s += px(20,1,'#1a1a2a',8,4);
+    s += px(21,2,C.screen,6,2); // chart on screen
+    s += px(22,3,'#7a8c5e',2,1); // graph bar
+    s += px(25,2,'#c0392b',1,1); // graph point
+    // floor
+    for(let x=0;x<32;x++) s += px(x,6,C.floor,1,10);
+    for(let x=0;x<32;x+=3) s += px(x,6,C.floor2,1,10);
+    // round table area (standing desks / open area)
+    s += px(10,9,C.table,12,1);
+    s += px(14,10,C.tableLeg,1,3) + px(20,10,C.tableLeg,1,3);
+    // papers & laptops on table
+    s += px(12,9,C.paper,1,1) + px(16,8,'#1a1a2a',2,1) + px(16,9,C.screen,2,1);
+    s += px(20,9,C.paper,1,1);
+    // Person 1 (standing, presenting) - left
+    s += px(4,4,C.hair,2,1);
+    s += px(4,5,C.skin,2,1);
+    s += px(3,6,C.shirt1,4,3);
+    s += px(2,7,C.skin,1,1); // gesturing hand
+    s += px(4,9,'#2a3a5a',2,2);
+    // Person 2 (seated left)
+    s += px(9,6,C.hair2,2,1);
+    s += px(9,7,C.skin,2,1);
+    s += px(8,8,C.shirt2,4,1);
+    s += px(9,9,C.shirt2,2,1);
+    // Person 3 (seated center)
+    s += px(15,6,C.hair,2,1);
+    s += px(15,7,C.skin,2,1);
+    s += px(14,8,C.shirt3,4,1);
+    // Person 4 (seated right)
+    s += px(22,6,C.hair2,1,1);
+    s += px(22,7,C.skin,1,1);
+    s += px(21,8,C.shirt1,3,1);
+    // Plant in corner
+    s += px(29,4,C.plant,2,1) + px(30,3,C.plant2,1,1) + px(28,5,C.plant2,3,1) + px(29,6,C.pot,2,1);
+    // Coffee cups
+    s += px(13,8,C.coffee,1,1) + px(19,8,C.coffee,1,1);
+    return `<svg viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">${s}</svg>`;
+  })(),
+
+  crisis: (() => {
+    let s = '';
+    // dark room with red tint
+    for(let x=0;x<32;x++) s += px(x,0,'#12080a',1,16);
+    // emergency lights along ceiling
+    for(let x=2;x<30;x+=5) s += `<rect x="${x*10}" y="0" width="10" height="10" fill="${C.red}" style="animation:pulse-red 1.2s infinite"/>`;
+    // red ambient glow
+    s += `<rect x="0" y="0" width="320" height="160" fill="rgba(192,57,43,0.04)"/>`;
+    // server racks
+    for(let x=2;x<8;x++) { s += px(x,2,C.server,1,6); s += px(x,3,C.server2,1,1); }
+    for(let x=24;x<30;x++) { s += px(x,2,C.server,1,6); s += px(x,3,C.server2,1,1); }
+    // server LEDs
+    s += `<rect x="30" y="30" width="10" height="10" fill="${C.serverLed}" style="animation:blink-cursor 0.6s infinite"/>`;
+    s += `<rect x="50" y="40" width="10" height="10" fill="${C.red}" style="animation:pulse-red 0.8s infinite"/>`;
+    s += `<rect x="260" y="30" width="10" height="10" fill="${C.red}" style="animation:pulse-red 1s infinite"/>`;
+    s += `<rect x="280" y="50" width="10" height="10" fill="${C.serverLed}" style="animation:blink-cursor 0.5s infinite"/>`;
+    // monitor station center
+    s += px(12,4,'#1a1a2a',8,1); // monitor frame
+    s += px(12,5,C.red,8,3); // RED error screen
+    s += px(13,6,'#e8e2d9',2,1); // error text
+    s += px(16,6,'#e8e2d9',3,1);
+    s += px(14,7,'#ff6b5a',4,1); // error line
+    s += px(15,8,'#1a1a2a',2,1); // stand
+    // desk
+    s += px(10,9,C.desk,12,1);
+    // keyboard
+    s += px(13,9,'#1a1a2a',6,1);
+    // Person 1 - panicking at screen
+    s += px(14,2,C.hair,2,1);
+    s += px(14,3,C.skin,2,1);
+    s += px(13,4,C.shirt1,4,2);
+    s += px(12,5,C.skin,1,1); // hands up at screen
+    s += px(17,5,C.skin,1,1);
+    // Person 2 - on phone, standing right
+    s += px(22,7,C.hair2,2,1);
+    s += px(22,8,C.skin,2,1);
+    s += px(21,9,C.shirt2,4,3);
+    s += px(24,9,C.skin,1,1); // phone hand
+    s += px(25,9,'#e8e2d9',1,1); // phone
+    s += px(22,12,'#2a3a5a',2,2);
+    // floor
+    for(let x=0;x<32;x++) s += px(x,14,C.floor,1,2);
+    // scattered papers on floor
+    s += px(10,13,C.paper,1,1) + px(18,14,C.paper,1,1);
+    return `<svg viewBox="0 0 320 160" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">${s}</svg>`;
+  })(),
+
+  street: (() => {
+    let s = '';
+    // night sky
+    for(let x=0;x<32;x++) s += px(x,0,C.sky,1,5);
+    // stars
+    s += px(3,1,'#e8e2d9',1,1) + px(14,0,'#8a8279',1,1) + px(28,1,'#e8e2d9',1,1) + px(20,0,'#8a8279',1,1);
+    // building left (tall)
+    s += px(0,1,C.bldg,6,10);
+    s += px(1,2,C.bldgWin,1,1) + px(3,2,C.bldgWin,1,1); // lit windows
+    s += px(1,4,C.bldgWinOff,1,1) + px(3,4,C.bldgWin,1,1);
+    s += px(1,6,C.bldgWin,1,1) + px(3,6,C.bldgWinOff,1,1);
+    // building center-left (medium)
+    s += px(7,3,C.bldg2,6,8);
+    s += px(8,4,C.bldgWin,1,1) + px(10,4,C.bldgWinOff,1,1);
+    s += px(8,6,C.bldgWinOff,1,1) + px(10,6,C.bldgWin,1,1);
+    // gap (alley)
+    s += px(13,5,C.sky,2,6);
+    // building center-right (tall)
+    s += px(15,2,C.bldg,7,9);
+    s += px(16,3,C.bldgWin,1,1) + px(18,3,C.bldgWinOff,1,1) + px(20,3,C.bldgWin,1,1);
+    s += px(16,5,C.bldgWinOff,1,1) + px(18,5,C.bldgWin,1,1) + px(20,5,C.bldgWin,1,1);
+    s += px(16,7,C.bldgWin,1,1) + px(18,7,C.bldgWin,1,1);
+    // building right
+    s += px(23,4,C.bldg2,9,7);
+    s += px(24,5,C.bldgWin,1,1) + px(26,5,C.bldgWinOff,1,1) + px(28,5,C.bldgWin,1,1);
+    s += px(24,7,C.bldgWinOff,1,1) + px(26,7,C.bldgWin,1,1) + px(28,7,C.bldgWin,1,1);
+    // sidewalk
+    for(let x=0;x<32;x++) s += px(x,11,C.sidewalk,1,1);
+    // road
+    for(let x=0;x<32;x++) s += px(x,12,C.road,1,4);
+    // road center line
+    s += px(4,13,C.roadLine,3,1) + px(14,13,C.roadLine,3,1) + px(24,13,C.roadLine,3,1);
+    // street light
+    s += px(8,6,'#3a3a3a',1,5); // pole
+    s += px(7,5,C.amber,3,1); // light
+    s += `<rect x="70" y="60" width="30" height="50" fill="rgba(201,151,58,0.06)"/>`; // glow cone
+    // person walking
+    s += px(17,9,C.hair,2,1);
+    s += px(17,10,C.skin,2,1);
+    s += px(16,11,C.shirt1,4,1);
+    // coffee shop sign
+    s += px(8,9,C.amber,3,1);
+    s += px(7,10,'#2a2a3a',5,1); // awning
+    return '';
+  })(),
+};
+*/
+
+// ─── Game data ────────────────────────────────────────────────────────
+// choices is an object keyed by startup type (saas/consumer/crypto/hardware)
+// crypto scene 12 also has crypto_no_token for the causal token branch
+
+const SCENE_DATA = [
+  {
+    id: 0,
+    label: 'THE PITCH',
+    day: 'Month 1',
+    scene: 'boardroom',
+    speaker: 'VC Partner',
+    dialogue: {
+      saas:     '"Your deck says you\'re disrupting a $4T market. That\'s… every market. Walk me through the TAM math."',
+      consumer: '"DAUs are cute. But where\'s the monetization? TikTok took years to figure this out. Why are you different?"',
+      crypto:   '"So it\'s a protocol AND a token AND a DAO. Can you explain what a user actually does on day one?"',
+      hardware: '"Hardware margins are brutal. Why aren\'t you just building a SaaS layer on top of someone else\'s hardware?"',
+    },
+    choices: {
+      saas: [
+        { text: 'Pitch the vision hard — $4T is conservative, name-drop the Sequoia comps and paint the outcome',  r:  5, p:  0, m: 10 },
+        { text: 'Be honest: early days, strong signal from pilots, need their help to find PMF faster',             r:  0, p: 10, m:  5 },
+        { text: 'Ask what enterprise sectors they\'re excited about, then shape your pitch around their thesis',    r: -5, p:  5, m: -5 },
+      ],
+      consumer: [
+        { text: 'Lead with retention — week-4 is 34%, higher than Instagram at the same stage',  r:  5, p: 10, m: 10 },
+        { text: 'Be honest about monetization: still testing, but the engagement signal is real', r:  0, p:  5, m:  5 },
+        { text: 'Ask what consumer categories they\'re most excited about, find your framing',    r: -5, p:  5, m: -5 },
+      ],
+      crypto: [
+        { text: 'Lead with the token upside — community is 40k, TGE could be a 50x from here',       r: 10, p: -5, m: 15 },
+        { text: 'Focus on protocol fundamentals — TVL, real users, sustainable tokenomics model',     r:  0, p: 15, m:  5 },
+        { text: 'Ask about their crypto thesis — L1/L2, DeFi, infra — then pitch directly into that', r: -5, p:  5, m: -5 },
+      ],
+      hardware: [
+        { text: 'Demo the prototype live in the room — let the hardware speak for itself',              r:  5, p: 10, m: 15 },
+        { text: 'Be upfront about capital requirements — this is deep tech, it costs what it costs',    r:  0, p:  5, m:  5 },
+        { text: 'Ask about their deep tech portfolio — frame yourself as the robotics Anduril',         r: -5, p:  5, m: -5 },
+      ],
+    },
+  },
+  {
+    id: 1,
+    label: 'THE FIRST HIRE',
+    day: 'Month 2',
+    scene: 'laptop2am',
+    speaker: 'You (internal)',
+    dialogue: {
+      saas:     'You need a CTO. Two candidates: your college roommate (loyal, decent coder) or a stranger with a legendary GitHub and strong opinions.',
+      consumer: 'You need a growth lead. Option A: ex-Facebook, $280k total comp. Option B: scrappy nobody who\'s built three viral apps from their bedroom.',
+      crypto:   'You need a co-founder. Option A: Ethereum OG with name recognition and connections. Option B: ops person who will actually run the day-to-day.',
+      hardware: 'You need a head of engineering. Option A: ex-SpaceX (wants 15% equity). Option B: ex-Google (wants cash, less equity, equally strong).',
+    },
+    choices: {
+      saas: [
+        { text: 'Hire the roommate — loyalty and trust matter more than raw talent at this stage', r:  5, p: -5, m: 10 },
+        { text: 'Hire the GitHub legend — even if uncomfortable, you need the best person',        r: -5, p: 15, m:  0 },
+        { text: 'Hire neither — stay founder-led until you have real product signal',              r: 10, p:  0, m: -10 },
+      ],
+      consumer: [
+        { text: 'Hire ex-Facebook — experience building at consumer scale is hard to replicate',   r: -10, p:  5, m: 10 },
+        { text: 'Hire the scrappy one — viral instinct can\'t be taught and the comp is sustainable', r: 5, p: 15, m:  5 },
+        { text: 'Hire neither — bring on a freelance growth hacker and preserve equity',           r:  5, p:  0, m: -5 },
+      ],
+      crypto: [
+        { text: 'Hire the Ethereum OG — credibility opens doors, community trusts known names',   r:  5, p:  5, m: 10 },
+        { text: 'Hire the ops person — someone needs to run the protocol day-to-day',             r: -5, p: 10, m:  5 },
+        { text: 'Hire neither — keep it flat, bring on a community manager instead',              r: 10, p: -5, m: -5 },
+      ],
+      hardware: [
+        { text: 'Hire ex-SpaceX — the credibility alone unlocks customer and investor conversations', r: -10, p: 10, m: 15 },
+        { text: 'Hire ex-Google — strong engineering, more equity for everyone, lower monthly burn',  r:  5, p: 10, m:  5 },
+        { text: 'Contract a hardware studio — preserve equity, validate before making it permanent', r: 10, p: -5, m: -10 },
+      ],
+    },
+  },
+  {
+    id: 2,
+    label: 'EARLY TRACTION',
+    day: 'Month 4',
+    scene: 'laptop2am',
+    speaker: 'Slack (ping)',
+    dialogue: {
+      saas:     '"3 pilots live. One company loves it, one is ghosting, one wants 14 custom features. What\'s the play?"',
+      consumer: '"8,000 downloads. Day 7 retention is 12%. Everyone says they love the concept. Nobody\'s coming back."',
+      crypto:   '"Discord hit 40k members. 6k wallets connected. 80% of on-chain activity is from just 12 whale addresses."',
+      hardware: '"Prototype #4 works. Sort of. Manufacturing lead time is 18 months and minimum order is 10,000 units."',
+    },
+    choices: {
+      saas: [
+        { text: 'Fire the ghoster and the feature-requester — go deep on the company that loves you',    r:  5, p: 20, m:  5 },
+        { text: 'Talk to all three — understand WHY one loves it before you bet everything on them',     r:  0, p: 10, m:  5 },
+        { text: 'Build the 14 features — enterprise deals are won through responsiveness and customization', r: -10, p: 5, m: -5 },
+      ],
+      consumer: [
+        { text: 'Find the 2% with high retention — figure out exactly who they are, build for them',    r:  5, p: 20, m:  5 },
+        { text: 'Run 10 user interviews this week — understand why 88% don\'t come back on day 7',      r:  0, p: 10, m:  5 },
+        { text: 'Ship a push notification re-engagement flow — easier to bring back than acquire new',  r: -5, p:  5, m: -5 },
+      ],
+      crypto: [
+        { text: 'DM the 12 whales directly — understand their use case, build for them first',          r:  5, p: 20, m:  5 },
+        { text: 'Focus on broadening the wallet base — whale concentration is a red flag for TGE',      r:  0, p: 10, m:  5 },
+        { text: 'Drop a protocol update and tweet about it — grow the community before worrying about depth', r: -10, p: 5, m: 10 },
+      ],
+      hardware: [
+        { text: 'Sign the 10k unit order now — 18 months starts when you sign, not when you\'re ready',     r: -15, p: 20, m:  5 },
+        { text: 'Negotiate MOQ down to 2,000 — smaller CM, higher unit cost, but less capital exposure',    r: -5,  p: 10, m:  5 },
+        { text: 'Keep iterating on the prototype — ship defective units at scale and you\'ll drown in returns', r: 10, p:  5, m:  0 },
+      ],
+    },
+  },
+  {
+    id: 3,
+    label: 'THE PIVOT MOMENT',
+    day: 'Month 6',
+    scene: 'teammeeting',
+    speaker: 'Co-founder',
+    dialogue: {
+      saas:     '"Users aren\'t using the main feature. They all keep clicking the export button. Maybe the product IS the export?"',
+      consumer: '"Nobody cares about the social layer. The AI assistant part is what they\'re actually paying for."',
+      crypto:   '"Nobody wants the underlying tool. They just want the token. Should we strip the product and just be a pure token play?"',
+      hardware: '"The hardware unit cost is too high for the mass market. What if we licensed the IP to OEMs and sold software+data instead?"',
+    },
+    choices: {
+      saas: [
+        { text: 'Pivot fully — kill the original product, rebuild as a data export/API layer',     r: -15, p: 25, m: -10 },
+        { text: 'Partial pivot — keep the core, make export a first-class feature with a pricing tier', r: -5, p: 15, m:  5 },
+        { text: 'Stay the course — the export thing is a power-user quirk, not the real signal',   r:  5,  p: -5, m: 10 },
+      ],
+      consumer: [
+        { text: 'Kill the social layer entirely — rebuild as a pure AI assistant product',         r: -15, p: 25, m: -10 },
+        { text: 'Keep social but build AI deeply into it — differentiated rather than either/or',  r: -5,  p: 15, m:  5 },
+        { text: 'Stay social-first — AI assistant is a trend, the social layer is the real moat',  r:  5,  p: -5, m: 10 },
+      ],
+      crypto: [
+        { text: 'Go full token — strip the product complexity, let speculation and community drive it', r: 20, p: -15, m: 10 },
+        { text: 'Keep both — use the token as fuel, build the protocol as the long-term moat',         r: -5, p: 15, m:  5 },
+        { text: 'Double down on the underlying tool — the token is mechanics, product is the real moat', r: -10, p: 25, m: -5 },
+      ],
+      hardware: [
+        { text: 'Go asset-light — license the IP to two OEMs, become a software + royalty business',    r: 10,  p: 15, m: -10 },
+        { text: 'Keep hardware, build software layer on top — sell the unit AND a data subscription',   r: -5,  p: 20, m:  5 },
+        { text: 'Stay hardware-first — margin improves at scale, don\'t abandon the physical moat now', r:  5,  p: -5, m: 10 },
+      ],
+    },
+  },
+  {
+    id: 4,
+    label: 'FUNDRAISING CRUNCH',
+    day: 'Month 8',
+    scene: 'boardroom',
+    speaker: 'Lead Investor',
+    dialogue: {
+      saas:     '"We\'d love to lead your Series A. $8M at $40M pre. But we need 30 days of exclusivity before signing."',
+      consumer: '"We\'re seeing a lot of deal flow. Can\'t wait — if you can\'t close in 2 weeks, we\'re passing."',
+      crypto:   '"Market is down 60%. We can do a SAFE at $20M cap. Your last round was at $80M. Take it or leave it."',
+      hardware: '"We want to invest but we\'re worried about capital intensity. Can you hit your milestones on $3M less than you asked for?"',
+    },
+    choices: {
+      saas: [
+        { text: 'Accept the exclusivity — get the term sheet signed, optimize terms in the next round',         r: 25, p:  0, m: -5 },
+        { text: 'Push back — accept $6M at the same pre but remove the exclusivity clause',                    r: 15, p:  0, m: -5 },
+        { text: 'Walk away — wait 3 months until metrics are cleaner and terms are better',                    r: -20, p: 10, m:  5 },
+      ],
+      consumer: [
+        { text: 'Close in 2 weeks — drop everything, sprint the diligence process, get it done',              r: 25, p:  0, m: -10 },
+        { text: 'Ask for 4 weeks — use the extra time to get another term sheet and create real competition',  r: 10, p:  0, m: -5 },
+        { text: 'Pass — their artificial urgency is a red flag about the partnership ahead',                   r: -15, p: 10, m:  5 },
+      ],
+      crypto: [
+        { text: 'Take the SAFE — $20M cap is painful but cash is cash and the market is brutal right now',    r: 25, p:  0, m: -10 },
+        { text: 'Counter at $35M cap — meet in the middle, show conviction without looking desperate',         r: 10, p:  0, m: -5 },
+        { text: 'Reject — do a community round instead, sell tokens to your Discord at better terms',          r: -10, p: 10, m: 10 },
+      ],
+      hardware: [
+        { text: 'Accept the reduced terms — restructure the milestone plan to fit, make it work',             r: 20, p:  0, m: -10 },
+        { text: 'Negotiate on structure — hold valuation but offer a convertible note as middle ground',       r: 10, p:  0, m: -5 },
+        { text: 'Walk and find a strategic investor who actually understands hardware capital cycles',          r: -15, p: 5, m:  5 },
+      ],
+    },
+  },
+  {
+    id: 5,
+    label: 'THE TEAM BLOWUP',
+    day: 'Month 10',
+    scene: 'teammeeting',
+    speaker: 'CTO',
+    dialogue: {
+      saas:     '"The sales team keeps over-promising features we haven\'t built. If this doesn\'t stop, I\'m out."',
+      consumer: '"Design shipped an update without engineering. Three critical bugs are in production. Twitter is noticing."',
+      crypto:   '"Two devs got poached by an a16z portfolio company. They leave Friday. The smart contracts aren\'t done."',
+      hardware: '"Shenzhen just raised prices 40%. And our lead engineer just got an Apple offer."',
+    },
+    choices: {
+      saas: [
+        { text: 'Hold a hard reset — define sales/product boundaries this week, even if uncomfortable',   r: -5, p:  5, m: 15 },
+        { text: 'Bump the CTO\'s salary and clarify decision rights — retain them without the reset',      r: -10, p: 0, m: 10 },
+        { text: 'Hire a VP Sales who owns the over-promising problem — take yourself out of the conflict', r: -15, p: 5, m:  5 },
+      ],
+      consumer: [
+        { text: 'Hotfix the bugs now, then run a postmortem on process — ship fast but not carelessly',   r: -5, p:  5, m: -10 },
+        { text: 'Fix bugs silently first — acknowledge the problem publicly only once it\'s resolved',    r:  5, p:  0, m: -5 },
+        { text: 'Turn the Twitter moment into a transparency story — it builds community trust long-term', r: -5, p: 10, m:  5 },
+      ],
+      crypto: [
+        { text: 'Delay the protocol audit, bring in contractors — don\'t ship half-done smart contracts',    r: -10, p:  5, m: -5 },
+        { text: 'Counter-offer both devs immediately — equity bump plus a token allocation to stay',          r: -15, p:  5, m: 10 },
+        { text: 'Ship what\'s done, hire fast to replace them — community is waiting, don\'t let them hold you hostage', r:  5, p: -5, m: -10 },
+      ],
+      hardware: [
+        { text: 'Lock in current Shenzhen price for 12 months before it gets worse — sign now',               r: -10, p:  5, m:  5 },
+        { text: 'Start vetting a second manufacturer now — dual-source as leverage against both problems',    r: -15, p: 10, m:  5 },
+        { text: 'Match Apple\'s offer for the lead engineer — losing them right now is catastrophic',         r: -15, p:  5, m: 15 },
+      ],
+    },
+  },
+  {
+    id: 6,
+    label: 'PRESS MOMENT',
+    day: 'Month 11',
+    scene: 'street',
+    speaker: 'Journalist',
+    dialogue: {
+      saas:     '"We\'re writing about AI enterprise tools. You\'re on the shortlist. Need a comment on the $1B ARR you told investors you\'d hit."',
+      consumer: '"Your app went viral on TikTok — a teen made a video, 2M views. We want to write about it. Talk to us?"',
+      crypto:   '"Allegations your token pre-sale gave insiders early access at a 70% discount. Want to comment before we publish?"',
+      hardware: '"Your competitor just raised $200M. We\'re writing about the space. Do you have news that shows you\'re still relevant?"',
+    },
+    choices: {
+      saas: [
+        { text: 'Do the interview — be radically transparent, the real story builds credibility with buyers',  r:  0, p: 10, m: 15 },
+        { text: 'Craft a PR response — control the $1B narrative, acknowledge it\'s a 5-year target',         r:  0, p:  5, m:  5 },
+        { text: 'Decline — you\'re heads-down in enterprise sales cycle, press is a distraction right now',   r:  5, p: -5, m: -5 },
+      ],
+      consumer: [
+        { text: 'Lean in — do the interview, share the raw retention data, virality + honesty is powerful',   r:  0, p: 15, m: 15 },
+        { text: 'Do the interview but stay on message — the viral moment only, no retention data',            r:  0, p:  5, m:  5 },
+        { text: 'Skip it — viral coverage without PMF leads to a spike then a harder crash',                  r:  5, p: -5, m: -5 },
+      ],
+      crypto: [
+        { text: 'Get ahead of it — publish a full token allocation transparency report before the article',   r:  0, p: 10, m: -5 },
+        { text: 'Legal statement only — deny specifically, acknowledge generally, don\'t get detailed',       r:  0, p: -5, m: -5 },
+        { text: 'Say nothing and let the community defend you — your Discord will go to war for you',         r:  5, p: -15, m: 10 },
+      ],
+      hardware: [
+        { text: 'Announce a customer win — even an LOI creates a counter-narrative',                          r:  0, p: 10, m: 15 },
+        { text: 'Host a demo event — invite press to see the hardware work, nothing beats seeing it live',    r: -5, p: 10, m: 10 },
+        { text: 'Say nothing — their $200M raise validates your market, not theirs',                          r:  5, p: -5, m: -5 },
+      ],
+    },
+  },
+  {
+    id: 7,
+    label: 'COMPETITION',
+    day: 'Month 13',
+    scene: 'boardroom',
+    speaker: 'Board Member',
+    dialogue: {
+      saas:     '"Salesforce just announced they\'re building exactly what you\'re building. Natively. For free. Thoughts?"',
+      consumer: '"Meta shipped a clone of your core feature last week. It already has more users than your whole company."',
+      crypto:   '"A Layer 1 just announced native support for everything your protocol does. Why would anyone use you now?"',
+      hardware: '"Boston Dynamics just open-sourced their robotics stack. Your competitive moat just got a lot harder to explain."',
+    },
+    choices: {
+      saas: [
+        { text: 'Go hyper-niche — pick the one vertical Salesforce will never bother to prioritize and own it', r: -5, p: 20, m:  5 },
+        { text: 'Race them on velocity — out-execute on UX and features, win on product iteration speed',       r: -15, p: 10, m: -10 },
+        { text: 'Use them as validation — reframe, get in front of their prospect pipeline as the specialist', r:  5, p:  5, m: 10 },
+      ],
+      consumer: [
+        { text: 'Go where Meta won\'t — niche communities and use cases they\'re too broad to care about',     r: -5, p: 20, m:  5 },
+        { text: 'Out-ship them on personalization — your small team moves 10x faster than their org',          r: -15, p: 10, m: -10 },
+        { text: 'Ride their coattails — their launch creates category awareness, you capture the converts',    r:  5, p:  5, m: 10 },
+      ],
+      crypto: [
+        { text: 'Double down on your community — protocol loyalty doesn\'t switch overnight, go deeper',       r: -5, p: 20, m:  5 },
+        { text: 'Build native interop with their chain — become the best app built on top of their stack',     r: -10, p: 15, m:  5 },
+        { text: 'Use them as validation — their announcement proves the market, you\'re the pure-play',        r:  5, p:  5, m: 10 },
+      ],
+      hardware: [
+        { text: 'Your moat is manufacturing and distribution — open source doesn\'t ship to enterprise',       r: -5, p: 20, m: 10 },
+        { text: 'Contribute back to the open-source — become the company that ships the stack best',           r: -10, p: 15, m:  5 },
+        { text: 'Use it as a buying signal — enterprises pay for supported hardware, not DIY kits',            r:  5, p:  5, m: 10 },
+      ],
+    },
+  },
+  {
+    id: 8,
+    label: 'THE SCALING DECISION',
+    day: 'Month 15',
+    scene: 'laptop2am',
+    speaker: 'You (internal)',
+    dialogue: {
+      saas:     'Revenue is $80k MRR. Growing 15% MoM. You have enough to hire 10 people or stay lean for 18 more months.',
+      consumer: '500k MAUs. Retention okay. Raise a Series A now at decent terms or wait until metrics are undeniable.',
+      crypto:   'TVL is $40M. Community is loud. You can launch the token now and 10x your runway, or stay heads down on the protocol.',
+      hardware: 'First 200 units shipped. 40 defective. Scale manufacturing now or spend 6 months fixing quality first.',
+    },
+    choices: {
+      saas: [
+        { text: 'Scale now — hire fast, burn fast, grow fast, figure out efficiency later', r: -20, p: 15, m: 10 },
+        { text: 'Grow deliberately — hire 3 people in the highest-leverage roles only',     r: -5,  p: 10, m:  5 },
+        { text: 'Stay lean — best companies are built by small focused teams for longer',   r: 10,  p:  5, m: -5 },
+      ],
+      consumer: [
+        { text: 'Raise the Series A now — imperfect metrics are fine if the story is compelling',          r: 20,  p:  5, m: 10 },
+        { text: 'Wait 3 more months — get D30 retention to 25%, then the raise is a different conversation', r: -5, p: 15, m: -5 },
+        { text: 'Skip VC — run lean on revenue, bridge with angels, keep more of the outcome',             r:  5,  p: 10, m: -10 },
+      ],
+      crypto: [
+        { text: 'Launch the token now — community momentum is real, 10x runway changes everything',                         r: 25, p: -10, m: 15 },
+        { text: 'Soft-launch to community only — whitelist your Discord, test tokenomics before the public TGE',            r:  5, p:  5, m:  5 },
+        { text: 'Delay the token entirely — build protocol depth first, launch when TVL is $200M and undeniable',           r: -10, p: 25, m: -5 },
+      ],
+      hardware: [
+        { text: 'Scale manufacturing now — defect rate improves with volume, you need units to learn',     r: -20, p: 10, m: 10 },
+        { text: 'Fix quality first — 20% defect rate at full scale means a recall and you\'re done',       r: 10,  p: 15, m:  0 },
+        { text: 'Find a second manufacturer — use competition to solve both quality and pricing together', r: -5,  p: 10, m:  5 },
+      ],
+    },
+  },
+  {
+    id: 9,
+    label: 'THE CRISIS',
+    day: 'Month 17',
+    scene: 'crisis',
+    speaker: 'Slack (urgent)',
+    dialogue: {
+      saas:     '"PRODUCTION DOWN. Enterprise client is on a live demo with 500 people right now. They\'re calling the CEO line. This is bad."',
+      consumer: '"Data breach confirmed. 200k user emails exposed. Legal is asking what to do. Twitter is starting to notice."',
+      crypto:   '"Smart contract exploit. $2.3M drained in 45 minutes. Community is melting down. Someone is doxxing the team."',
+      hardware: '"Unit caught fire during a VC demo. No injuries. Fire department report is already public record."',
+    },
+    choices: {
+      saas: [
+        { text: 'War room — drop everything, fix it live, call the client CEO directly every 30 minutes',  r: -5, p:  5, m: -15 },
+        { text: 'Fix first, communicate after — get the facts right before you say anything to the client', r: -5, p:  0, m: -10 },
+        { text: 'Call the client CEO personally right now — own it, buy goodwill while engineering fixes',  r:  0, p: 10, m: -10 },
+      ],
+      consumer: [
+        { text: 'Disclose immediately — public breach notice, notify affected users directly, build trust', r: -5, p: 10, m: -15 },
+        { text: 'Patch and contain — notify users once you understand the full scope of the breach',        r: -5, p:  0, m: -10 },
+        { text: 'Lawyer up immediately — say nothing until advised, protect the company first',             r: -5, p: -10, m: -5 },
+      ],
+      crypto: [
+        { text: 'Pause the protocol now — take the loss, freeze contracts, stop the bleeding',              r: -5, p:  5, m: -15 },
+        { text: 'Offer a white-hat bounty — return 80%, keep 20%, no questions asked, move on',            r: -5, p:  0, m: -10 },
+        { text: 'Fork the contract state — controversial but it protects community funds, own the call',   r: -10, p: -5, m: 10 },
+      ],
+      hardware: [
+        { text: 'Proactive full recall — email every customer, replace units, publish root cause publicly', r: -10, p: 10, m: -10 },
+        { text: 'Targeted recall — identify the affected batch, replace quietly before media picks it up',  r: -5, p:  5, m: -10 },
+        { text: 'Statement first — acknowledge it publicly, show it\'s isolated, frame it as a data point', r:  0, p: -5, m: -5 },
+      ],
+    },
+  },
+  {
+    id: 10,
+    label: 'BOARD PRESSURE',
+    day: 'Month 19',
+    scene: 'boardroom',
+    speaker: 'Lead Investor',
+    dialogue: {
+      saas:     '"The Series B market is closed right now. We need to talk about your burn rate. You have 9 months of runway."',
+      consumer: '"Growth has plateaued. The board wants you to show a path to monetization or we need to discuss strategic options."',
+      crypto:   '"Regulatory pressure is mounting. Two board members are pushing you to restructure the entity out of the US."',
+      hardware: '"Your Series B needs a manufacturing anchor partner. We think you should license the IP and go asset-light."',
+    },
+    choices: {
+      saas: [
+        { text: 'Cut 30% of headcount now — get to default alive, extend runway to 18 months',          r: 20, p: -5, m: -20 },
+        { text: 'Push back with a plan — show the board a concrete 6-month path to Series B readiness', r:  0, p:  5, m:  5 },
+        { text: 'Bridge from angels — raise $2M to buy time without cutting the team',                  r: 10, p:  0, m: -5 },
+      ],
+      consumer: [
+        { text: 'Launch monetization now — even low subscription conversion proves the model exists',   r: 10, p: 10, m: -5 },
+        { text: 'Push back — premature monetization kills growth, show them a 90-day retention plan',  r:  0, p:  5, m:  5 },
+        { text: 'Explore strategic M&A — if the board is right, a strategic home is better than zero', r:  5, p: -5, m: -10 },
+      ],
+      crypto: [
+        { text: 'Restructure to a foundation — Cayman/Singapore entity protects the protocol long-term', r: 10, p:  5, m: -10 },
+        { text: 'Fight it — engage DC crypto lobbyists, become the company that shapes the regulation',  r: -10, p: 10, m:  5 },
+        { text: 'Wait and see — operate in the existing structure until regulation actually clarifies',  r:  5, p: -5, m: 10 },
+      ],
+      hardware: [
+        { text: 'Agree to asset-light — license IP to two OEMs, become software + royalty model',       r: 10, p: 10, m: -10 },
+        { text: 'Find a manufacturing strategic — Foxconn, Flex — equity stake for guaranteed capacity', r: -5, p: 10, m:  5 },
+        { text: 'Resist — hardware moat is the entire thesis, asset-light kills your differentiation',  r: -10, p: -5, m: 10 },
+      ],
+    },
+  },
+  {
+    id: 11,
+    label: 'THE COFOUNDER BOMB',
+    day: 'Month 21',
+    scene: 'teammeeting',
+    speaker: 'Co-founder',
+    dialogue: {
+      saas:     '"I don\'t believe in the enterprise direction anymore. I think we\'re building the wrong thing and I\'m done pretending I don\'t."',
+      consumer: '"I\'m burning out. I\'ve been doing the job of three people for eight months. Fix this or I\'m out by end of month."',
+      crypto:   '"I got an offer from a Tier 1 fund. Partner track. I\'m sorry — you should hear this from me first."',
+      hardware: '"My equity is done vesting. We have fundamentally different visions for this company. I want to buy out or be bought out."',
+    },
+    choices: {
+      saas: [
+        { text: 'Have the real conversation — is it the direction or something deeper? Separate the two', r: -5, p:  5, m: 10 },
+        { text: 'Let them go cleanly now — negotiate a buyout, a slow deterioration is worse',            r: -10, p: 0, m:  5 },
+        { text: 'Ask for 3 months to transition — protect the company even if the relationship is done',  r:  0, p:  5, m: -5 },
+      ],
+      consumer: [
+        { text: 'Restructure roles — hire the people they need, reduce their scope to what they love',     r: -10, p:  5, m: 15 },
+        { text: 'Give them a leave of absence — 6 weeks off, come back reset, don\'t lose them permanently', r: -5, p: 0, m: 10 },
+        { text: 'Let them set the terms — buyback, reduced role, whatever keeps them in the cap table',    r: -10, p: 0, m:  5 },
+      ],
+      crypto: [
+        { text: 'Counter with a token allocation package — vest over 2 years, better than any fund carry', r: -10, p:  5, m: 10 },
+        { text: 'Let them go gracefully — their fund connections might be more valuable than their day-to-day', r: -5, p: 5, m:  5 },
+        { text: 'Negotiate a part-time advisory role — keep the relationship, remove the dependency',       r:  0, p:  5, m: -5 },
+      ],
+      hardware: [
+        { text: 'Agree to a fair buyout on paper — clarity is better than ambiguity on a cap table',       r: -15, p: 0, m:  5 },
+        { text: 'Bring in a mediator — figure out if it\'s fixable before you burn the bridge',            r: -5, p:  5, m: -5 },
+        { text: 'Ask them to stay 6 months — manufacturing needs continuity, offer a retention bonus',      r: -5, p:  5, m: -10 },
+      ],
+    },
+  },
+  {
+    id: 12,
+    label: 'THE BIG BET',
+    day: 'Month 23',
+    scene: 'laptop2am',
+    speaker: 'You (internal)',
+    dialogue: {
+      saas:     'A Fortune 500 wants a $500k contract. Doubles MRR. Requires 3 months of custom work exclusively for them.',
+      consumer: '$200k to spend on paid acquisition. One mega-influencer or 50 micro-influencers. Both could work. Neither is guaranteed.',
+      crypto:   'A top-5 CEX wants to list your token. Listing fee: $400k. You have $600k left in the bank.',
+      hardware: 'A major retailer wants your product in 2,000 stores. Minimum order: $1.2M in inventory upfront.',
+    },
+    choices: {
+      saas: [
+        { text: 'Take the $500k contract — this is what runway is for, doubles MRR overnight',            r: -20, p: 20, m: 15 },
+        { text: 'Negotiate a $200k scoped pilot — prove the model without the 3-month exclusivity trap', r: -10, p: 10, m:  5 },
+        { text: 'Pass — one customer as 50% of revenue is existential dependency, not product-market fit', r: 10, p:  5, m: -5 },
+      ],
+      consumer: [
+        { text: 'Go mega-influencer — one massive moment can permanently shift the growth curve',          r: -20, p: 20, m: 15 },
+        { text: 'Go micro-influencers — more authentic, better conversion rate, spreads the risk',        r: -15, p: 15, m:  5 },
+        { text: 'Skip paid entirely — if the product is good enough it will grow organically from here',  r: 10,  p:  5, m: -5 },
+      ],
+      crypto: [
+        { text: 'Pay the listing fee — top-5 CEX is a step-function change in liquidity and awareness',   r: -30, p: 25, m: 15 },
+        { text: 'Negotiate a revenue-share listing — no upfront fee, exchange takes a cut of volume',     r: -10, p: 12, m:  5 },
+        { text: 'Stay DeFi native — DEX volume is real and you keep the $400k in the bank',               r: 10,  p:  5, m: -5 },
+      ],
+      // Causal: if token was NOT launched in scene 8, no CEX path exists
+      crypto_no_token: [
+        { text: 'Apply for ecosystem grants from L1 foundations — non-dilutive, pays well for builders',  r: 10,  p: 15, m:  5 },
+        { text: 'Launch the token now — market window is open, protocol is strong enough to justify it',  r: -10, p: 20, m: 10 },
+        { text: 'Turn on protocol fees — prove sustainable revenue before you even think about a token',  r:  5,  p: 20, m: -5 },
+      ],
+      hardware: [
+        { text: 'Commit to the full retailer order — 2,000 stores is the distribution breakthrough you\'ve been building for', r: -30, p: 20, m: 15 },
+        { text: 'Negotiate a 500-store pilot — prove sell-through before committing to the full inventory', r: -10, p: 12, m:  5 },
+        { text: 'Pass on retail — margins are brutal, stay DTC where you own the customer relationship',    r: 10,  p:  5, m: -5 },
+      ],
+    },
+  },
+  {
+    id: 13,
+    label: 'THE ACQUI-HIRE OFFER',
+    day: 'Month 25',
+    scene: 'boardroom',
+    speaker: 'Corp Dev',
+    dialogue: {
+      saas:     '"We\'d like to acquire your team and technology. $8M total: 40% cash, 60% stock with a 3-year vest. Your product gets deprecated."',
+      consumer: '"We love what you\'ve built. $4M for the team. Nothing for the product — we\'ll rebuild it our way."',
+      crypto:   '"$6M for the core team, distributed among shareholders. The protocol gets wound down. Good jobs for everyone."',
+      hardware: '"$12M for the IP and the team. Product line ends. You\'d be heading our internal robotics research unit."',
+    },
+    choices: {
+      saas: [
+        { text: 'Accept — give the team a soft landing, the product can live inside a bigger platform',   r: 100, p:  0, m: -20 },
+        { text: 'Counter at 2x — they clearly want you, test how much they actually want you',            r:  -5, p:  0, m:  5 },
+        { text: 'Decline — you didn\'t start this to be someone\'s R&D team. Keep going.',                r: -10, p: 15, m: 20 },
+      ],
+      consumer: [
+        { text: 'Accept — $4M is real money, the team gets good jobs, your users get a bigger platform', r: 100, p:  0, m: -20 },
+        { text: 'Counter — ask for $8M or product continuation as a condition of closing',               r:  -5, p:  0, m:  5 },
+        { text: 'Decline — the product matters too much to sell for a team retention package',            r: -10, p: 15, m: 20 },
+      ],
+      crypto: [
+        { text: 'Accept — $6M distributed is real, and protocols rarely survive losing the core team',   r: 100, p:  0, m: -20 },
+        { text: 'Counter — ask for protocol open-sourcing as a condition of the wind-down terms',         r:  -5, p:  0, m:  5 },
+        { text: 'Decline — the protocol is bigger than any one company. Keep building it.',               r: -10, p: 15, m: 20 },
+      ],
+      hardware: [
+        { text: 'Accept — $12M for the IP is real, and the research unit keeps the team together',        r: 100, p:  0, m: -20 },
+        { text: 'Counter — ask for product line continuation or licensing rights as part of the terms',   r:  -5, p:  0, m:  5 },
+        { text: 'Decline — you didn\'t spend 3 years on hardware to become someone\'s skunkworks.',       r: -10, p: 15, m: 20 },
+      ],
+    },
+  },
+  {
+    id: 14,
+    label: 'FINAL PUSH',
+    day: 'Month 27',
+    scene: 'laptop2am',
+    speaker: 'You (internal)',
+    dialogue: {
+      saas:     'Runway: 4 months. Two inbound LOIs and one VC who keeps scheduling calls. This is the window.',
+      consumer: 'Product is solid. Organic growth is 8% MoM. One more round to hit escape velocity.',
+      crypto:   'Market is recovering. Protocol has real users. The fundraise window is open again. Briefly.',
+      hardware: 'Units finally shipping on time. Gross margin is 28%. Not great, but real. Almost there.',
+    },
+    choices: {
+      saas: [
+        { text: 'Sprint to close both LOIs — 90-day all-in, convert them to signed contracts before runway ends', r: -10, p: 15, m: -15 },
+        { text: 'Raise a small bridge from angels — buy 6 months, convert one LOI at a time deliberately',        r: 15,  p:  5, m: -5 },
+        { text: 'Optimize for revenue — close one LOI on payment terms, get to default alive this quarter',        r:  5,  p: 20, m:  5 },
+      ],
+      consumer: [
+        { text: 'Push hard for the Series A — work every investor angle for the next 60 days',               r: -10, p: 10, m: -15 },
+        { text: 'Raise a bridge from existing angels — extend runway, let metrics compound 3 more months',   r: 15,  p: 10, m: -5 },
+        { text: 'Turn on subscriptions now — if 8% MoM is real, revenue can get you to default alive',      r:  5,  p: 20, m:  5 },
+      ],
+      crypto: [
+        { text: 'Ride the recovery — raise a $5M institutional round at current market conditions now',     r: 20,  p:  5, m: 10 },
+        { text: 'Launch the token (or double down if launched) — market window closes fast',                 r: 10,  p: 15, m:  5 },
+        { text: 'Turn on protocol fees — sustainable revenue is worth more than another fundraise right now', r:  5, p: 25, m:  0 },
+      ],
+      hardware: [
+        { text: 'Close the distribution deal now — scale or die, you need volume to move margins',          r: -10, p: 15, m: -15 },
+        { text: 'Raise a bridge from hardware-focused family offices — buy 9 more months',                  r: 15,  p:  5, m: -5 },
+        { text: 'Focus on margin — get to 40%+ gross margin and the fundraise becomes a completely different conversation', r: 5, p: 15, m: 5 },
+      ],
+    },
+  },
+];
+
+// ─── Endings ──────────────────────────────────────────────────────────
+const ENDINGS = {
+  exit: {
+    icon: '🏆',
+    title: 'The Exit',
+    tagline: 'CONGRATULATIONS — YOU\'RE THE 1%',
+    color: '#7a8c5e',
+    body: `Against all odds, you did it. A strategic acquirer paid a real number. Or you IPO'd and watched your equity become something your accountant had to explain. The champagne was fine. The post-exit depression hit around month three. You now give talks at Stanford about "the journey" and subtly edit your Wikipedia page. Somewhere, a 22-year-old just read your story and started building. You're the reason they'll lose five years of their life. Congrats.`,
+  },
+  acquihire: {
+    icon: '🤝',
+    title: 'Acqui-hired',
+    tagline: 'THE PRODUCT DIED SO THE TEAM COULD LIVE',
+    color: '#4a7c7e',
+    body: `A big company saw talent it couldn't build and wrote a check to make that problem go away. Your product is being deprecated. Your users got an email that started with "exciting news." Your team has jobs with dental. You've given your acqui-hire talking point a positive spin in 47 subsequent conversations. Somewhere in a Google Drive, your original pitch deck still has the word "revolutionary" in slide 3.`,
+  },
+  zombie: {
+    icon: '🧟',
+    title: 'Zombie Mode',
+    tagline: 'ALIVE IN THE TECHNICAL SENSE',
+    color: '#8a8279',
+    body: `The company didn't die. It also didn't really live. Revenue covers costs. Users churn in, users churn out. The team is down to four people who are mostly waiting to see what happens. You've had the "do we shut down or keep going" conversation eleven times and always landed on "one more month." Your LinkedIn still says "CEO." Nobody is lying, exactly.`,
+  },
+  dead: {
+    icon: '💸',
+    title: 'Default Dead',
+    tagline: 'RUNWAY HIT ZERO',
+    color: '#c0392b',
+    body: `The money ran out. You knew it was coming — the spreadsheet told you three months ago. You paid the team through the last payroll and sent an email to investors that was technically honest. The goodbye Slack message got seventeen heart emojis and one fire emoji from the backend engineer you should have listened to more. You're okay. This is how most of them end. You learned $3M worth of things, and some of them are actually useful.`,
+  },
+  pivot: {
+    icon: '🔄',
+    title: 'The Eternal Pivot',
+    tagline: 'YOU CHANGED IDEAS SEVEN TIMES. YOU ARE NOW IN B2B COMPLIANCE.',
+    color: '#c9973a',
+    body: `Started as a consumer social app. Pivoted to B2B. Pivoted to API-first. Pivoted to vertical SaaS for logistics. Now you sell compliance software to mid-market regional banks and it's honestly fine. Revenue is real. The passion is not. You haven't said the word "disruption" in four years and you are better for it. You're planning to write a "what I'd do differently" post. Don't.`,
+  },
+  scandal: {
+    icon: '📰',
+    title: 'Famous for the Wrong Reasons',
+    tagline: 'THEY WROTE ABOUT YOU. NOT THE WAY YOU WANTED.',
+    color: '#c0392b',
+    body: `A journalist. A whistleblower. A Twitter thread. A Senate hearing. Whatever the mechanism, the world learned something about how you ran things that you were not ready to explain. There is a Wikipedia section about it. You've given two interviews since. You say you've grown. Maybe you have. The company is gone. The cautionary tale is permanent. Future founders will read your story and think "I would never." You thought that too.`,
+  },
+};
+
+// ─── Game state ───────────────────────────────────────────────────────
+let state = {
+  startupType: null,
+  runway: 60,
+  pmf: 20,
+  morale: 75,
+  sceneIndex: 0,
+  decisionsCount: 0,
+  acquihireOffered: false,
+  ended: false,
+  flags: {},
+};
+
+function clamp(v) { return Math.max(0, Math.min(100, v)); }
+
+// ─── Startup selector ─────────────────────────────────────────────────
+function selectStartup(el) {
+  document.querySelectorAll('.startup-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  state.startupType = el.dataset.type;
+  const btn = document.getElementById('btn-start');
+  btn.disabled = false;
+  btn.textContent = '▸  start simulation — ' + el.querySelector('.startup-name').textContent;
+}
+
+// ─── Screen transitions ───────────────────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ─── Start game ───────────────────────────────────────────────────────
+const STARTING_STATS = {
+  saas:     { runway: 60, pmf: 25, morale: 75 },
+  consumer: { runway: 55, pmf: 15, morale: 80 },
+  crypto:   { runway: 75, pmf: 10, morale: 85 },
+  hardware: { runway: 65, pmf: 30, morale: 65 },
+};
+
+function startGame() {
+  const s = STARTING_STATS[state.startupType] || { runway: 65, pmf: 20, morale: 75 };
+  state = {
+    startupType: state.startupType,
+    runway: s.runway,
+    pmf: s.pmf,
+    morale: s.morale,
+    sceneIndex: 0,
+    decisionsCount: 0,
+    acquihireOffered: false,
+    ended: false,
+    flags: {},
+  };
+  showScreen('screen-game');
+  renderScene();
+  updateBars();
+}
+
+// ─── Choice resolver (handles per-type + causal flags) ───────────────
+function getChoices(scene, type, flags) {
+  const c = scene.choices;
+  if (Array.isArray(c)) return c;  // fallback for plain arrays
+  if (type === 'crypto' && scene.id === 12) {
+    // Causal: if token was NOT launched in scene 8, show alternate options
+    if (flags.tokenLaunched === false) return c.crypto_no_token || c.crypto || [];
+    return c.crypto || [];
+  }
+  return c[type] || c.saas || [];
+}
+
+// ─── Render scene ─────────────────────────────────────────────────────
+function renderScene() {
+  const scene = SCENE_DATA[state.sceneIndex];
+  if (!scene) { resolveEnding(); return; }
+
+  const type = state.startupType;
+
+  document.getElementById('scene-label').textContent = scene.label;
+  document.getElementById('scene-day').textContent = scene.day;
+  document.getElementById('dialogue-speaker').textContent = scene.speaker;
+  document.getElementById('hud-title').textContent = scene.label;
+  document.getElementById('hud-sub').textContent = `${type === 'saas' ? 'B2B SaaS' : type === 'consumer' ? 'Consumer App' : type === 'crypto' ? 'Crypto / Web3' : 'Hardware / Robotics'}`;
+  document.getElementById('hud-progress').textContent = `scene ${state.sceneIndex + 1} / ${SCENE_DATA.length}`;
+
+  // pixel art
+  const container = document.getElementById('pixel-art-container');
+  container.innerHTML = SCENES[scene.scene] || '';
+
+  // typewriter dialogue
+  const dialogueEl = document.getElementById('dialogue-text');
+  const text = scene.dialogue[type] || scene.dialogue.saas;
+  typewrite(dialogueEl, text, 18);
+
+  // choices
+  const list = document.getElementById('choices-list');
+  list.innerHTML = '';
+  getChoices(scene, state.startupType, state.flags).forEach((c, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'pixel-choice';
+    btn.innerHTML = `<span class="choice-key">${String.fromCharCode(65 + i)}</span>${c.text}`;
+    btn.onclick = () => makeChoice(i);
+    list.appendChild(btn);
+  });
+
+  // fade in
+  const sceneEl = document.getElementById('game-scene');
+  sceneEl.classList.remove('fade-in');
+  void sceneEl.offsetWidth;
+  sceneEl.classList.add('fade-in');
+  const choicesEl = document.querySelector('.game-choices');
+  choicesEl.classList.remove('fade-in');
+  void choicesEl.offsetWidth;
+  choicesEl.classList.add('fade-in');
+}
+
+// ─── Typewriter ───────────────────────────────────────────────────────
+function typewrite(el, text, speed) {
+  el.textContent = '';
+  let i = 0;
+  const interval = setInterval(() => {
+    if (i < text.length) { el.textContent += text[i++]; }
+    else clearInterval(interval);
+  }, speed);
+}
+
+// ─── Make a choice ────────────────────────────────────────────────────
+function makeChoice(idx) {
+  if (state.ended) return;
+  const scene = SCENE_DATA[state.sceneIndex];
+  const choice = getChoices(scene, state.startupType, state.flags)[idx];
+
+  // Track causal flags
+  if (state.startupType === 'crypto' && scene.id === 8) {
+    // C (idx=2) = delay token; A or B = launched (fully or soft)
+    state.flags.tokenLaunched = (idx !== 2);
+  }
+
+  // disable all choices
+  document.querySelectorAll('.pixel-choice').forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === idx) btn.classList.add('chosen');
+  });
+
+  // apply deltas
+  const oldRunway = state.runway;
+  const oldPmf    = state.pmf;
+  const oldMorale = state.morale;
+
+  state.runway = clamp(state.runway + choice.r);
+  state.pmf    = clamp(state.pmf    + choice.p);
+  state.morale = clamp(state.morale + choice.m);
+  state.decisionsCount++;
+
+  // flash deltas
+  flashDelta('runway', choice.r);
+  flashDelta('pmf',    choice.p);
+  flashDelta('morale', choice.m);
+
+  updateBars();
+
+  // check early endings
+  if (state.runway <= 5) {
+    setTimeout(() => showEnding('dead'), 900);
+    return;
+  }
+  if (state.morale <= 5) {
+    setTimeout(() => showEnding('scandal'), 900);
+    return;
+  }
+  // Acqui-hire trap on scene 13
+  if (scene.id === 13 && idx === 0) {
+    setTimeout(() => showEnding('acquihire'), 900);
+    return;
+  }
+
+  // next scene or ending
+  state.sceneIndex++;
+  if (state.sceneIndex >= SCENE_DATA.length) {
+    setTimeout(() => resolveEnding(), 900);
+  } else {
+    setTimeout(() => renderScene(), 600);
+  }
+}
+
+// ─── Update stat bars ─────────────────────────────────────────────────
+function updateBars() {
+  setBar('runway', state.runway, 'fill-amber');
+  setBar('pmf',    state.pmf,    'fill-olive');
+  setBar('morale', state.morale, 'fill-teal');
+}
+
+function setBar(name, val, cls) {
+  const fill = document.getElementById('bar-' + name);
+  const valEl = document.getElementById('val-' + name);
+  fill.style.width = val + '%';
+  fill.className = 'stat-bar-fill ' + cls;
+  if (val <= 20) fill.className = 'stat-bar-fill fill-red';
+  valEl.textContent = val;
+}
+
+// ─── Delta flash ──────────────────────────────────────────────────────
+function flashDelta(name, delta) {
+  if (delta === 0) return;
+  const el = document.getElementById('delta-' + name);
+  el.textContent = (delta > 0 ? '+' : '') + delta;
+  el.className = 'delta-flash ' + (delta > 0 ? 'delta-pos' : 'delta-neg');
+  void el.offsetWidth;
+  el.classList.add('show');
+  setTimeout(() => { el.classList.add('hide'); }, 600);
+  setTimeout(() => { el.className = 'delta-flash'; }, 1100);
+}
+
+// ─── Resolve ending ───────────────────────────────────────────────────
+function resolveEnding() {
+  const { runway, pmf, morale } = state;
+
+  let endingKey;
+  if (runway >= 60 && pmf >= 70) {
+    endingKey = 'exit';
+  } else if (runway <= 10 || (runway <= 20 && pmf <= 20)) {
+    endingKey = 'dead';
+  } else if (morale <= 15) {
+    endingKey = 'scandal';
+  } else if (pmf >= 50 && runway >= 30) {
+    endingKey = 'acquihire';
+  } else if (pmf <= 25 && runway >= 25) {
+    endingKey = 'pivot';
+  } else {
+    endingKey = 'zombie';
+  }
+
+  showEnding(endingKey);
+}
+
+// ─── Show ending ──────────────────────────────────────────────────────
+function showEnding(key) {
+  state.ended = true;
+  const e = ENDINGS[key];
+
+  document.getElementById('ending-icon').textContent = e.icon;
+  document.getElementById('ending-title').textContent = e.title;
+  document.getElementById('ending-tagline').textContent = e.tagline;
+  document.getElementById('ending-body').textContent = e.body;
+  document.getElementById('ending-label').textContent = `— ending: ${key.toUpperCase()} —`;
+  document.getElementById('ending-runway').textContent = state.runway;
+  document.getElementById('ending-runway').style.color = state.runway <= 20 ? 'var(--red)' : 'var(--amber)';
+  document.getElementById('ending-pmf').textContent = state.pmf;
+  document.getElementById('ending-pmf').style.color = state.pmf >= 60 ? 'var(--olive)' : state.pmf <= 20 ? 'var(--red)' : 'var(--text-dim)';
+  document.getElementById('ending-morale').textContent = state.morale;
+  document.getElementById('ending-morale').style.color = state.morale >= 60 ? 'var(--teal)' : state.morale <= 20 ? 'var(--red)' : 'var(--text-dim)';
+  document.getElementById('ending-decisions').textContent = state.decisionsCount;
+
+  const typeLabel = state.startupType === 'saas' ? 'B2B SaaS' : state.startupType === 'consumer' ? 'Consumer App' : state.startupType === 'crypto' ? 'Crypto/Web3' : 'Hardware';
+  const tweetText = encodeURIComponent(`I ran my ${typeLabel} startup on founder.fail and ended up: "${e.title}" (${e.tagline})\n\nRunway: ${state.runway} | PMF: ${state.pmf} | Morale: ${state.morale}\n\nfounder.fail`);
+  const shareUrl = `https://x.com/intent/tweet?text=${tweetText}`;
+  document.getElementById('btn-share-ending').onclick = () => {
+    const a = document.createElement('a');
+    a.href = shareUrl;
+    a.target = '_blank';
+    a.rel = 'noopener noreferrer';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
+  showScreen('screen-ending');
+}
+
+// ─── Reset ────────────────────────────────────────────────────────────
+function resetGame() {
+  document.querySelectorAll('.startup-option').forEach(o => o.classList.remove('selected'));
+  state.startupType = null;
+  document.getElementById('btn-start').disabled = true;
+  document.getElementById('btn-start').textContent = '▸  select a startup to begin';
+  showScreen('screen-start');
+}
+
+// ─── Keyboard shortcuts ───────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.metaKey || e.ctrlKey) return;
+  const screen = document.querySelector('.screen.active');
+  if (!screen || screen.id !== 'screen-game') return;
+  const keys = { 'a': 0, 'A': 0, '1': 0, 'b': 1, 'B': 1, '2': 1, 'c': 2, 'C': 2, '3': 2 };
+  if (keys[e.key] !== undefined) {
+    const btns = document.querySelectorAll('.pixel-choice:not(:disabled)');
+    if (btns[keys[e.key]]) btns[keys[e.key]].click();
+  }
+});
+</script>
 </body>
 </html>
